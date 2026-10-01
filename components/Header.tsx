@@ -68,7 +68,7 @@ export function Header({ overlay = false }: HeaderProps) {
                 alt="Kansotex" 
                 width={500} 
                 height={120} 
-                className="w-[180px] sm:w-[220px] h-auto md:w-auto md:h-[80px] object-contain" 
+                className="w-[160px] sm:w-[200px] h-auto md:w-auto md:h-[70px] object-contain" 
                 priority 
               />
             </Link>
