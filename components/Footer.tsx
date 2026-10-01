@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { brand, nav } from "@/lib/content";
 import { Wordmark } from "./Logo";
 
@@ -9,7 +10,13 @@ export function Footer() {
         {/* Massive Centered Logo */}
         <div className="mb-20 flex justify-center border-b border-[#f3eee6]/15 pb-16">
           <Link href="/" aria-label="Kansotex" className="transition-opacity hover:opacity-80">
-            <Wordmark centered className="h-16 w-[18rem] invert sm:h-24 sm:w-[26rem] md:h-32 md:w-[450px]" />
+            <Image 
+              src="/KANSOTEX-marque-1-white.png" 
+              alt="Kansotex" 
+              width={450} 
+              height={150} 
+              className="w-[18rem] h-auto sm:w-[26rem] md:w-[450px]" 
+            />
           </Link>
         </div>
 
@@ -40,7 +47,7 @@ export function Footer() {
           
           {/* Navigation */}
           <div>
-            <h4 className="font-termina mb-8 text-[11px] font-bold uppercase tracking-[0.2em] text-[#a49a8d]">DÉCOUVRIR</h4>
+            <h4 className="font-termina mb-8 text-[11px] font-bold uppercase tracking-[0.2em] text-[#a49a8d]">DECOUVRIR</h4>
             <ul className="flex flex-col gap-5">
               {nav.map((item) => (
                 <li key={item.href}>
@@ -56,9 +63,9 @@ export function Footer() {
           <div>
             <h4 className="font-termina mb-8 text-[11px] font-bold uppercase tracking-[0.2em] text-[#a49a8d]">SERVICE CLIENT</h4>
             <ul className="flex flex-col gap-5">
-              <li><Link href="/faq" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">QUESTIONS FRÉQUENTES</Link></li>
+              <li><Link href="/faq" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">QUESTIONS FREQUENTES</Link></li>
               <li><Link href="/livraison" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">LIVRAISON & RETOURS</Link></li>
-              <li><Link href="/echantillons" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">ÉCHANTILLONS</Link></li>
+              <li><Link href="/echantillons" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">ECHANTILLONS</Link></li>
               <li><Link href="/guide" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">GUIDE D'ENTRETIEN</Link></li>
             </ul>
           </div>
@@ -86,7 +93,7 @@ export function Footer() {
 
           {/* Social */}
           <div>
-            <h4 className="font-termina mb-8 text-[11px] font-bold uppercase tracking-[0.2em] text-[#a49a8d]">RÉSEAUX</h4>
+            <h4 className="font-termina mb-8 text-[11px] font-bold uppercase tracking-[0.2em] text-[#a49a8d]">RESEAUX</h4>
             <ul className="flex flex-col gap-5">
               <li>
                 <a href={brand.instagram} target="_blank" rel="noreferrer" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">
@@ -109,10 +116,10 @@ export function Footer() {
 
         {/* Bottom Footer */}
         <div className="mt-28 flex flex-col items-center justify-between gap-8 border-t border-[#f3eee6]/10 pt-10 font-sans text-xs font-light text-[#f3eee6]/40 md:flex-row">
-          <p className="font-termina text-[9px] font-bold uppercase tracking-[0.2em]">© 2026 {brand.name}. TOUS DROITS RÉSERVÉS.</p>
+          <p className="font-termina text-[9px] font-bold uppercase tracking-[0.2em]">© 2026 {brand.name}. TOUS DROITS RESERVES.</p>
           <ul className="flex flex-wrap justify-center gap-6 md:gap-10">
-            <li><Link href="/mentions-legales" className="font-termina text-[9px] font-bold uppercase tracking-[0.2em] hover:text-[#f3eee6]">MENTIONS LÉGALES</Link></li>
-            <li><Link href="/confidentialite" className="font-termina text-[9px] font-bold uppercase tracking-[0.2em] hover:text-[#f3eee6]">CONFIDENTIALITÉ</Link></li>
+            <li><Link href="/mentions-legales" className="font-termina text-[9px] font-bold uppercase tracking-[0.2em] hover:text-[#f3eee6]">MENTIONS LEGALES</Link></li>
+            <li><Link href="/confidentialite" className="font-termina text-[9px] font-bold uppercase tracking-[0.2em] hover:text-[#f3eee6]">CONFIDENTIALITE</Link></li>
             <li><Link href="/cgv" className="font-termina text-[9px] font-bold uppercase tracking-[0.2em] hover:text-[#f3eee6]">CGV</Link></li>
           </ul>
         </div>

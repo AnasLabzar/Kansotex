@@ -141,7 +141,7 @@ export function Overlays() {
                 type="submit" 
                 className="mt-2 bg-[#1c1b19] py-5 font-termina text-[11px] font-bold uppercase tracking-widest text-[#f3eee6] transition-transform hover:bg-[#2a2926] hover:scale-[1.02]"
               >
-                Débloquer mon offre
+                Debloquer mon offre
               </button>
             </form>
           </div>

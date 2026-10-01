@@ -24,12 +24,17 @@ export default function Home() {
         <Header overlay />
 
         {/* MOBILE HERO (Maison Nicole style) */}
-        <div className="relative z-10 flex min-h-[100dvh] flex-col justify-between px-6 pb-12 pt-28 text-[#f3eee6] md:hidden">
+        <div className="relative z-10 flex min-h-[100dvh] flex-col justify-between px-6 pb-12 pt-20 text-[#f3eee6] md:hidden">
           {/* Top: Huge Brand Name */}
-          <div className="w-full text-center mt-2 px-1">
-            <h1 className="font-tangerine text-[16vw] font-medium tracking-normal drop-shadow-lg">
-              KANSOTEX
-            </h1>
+          <div className="w-full flex justify-center mt-2">
+            <Image 
+              src="/KANSOTEX-marque-1-white.png"
+              alt="KANSOTEX"
+              width={600}
+              height={150}
+              className="w-full h-auto max-w-[420px] drop-shadow-lg"
+              priority
+            />
           </div>
 
           {/* Center: Main Title */}
@@ -51,12 +56,19 @@ export default function Home() {
         </div>
 
         {/* DESKTOP HERO (Original) */}
-        <div className="relative z-10 hidden min-h-[100dvh] flex-col px-4 pb-10 pt-24 text-[#f3eee6] md:flex">
-          <h1 className="font-tangerine mt-2 text-center text-[13.5vw] font-medium leading-[0.78] tracking-[-0.03em]">
-            <Link href="/" className="block">
-              KANSOTEX
+        <div className="relative z-10 hidden min-h-[100dvh] flex-col px-4 pb-10 pt-20 text-[#f3eee6] md:flex">
+          <div className="mt-2 flex justify-center">
+            <Link href="/" className="block w-full max-w-[1200px] px-4">
+              <Image 
+                src="/KANSOTEX-marque-1-white.png"
+                alt="KANSOTEX"
+                width={1400}
+                height={350}
+                className="w-full h-auto drop-shadow-lg"
+                priority
+              />
             </Link>
-          </h1>
+          </div>
 
           <FadeIn delay={1.5} className="mx-auto mt-auto flex max-w-md flex-col items-center gap-10 pb-0 text-center md:flex-1 md:justify-center">
             <p className="font-termina text-[13px] font-bold uppercase leading-relaxed tracking-[0.42em]">
@@ -71,6 +83,17 @@ export default function Home() {
               Nos univers
             </UnderlineLink>
           </FadeIn>
+        </div>
+
+        {/* Bottom Right Mark (Only in Hero) */}
+        <div className="absolute bottom-6 right-6 z-40 pointer-events-none">
+          <Image 
+            src="/made_morocco.png" 
+            alt="Made in Morocco" 
+            width={120} 
+            height={120} 
+            className="w-20 h-20 md:w-24 md:h-24 object-contain drop-shadow-md"
+          />
         </div>
       </section>
 
@@ -142,8 +165,8 @@ export default function Home() {
               />
               <div className="absolute inset-0 bg-[#1c1b19]/35 transition-colors duration-700 group-hover:bg-[#1c1b19]/25" />
               <div className="relative z-10 flex h-full w-full min-h-[52vh] flex-col items-center justify-center px-6 text-center text-[#f3eee6]">
-                <p className="font-termina text-[10px] font-bold uppercase tracking-[0.4em]">{item.kicker}</p>
-                <h3 className="font-termina mt-4 text-3xl font-bold uppercase tracking-widest md:text-4xl">{item.title}</h3>
+                <p className="font-termina text-[10px] font-bold uppercase tracking-[0.4em]">{item.kicker.replace(/[éèêÉÈÊ]/g, 'e')}</p>
+                <h3 className="font-termina mt-4 text-3xl font-bold uppercase tracking-widest md:text-4xl">{item.title.replace(/[éèêÉÈÊ]/g, 'e')}</h3>
               </div>
             </Link>
           </StaggerItem>
@@ -153,7 +176,7 @@ export default function Home() {
       <section className="bg-cream px-6 py-20 md:px-12 md:py-28">
         <FadeIn>
           <p className="font-termina mb-10 text-center text-[11px] font-bold uppercase tracking-widest text-[#1c1b19]">
-            Linge &amp; matières
+            Linge &amp; matieres
           </p>
         </FadeIn>
         
@@ -171,7 +194,7 @@ export default function Home() {
                   />
                 </div>
                 <h3 className="font-termina mt-5 text-center text-[10px] font-bold uppercase tracking-widest text-[#1c1b19]">
-                  {item.title}
+                  {item.title.replace(/[éèêÉÈÊ]/g, 'e')}
                 </h3>
               </Link>
             </StaggerItem>

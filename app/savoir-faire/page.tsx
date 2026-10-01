@@ -41,7 +41,7 @@ export default function SavoirFairePage() {
       <section className="bg-cream px-6 py-20 md:px-12 md:py-28">
         <h2 className="editorial mx-auto max-w-3xl text-center text-4xl leading-tight md:text-5xl">
           Une culture de la{" "}
-          <span className="uppercase">matière</span>, <em>au service</em> de vos
+          <span className="uppercase">matiere</span>, <em>au service</em> de vos
           projets.
         </h2>
 
@@ -58,7 +58,7 @@ export default function SavoirFairePage() {
                 />
               </div>
               <h3 className="mt-6 text-[12px] uppercase tracking-[0.28em]">
-                {pillar.title}
+                {pillar.title.replace(/[éèêÉÈÊ]/g, 'e')}
               </h3>
               <p className="mx-auto mt-3 max-w-xs text-sm leading-relaxed text-muted">
                 {pillar.text}
@@ -77,7 +77,7 @@ export default function SavoirFairePage() {
             <article key={step.n}>
               <p className="text-[11px] tracking-[0.32em] text-muted">{step.n}</p>
               <h3 className="mt-3 text-[13px] uppercase tracking-[0.22em]">
-                {step.title}
+                {step.title.replace(/[éèêÉÈÊ]/g, 'e')}
               </h3>
               <p className="mt-4 text-sm leading-relaxed text-muted">{step.text}</p>
             </article>

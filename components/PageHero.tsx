@@ -35,10 +35,10 @@ export function PageHero({
       </div>
       <div className="relative z-10 mx-auto mt-24 max-w-xl px-6 text-center text-[#f3eee6]">
         {kicker ? (
-          <p className="mb-3 text-[11px] uppercase tracking-[0.42em]">{kicker}</p>
+          <p className="mb-3 text-[11px] uppercase tracking-[0.42em]">{kicker.replace(/[éèêÉÈÊ]/g, 'e')}</p>
         ) : null}
         <h1 className="font-sans text-[13px] uppercase tracking-[0.38em] md:text-[15px]">
-          {title}
+          {title.replace(/[éèêÉÈÊ]/g, 'e')}
         </h1>
       </div>
     </section>

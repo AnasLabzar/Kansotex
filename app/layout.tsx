@@ -4,6 +4,10 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Footer } from "@/components/Footer";
 import { Overlays } from "@/components/Overlays";
+import { CartProvider } from "@/lib/CartContext";
+import { CartDrawer } from "@/components/CartDrawer";
+import { getSession } from "@/lib/session";
+import { SessionProvider } from "@/lib/SessionContext";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -52,16 +56,23 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const session = await getSession();
+
   return (
       <html
         lang="fr"
         className={`${poppins.variable} ${cormorant.variable} ${sage.variable} ${commune.variable} ${tangerine.variable} ${termina.variable} h-full antialiased`}
       >
       <body className="min-h-full flex flex-col bg-cream text-ink">
-        <Overlays />
-        {children}
-        <Footer />
+        <SessionProvider session={session}>
+          <CartProvider>
+            <Overlays />
+            {children}
+            <Footer />
+            <CartDrawer />
+          </CartProvider>
+        </SessionProvider>
       </body>
     </html>
   );

@@ -1,0 +1,191 @@
+// use prisma-8
+
+// ----------------------------------------------------
+// 1. UTILISATEURS & B2B CRM
+// ----------------------------------------------------
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  passwordHash  String?
+  firstName     String
+  lastName      String
+  role          UserRole  @default(CUSTOMER)
+  
+  // Champs spécifiques B2B
+  companyName   String?
+  siret         String?
+  isVerifiedPro Boolean   @default(false)
+  tradeDiscount Float     @default(0) // ex: 0.20 pour 20%
+  
+  createdAt     temporal.createdAtString()
+  updatedAt     temporal.updatedAtString()
+  
+  orders        Order[]
+  quotes        Quote[]
+}
+
+model VerificationToken {
+  id        String   @id @default(uuid())
+  email     String
+  code      String
+  expiresAt String
+  createdAt temporal.createdAtString()
+  
+  @@unique([email, code])
+}
+
+enum UserRole {
+  @@type("pg/text@1")
+  CUSTOMER = "CUSTOMER"
+  ARCHITECT = "ARCHITECT"
+  DECORATOR = "DECORATOR"
+  HOTEL = "HOTEL"
+  ADMIN = "ADMIN"
+}
+
+// ----------------------------------------------------
+// 2. CATALOGUE & ARCHITECTURE TEXTILE
+// ----------------------------------------------------
+model Category {
+  id          String    @id @default(uuid())
+  slug        String    @unique
+  name        String
+  description String?
+  products    Product[]
+}
+
+model Product {
+  id            String    @id @default(uuid())
+  slug          String    @unique
+  name          String
+  description   String?
+  type          ProductType
+  isActive      Boolean   @default(true)
+  
+  // Prix de base (TTC Public) - Le prix Pro est calculé dynamiquement
+  basePrice     Float
+  
+  image         String?   // Added image field for catalog/cart
+  
+  categoryId    String
+  category      Category  @relation(fields: [categoryId], references: [id])
+  
+  variants      ProductVariant[]
+  metadata      ProductMetadata? // The textile-specific intelligence
+  
+  createdAt     temporal.createdAtString()
+  updatedAt     temporal.updatedAtString()
+}
+
+enum ProductType {
+  @@type("pg/text@1")
+  FABRIC_BY_METER = "FABRIC_BY_METER"
+  FINISHED_GOOD = "FINISHED_GOOD"
+  SAMPLE = "SAMPLE"
+}
+
+// Le cerveau technique de l'éditeur de tissu
+model ProductMetadata {
+  id              String   @id @default(uuid())
+  productId       String   @unique
+  product         Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  // Spécifications de coupe et calcul
+  laize           Float?   // Largeur du rouleau en cm (ex: 140)
+  raccordV        Float?   // Répétition verticale du motif en cm
+  raccordH        Float?   // Répétition horizontale en cm
+  isHalfDrop      Boolean? @default(false) // Vrai si "Raccord sauteur"
+  
+  // Spécifications physiques
+  martindale      Int?     // Résistance à l'usure (ex: 40000 tours)
+  weight          Float?   // Poids au mètre carré (gr/m2)
+  composition     String?  // ex: "100% Lin", "60% Coton 40% PES"
+  
+  // Contraintes de vente
+  minOrderLength  Float?   // Minimum d'achat en mètre (ex: 1.0)
+  cutIncrement    Float?   // Pas de coupe autorisé (ex: 0.1m)
+}
+
+model ProductVariant {
+  id          String   @id @default(uuid())
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  sku         String   @unique
+  colorName   String?
+  colorHex    String?
+  size        String?  // Utilisé pour le linge (ex: "240x260")
+  
+  // Le stock global théorique (la réalité est dans les DyeLots)
+  stockLevel  Float    @default(0)
+  dyeLots     DyeLot[]
+}
+
+// ----------------------------------------------------
+// 3. GESTION EXPERTE DU STOCK (BAINS DE TEINTURE)
+// ----------------------------------------------------
+model DyeLot {
+  id          String         @id @default(uuid())
+  variantId   String
+  variant     ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  
+  lotNumber   String         // Numéro du bain de teinture
+  stockLength Float          // Longueur physique exacte de ce rouleau
+  isExhausted Boolean        @default(false)
+}
+
+// ----------------------------------------------------
+// 4. MOTEUR TRANSACTIONNEL (COMMANDES ET DEVIS)
+// ----------------------------------------------------
+model Order {
+  id            String      @id @default(uuid())
+  userId        String?
+  user          User?       @relation(fields: [userId], references: [id])
+  
+  status        OrderStatus @default(PENDING)
+  totalAmount   Float
+  
+  lines         OrderLine[]
+  
+  createdAt     DateTime    @default(now())
+  updatedAt     temporal.updatedAt()
+}
+
+model Quote {
+  id            String      @id @default(uuid())
+  userId        String
+  user          User        @relation(fields: [userId], references: [id])
+  
+  status        QuoteStatus @default(DRAFT)
+  pdfUrl        String?
+  
+  createdAt     DateTime    @default(now())
+}
+
+enum OrderStatus {
+  @@type("pg/text@1")
+  PENDING = "PENDING"
+  PAID = "PAID"
+  PROCESSING = "PROCESSING" // En cours de coupe
+  SHIPPED = "SHIPPED"
+  DELIVERED = "DELIVERED"
+  CANCELLED = "CANCELLED"
+}
+
+enum QuoteStatus {
+  @@type("pg/text@1")
+  DRAFT = "DRAFT"
+  SENT = "SENT"
+  ACCEPTED = "ACCEPTED"
+  REJECTED = "REJECTED"
+}
+
+model OrderLine {
+  id            String         @id @default(uuid())
+  orderId       String
+  order         Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  
+  variantId     String
+  quantity      Float          // Peut être décimal pour le tissu !
+  unitPrice     Float          // Prix figé au moment de l'achat
+}

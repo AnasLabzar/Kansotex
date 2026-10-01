@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Wordmark } from "./Logo";
+import Image from "next/image";
 
 // The Intro Loading Screen
 export function IntroScreen() {
@@ -31,7 +31,14 @@ export function IntroScreen() {
             exit={{ opacity: 0, scale: 1.05, transition: { duration: 0.5 } }}
             className="flex flex-col items-center"
           >
-            <Wordmark centered className="h-20 w-[18rem] invert md:h-28 md:w-[400px]" />
+            <Image 
+              src="/KANSOTEX-marque-1-white.png"
+              alt="KANSOTEX"
+              width={400}
+              height={100}
+              className="h-auto w-[250px] md:w-[400px]"
+              priority
+            />
             <motion.div 
               initial={{ width: 0 }}
               animate={{ width: "100%", transition: { duration: 1.2, delay: 0.5, ease: "circInOut" } }}

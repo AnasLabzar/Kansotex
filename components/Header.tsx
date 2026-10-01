@@ -3,8 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { Wordmark } from "./Logo";
 import { nav } from "@/lib/content";
+import { useCart } from "@/lib/CartContext";
+import { useSession } from "@/lib/SessionContext";
+import { logout } from "@/lib/session";
 
 type HeaderProps = {
   overlay?: boolean;
@@ -12,12 +17,26 @@ type HeaderProps = {
 
 export function Header({ overlay = false }: HeaderProps) {
   const pathname = usePathname();
+  const { openCart, cartCount } = useCart();
+  const { session } = useSession();
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
   const [menuOrigin, setMenuOrigin] = useState<"left" | "right">("right");
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 90);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 90);
+      
+      // Hide header when reaching near the footer
+      const scrollPosition = window.scrollY + window.innerHeight;
+      const threshold = document.documentElement.scrollHeight - 200; // 200px from bottom
+      if (scrollPosition > threshold) {
+        setHidden(true);
+      } else {
+        setHidden(false);
+      }
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -32,17 +51,26 @@ export function Header({ overlay = false }: HeaderProps) {
     ? "bg-[#f3eee6]/95 text-[#1c1b19] shadow-[0_1px_0_rgba(28,27,25,0.06)] backdrop-blur-md"
     : "bg-transparent text-[#f3eee6]";
 
+  const headerTransform = hidden && !open ? "-translate-y-full" : "translate-y-0";
+
   const transformClass = menuOrigin === "left"
     ? open ? "translate-x-0" : "-translate-x-8 md:-translate-x-full" // slide from left
     : open ? "translate-x-0" : "translate-x-8 md:translate-x-full"; // slide from right
 
   return (
     <>
-      <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${bar}`}>
+      <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${bar} ${headerTransform}`}>
         {compact ? (
-          <div className="flex items-center justify-between gap-4 px-5 py-3 md:px-8">
-            <Link href="/" aria-label="Kansotex" className="-ml-2 md:-ml-3">
-              <Wordmark className="h-16 w-56 md:h-20 md:w-[17rem]" />
+          <div className="flex items-center justify-between gap-4 px-5 py-2 md:px-8 overflow-hidden">
+            <Link href="/" aria-label="Kansotex" className="-ml-2 md:-ml-3 shrink-0">
+              <Image 
+                src="/KANSOTEX-marque-Black.png" 
+                alt="Kansotex" 
+                width={500} 
+                height={120} 
+                className="w-[180px] sm:w-[220px] h-auto md:w-auto md:h-[80px] object-contain" 
+                priority 
+              />
             </Link>
             <nav className="hidden items-center gap-8 md:flex">
               {nav.map((item) => (
@@ -55,15 +83,44 @@ export function Header({ overlay = false }: HeaderProps) {
               ))}
             </nav>
             <div className="flex items-center gap-6">
+              {session?.isPro && (
+                <button 
+                  onClick={async () => {
+                    await logout();
+                    window.location.reload();
+                  }}
+                  className="hidden lg:block text-[8px] uppercase tracking-widest font-termina bg-red-900/10 text-red-900 px-2 py-1 rounded-sm hover:bg-red-900/20 transition-colors"
+                >
+                  Déconnexion B2B
+                </button>
+              )}
               <button aria-label="Recherche" className="transition-opacity hover:opacity-70">
                 <SearchIcon className="h-[18px] w-[18px]" />
               </button>
-              <button aria-label="Compte" className="hidden transition-opacity hover:opacity-70 sm:block">
+              <Link href="/pro" aria-label="Compte" className="hidden transition-opacity hover:opacity-70 sm:block">
                 <UserIcon className="h-[18px] w-[18px]" />
-              </button>
-              <button aria-label="Panier" className="relative transition-opacity hover:opacity-70">
+              </Link>
+              <button id="cart-icon" aria-label="Panier" onClick={openCart} className="relative transition-opacity hover:opacity-70">
                 <CartIcon className="h-[18px] w-[18px]" />
-                <span className="absolute -right-1.5 -top-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#1c1b19] text-[9px] text-[#f3eee6]">0</span>
+                <AnimatePresence>
+                  {cartCount > 0 && (
+                    <motion.span 
+                      key={cartCount}
+                      initial={{ y: -20, opacity: 0, scale: 0.5 }}
+                      animate={{ y: 0, opacity: 1, scale: 1 }}
+                      exit={{ scale: 0, opacity: 0 }}
+                      transition={{ 
+                        type: "spring", 
+                        stiffness: 400, 
+                        damping: 15,
+                        mass: 0.8
+                      }}
+                      className="absolute -right-1.5 -top-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#1c1b19] text-[9px] text-[#f3eee6]"
+                    >
+                      {cartCount}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
               </button>
               <MenuButton open={open} onClick={() => { setMenuOrigin("right"); setOpen((v) => !v); }} />
             </div>

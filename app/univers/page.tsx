@@ -44,10 +44,10 @@ export default function UniversPage() {
                 />
               </div>
               <p className="mt-4 text-center text-[10px] uppercase tracking-[0.32em] text-muted">
-                {item.kicker}
+                {item.kicker.replace(/[éèêÉÈÊ]/g, 'e')}
               </p>
               <h3 className="mt-1 text-center text-[12px] uppercase tracking-[0.22em]">
-                {item.title}
+                {item.title.replace(/[éèêÉÈÊ]/g, 'e')}
               </h3>
               <p className="mx-auto mt-3 max-w-sm text-center text-sm leading-relaxed text-muted">
                 {item.excerpt}
