@@ -25,7 +25,10 @@ async function main() {
     const { metadata, variants, ...productBase } = prodData;
     
     // Create Product
-    const product = await db.orm.public.Product.create(productBase);
+    const product = await db.orm.public.Product.create({
+      ...productBase,
+      type: productBase.type as any,
+    });
 
     // Handle Metadata
     if (metadata) {
