@@ -9,10 +9,18 @@ export async function PopularProducts() {
   let errorMsg = null;
 
   try {
-    // Fetch popular products (e.g. top 8 ordered by some logic, here we just take 8)
+    // Fetch popular products
     const allProducts = await db.orm.public.Product.all();
-    // Simply take the first 8 products for the carousel
-    products = allProducts.slice(0, 8);
+    // Next.js Server Components CANNOT serialize Prisma 8 Proxy objects to Client Components.
+    // We MUST map them to plain JSON objects!
+    products = allProducts.slice(0, 8).map(p => ({
+      id: p.id,
+      slug: p.slug,
+      image: p.image,
+      nameFr: p.nameFr,
+      nameEn: p.nameEn,
+      basePrice: p.basePrice
+    }));
     
     const session = await getSession();
     isPro = session?.isPro || false;
