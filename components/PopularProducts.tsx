@@ -1,6 +1,4 @@
-import { db } from "@/prisma/db";
-import { getSession } from "@/lib/session";
-import { PopularProductsCarousel } from "./PopularProductsCarousel";
+
 
 export async function PopularProducts() {
   return (
