@@ -18,12 +18,13 @@ export async function PopularProducts() {
     isPro = session?.isPro || false;
     discount = session?.tradeDiscount || 0;
   } catch (err: any) {
-    errorMsg = err.message + "\n" + err.stack;
+    const dbUrl = process.env.DATABASE_URL || "MISSING";
+    errorMsg = `DB_URL: ${dbUrl.substring(0, 30)}... \n\n` + err.message + "\n" + err.stack;
   }
 
   if (errorMsg) {
     return (
-      <div style={{ padding: "2rem", backgroundColor: "white", color: "red", zIndex: 9999, position: "relative" }}>
+      <div style={{ padding: "2rem", backgroundColor: "white", color: "red", zIndex: 9999, position: "relative", wordBreak: "break-all" }}>
         <h2>PRISMA ERROR IN POPULAR PRODUCTS:</h2>
         <pre>{errorMsg}</pre>
       </div>

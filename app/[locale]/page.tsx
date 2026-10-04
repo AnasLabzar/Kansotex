@@ -8,6 +8,8 @@ import { PopularProducts } from "@/components/PopularProducts";
 import { getTranslations, getLocale } from "next-intl/server";
 import { Suspense } from "react";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   try {
     const t = await getTranslations("Home");
