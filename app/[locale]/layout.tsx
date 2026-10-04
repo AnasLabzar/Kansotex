@@ -70,8 +70,23 @@ export default async function RootLayout({
   const { locale } = await params;
   if (!['fr', 'en'].includes(locale)) notFound();
 
-  const messages = await getMessages();
-  const session = await getSession();
+  let messages: any;
+  let session: any;
+  try {
+    messages = await getMessages();
+    session = await getSession();
+  } catch (err: any) {
+    return (
+      <html>
+        <body>
+          <div style={{ color: "red", background: "white", padding: "20px" }}>
+            <h1>LAYOUT CRASH:</h1>
+            <pre>{err.stack}</pre>
+          </div>
+        </body>
+      </html>
+    );
+  }
 
   return (
       <html

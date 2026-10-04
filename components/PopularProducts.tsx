@@ -40,7 +40,13 @@ export async function PopularProducts() {
     );
   }
 
-  return <PopularProductsCarousel products={products} isPro={isPro} discount={discount} />;
+  // return <PopularProductsCarousel products={products} isPro={isPro} discount={discount} />;
+  return (
+    <div style={{ backgroundColor: "black", color: "white", padding: "2rem" }}>
+      <h2>PRODUCTS LOADED SUCCESSFULLY</h2>
+      <pre>{JSON.stringify(products, null, 2)}</pre>
+    </div>
+  );
 }
 
 
