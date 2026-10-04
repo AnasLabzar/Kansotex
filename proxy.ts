@@ -1,18 +1,35 @@
-import createMiddleware from 'next-intl/middleware';
+import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-const intlMiddleware = createMiddleware({
-  locales: ['fr', 'en'],
-  defaultLocale: 'fr',
-  localePrefix: 'always', // Always redirect to /fr or /en to avoid rewrite bugs on Vercel
-  localeDetection: true // Auto-detect based on browser (Accept-Language)
-});
+const locales = ['fr', 'en'];
+const defaultLocale = 'fr';
 
 export function proxy(request: NextRequest) {
-  return intlMiddleware(request);
+  const { pathname } = request.nextUrl;
+  
+  // Check if pathname already has a locale
+  const pathnameHasLocale = locales.some(
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+  );
+
+  if (pathnameHasLocale) {
+    // Extract locale
+    const locale = pathname.split('/')[1];
+    
+    // Create response and set header for next-intl
+    const response = NextResponse.next();
+    response.headers.set('x-next-intl-locale', locale);
+    return response;
+  }
+
+  // Redirect if there is no locale
+  const response = NextResponse.redirect(new URL(`/${defaultLocale}${pathname}`, request.url));
+  response.headers.set('x-next-intl-locale', defaultLocale);
+  return response;
 }
 
 export const config = {
   // Match only internationalized pathnames
   matcher: ['/((?!api|_next|_vercel|.*\\..*).*)']
 };
+
