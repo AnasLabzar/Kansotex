@@ -1,15 +1,11 @@
 import createMiddleware from 'next-intl/middleware';
 
-const intlMiddleware = createMiddleware({
+export default createMiddleware({
   locales: ['fr', 'en'],
   defaultLocale: 'fr',
-  localePrefix: 'as-needed', // Only adds /en for english, keeps / for french
+  localePrefix: 'always', // Always redirect to /fr or /en to avoid rewrite bugs on Vercel
   localeDetection: true // Auto-detect based on browser (Accept-Language)
 });
-
-export default function proxy(req: any) {
-  return intlMiddleware(req);
-}
 
 export const config = {
   // Match only internationalized pathnames
