@@ -81,17 +81,19 @@ async function main() {
   // 1. Translate Categories
   const categories = await db.orm.public.Category.all();
   for (const cat of categories) {
-    if (translations.categories[cat.nameFr]) {
-      await db.orm.public.Category.where({ id: cat.id }).update({ nameEn: translations.categories[cat.nameFr] });
-      console.log(`Translated Category: ${cat.nameFr} -> ${translations.categories[cat.nameFr]}`);
+    const categoriesMap = translations.categories as Record<string, string>;
+    if (categoriesMap[cat.nameFr]) {
+      await db.orm.public.Category.where({ id: cat.id }).update({ nameEn: categoriesMap[cat.nameFr] });
+      console.log(`Translated Category: ${cat.nameFr} -> ${categoriesMap[cat.nameFr]}`);
     }
   }
 
   // 2. Translate Products
   const products = await db.orm.public.Product.all();
   for (const prod of products) {
-    if (translations.products[prod.slug]) {
-      const enData = translations.products[prod.slug];
+    const productsMap = translations.products as Record<string, { nameEn: string, descriptionEn: string }>;
+    if (productsMap[prod.slug]) {
+      const enData = productsMap[prod.slug];
       await db.orm.public.Product.where({ id: prod.id }).update({ 
         nameEn: enData.nameEn,
         descriptionEn: enData.descriptionEn

@@ -7,7 +7,7 @@ import { UnderlineLink } from "@/components/UnderlineLink";
 import { universes } from "@/lib/content";
 
 type Props = {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string, slug: string }>;
 };
 
 export function generateStaticParams() {
@@ -56,7 +56,7 @@ export default async function UniverseDetailPage({ params }: Props) {
               {item.title}
             </h2>
             <p className="mt-6 max-w-md text-sm leading-relaxed text-muted">
-              {item.descriptionFr}
+              {item.description}
             </p>
             <div className="mt-10">
               <UnderlineLink href="/contact">Parler de votre projet</UnderlineLink>

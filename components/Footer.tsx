@@ -127,7 +127,7 @@ export function Footer() {
         {/* Bottom Footer */}
         <div className="mt-28 flex flex-col items-center justify-between gap-8 border-t border-[#f3eee6]/10 pt-10 font-sans text-xs font-light text-[#f3eee6]/40 md:flex-row">
           <div className="flex items-center gap-6">
-            <p className="font-termina text-[9px] font-bold uppercase tracking-[0.2em]">© 2026 {brand.nameFr || brand.name}. {t("allRightsReserved")}</p>
+            <p className="font-termina text-[9px] font-bold uppercase tracking-[0.2em]">© 2026 {brand.name}. {t("allRightsReserved")}</p>
             <div className="hidden md:block w-px h-3 bg-[#f3eee6]/20"></div>
             <CurrencySelector isDark={true} />
             <div className="hidden md:block w-px h-3 bg-[#f3eee6]/20"></div>

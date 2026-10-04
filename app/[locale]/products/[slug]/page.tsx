@@ -6,7 +6,7 @@ import { Header } from "@/components/Header";
 import { getSession } from "@/lib/session";
 import ImageGallery from "./ImageGallery";
 
-export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ locale: string, slug: string }> }): Promise<Metadata> {
   const params = await props.params;
   const product = await db.orm.public.Product.where({ slug: params.slug }).first();
   if (!product) {
