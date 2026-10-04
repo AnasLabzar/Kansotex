@@ -4,7 +4,7 @@ import { Header } from "@/components/Header";
 import { UnderlineLink } from "@/components/UnderlineLink";
 import { IntroScreen, FadeIn, StaggerContainer, StaggerItem } from "@/components/Animations";
 import { pillars, universes } from "@/lib/content";
-// import { PopularProducts } from "@/components/PopularProducts";
+import { PopularProducts } from "@/components/PopularProducts";
 import { getTranslations, getLocale } from "next-intl/server";
 import { Suspense } from "react";
 
@@ -212,10 +212,9 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* PRODUCTS PLACEHOLDER */}
-        <div style={{ padding: "50px", textAlign: "center", backgroundColor: "black", color: "white" }}>
-          PRODUCTS SECTION REMOVED FOR DEBUGGING
-        </div>
+        <Suspense fallback={<div className="h-96 bg-[#f8f5f0] animate-pulse" />}>
+          <PopularProducts />
+        </Suspense>
 
         <section className="relative flex h-screen w-full flex-col md:h-[110vh] md:flex-row">
           {/* Left half */}
