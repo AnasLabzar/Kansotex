@@ -4,9 +4,13 @@ import { useCart } from "@/lib/CartContext";
 import { useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { useCurrency } from "@/lib/CurrencyContext";
+import { useTranslations } from "next-intl";
 
 export function CartDrawer() {
   const { isCartOpen, closeCart, items, removeItem, updateQuantity, cartTotal } = useCart();
+  const { formatPrice } = useCurrency();
+  const t = useTranslations("Cart");
 
   // Prevent background scrolling when cart is open
   useEffect(() => {
@@ -44,7 +48,7 @@ export function CartDrawer() {
           >
             {/* Header */}
             <div className="px-8 py-8 flex items-center justify-between border-b border-[#1c1b19]/10">
-              <h2 className="font-cormorant text-3xl italic tracking-wide">Votre Panier</h2>
+              <h2 className="font-cormorant text-3xl italic tracking-wide">{t("title")}</h2>
               <button 
                 onClick={closeCart}
                 className="group p-2 flex items-center justify-center transition-transform hover:rotate-90"
@@ -65,9 +69,9 @@ export function CartDrawer() {
                   animate={{ opacity: 1, y: 0 }}
                   className="flex flex-col items-center justify-center h-full text-center space-y-6"
                 >
-                  <p className="font-cormorant text-2xl italic text-[#1c1b19]/50">Votre panier est vide.</p>
+                  <p className="font-cormorant text-2xl italic text-[#1c1b19]/50">{t("empty")}</p>
                   <button onClick={closeCart} className="font-termina text-[10px] uppercase tracking-[0.2em] border-b border-[#1c1b19] pb-1 hover:text-[#1c1b19]/60 hover:border-[#1c1b19]/60 transition-all">
-                    Découvrir notre collection
+                    {t("discover")}
                   </button>
                 </motion.div>
               ) : (
@@ -131,8 +135,9 @@ export function CartDrawer() {
                           </button>
                         </div>
 
-                        <span className="font-cormorant text-2xl italic">
-                          {(item.price * item.quantity).toFixed(2)} €
+                        <span className="font-cormorant text-2xl italic flex items-baseline gap-1">
+                          {formatPrice(item.price * item.quantity).value}
+                          <span className="font-sans text-sm">{formatPrice(item.price * item.quantity).symbol}</span>
                         </span>
                       </div>
                     </div>
@@ -150,11 +155,14 @@ export function CartDrawer() {
                 className="p-8 bg-[#f3eee6] border-t border-[#1c1b19]/10"
               >
                 <div className="flex justify-between items-end mb-6 font-poppins">
-                  <span className="text-sm uppercase tracking-wider text-[#1c1b19]/60">Sous-total</span>
-                  <span className="text-2xl">{cartTotal.toFixed(2)} €</span>
+                  <span className="text-sm uppercase tracking-wider text-[#1c1b19]/60">{t("subtotal")}</span>
+                  <span className="text-2xl flex items-baseline gap-1">
+                    {formatPrice(cartTotal).value}
+                    <span className="font-sans text-sm">{formatPrice(cartTotal).symbol}</span>
+                  </span>
                 </div>
                 <p className="text-[10px] text-[#1c1b19]/50 font-light mb-6">
-                  Taxes et frais de livraison calculés à l'étape suivante.
+                  {t("taxesNote")}
                 </p>
                 
                 <Link 
@@ -162,12 +170,12 @@ export function CartDrawer() {
                   onClick={closeCart}
                   className="flex w-full h-14 items-center justify-center bg-[#1c1b19] text-[#f3eee6] font-termina text-[10px] tracking-[0.28em] uppercase hover:bg-[#1c1b19]/90 transition-colors"
                 >
-                  Commander
+                  {t("checkout")}
                 </Link>
                 
                 <div className="mt-4 flex w-full">
                   <button className="w-full text-center font-termina text-[9px] uppercase tracking-[0.2em] text-[#1c1b19]/60 border border-[#1c1b19]/20 h-10 hover:bg-[#1c1b19]/5 transition-colors">
-                    Demander un devis pro
+                    {t("requestQuote")}
                   </button>
                 </div>
               </motion.div>

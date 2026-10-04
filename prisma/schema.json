@@ -145,7 +145,14 @@
         "models": {
           "Category": {
             "fields": {
-              "description": {
+              "descriptionEn": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "descriptionFr": {
                 "nullable": true,
                 "type": {
                   "codecId": "pg/text@1",
@@ -159,7 +166,14 @@
                   "kind": "scalar"
                 }
               },
-              "name": {
+              "nameEn": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "nameFr": {
                 "nullable": false,
                 "type": {
                   "codecId": "pg/text@1",
@@ -193,14 +207,20 @@
             },
             "storage": {
               "fields": {
-                "description": {
-                  "column": "description"
+                "descriptionEn": {
+                  "column": "descriptionEn"
+                },
+                "descriptionFr": {
+                  "column": "descriptionFr"
                 },
                 "id": {
                   "column": "id"
                 },
-                "name": {
-                  "column": "name"
+                "nameEn": {
+                  "column": "nameEn"
+                },
+                "nameFr": {
+                  "column": "nameFr"
                 },
                 "slug": {
                   "column": "slug"
@@ -498,8 +518,23 @@
                   "kind": "scalar"
                 }
               },
-              "description": {
+              "descriptionEn": {
                 "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "descriptionFr": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "gallery": {
+                "many": true,
+                "nullable": false,
                 "type": {
                   "codecId": "pg/text@1",
                   "kind": "scalar"
@@ -526,7 +561,14 @@
                   "kind": "scalar"
                 }
               },
-              "name": {
+              "nameEn": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "nameFr": {
                 "nullable": false,
                 "type": {
                   "codecId": "pg/text@1",
@@ -621,8 +663,14 @@
                 "createdAt": {
                   "column": "createdAt"
                 },
-                "description": {
-                  "column": "description"
+                "descriptionEn": {
+                  "column": "descriptionEn"
+                },
+                "descriptionFr": {
+                  "column": "descriptionFr"
+                },
+                "gallery": {
+                  "column": "gallery"
                 },
                 "id": {
                   "column": "id"
@@ -633,8 +681,11 @@
                 "isActive": {
                   "column": "isActive"
                 },
-                "name": {
-                  "column": "name"
+                "nameEn": {
+                  "column": "nameEn"
+                },
+                "nameFr": {
+                  "column": "nameFr"
                 },
                 "slug": {
                   "column": "slug"
@@ -797,7 +848,14 @@
                   "kind": "scalar"
                 }
               },
-              "colorName": {
+              "colorNameEn": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "colorNameFr": {
                 "nullable": true,
                 "type": {
                   "codecId": "pg/text@1",
@@ -878,8 +936,11 @@
                 "colorHex": {
                   "column": "colorHex"
                 },
-                "colorName": {
-                  "column": "colorName"
+                "colorNameEn": {
+                  "column": "colorNameEn"
+                },
+                "colorNameFr": {
+                  "column": "colorNameFr"
                 },
                 "id": {
                   "column": "id"
@@ -1225,7 +1286,12 @@
           "table": {
             "Category": {
               "columns": {
-                "description": {
+                "descriptionEn": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "descriptionFr": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
                   "nullable": true
@@ -1235,7 +1301,12 @@
                   "nativeType": "text",
                   "nullable": false
                 },
-                "name": {
+                "nameEn": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "nameFr": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
                   "nullable": false
@@ -1485,6 +1556,11 @@
             "Product": {
               "checks": [
                 {
+                  "expression": "array_position(\"gallery\", NULL) IS NULL",
+                  "name": "Product_gallery_elem_not_null_6f7f27ad",
+                  "prefix": "Product_gallery_elem_not_null"
+                },
+                {
                   "expression": "\"type\" IN ('FABRIC_BY_METER', 'FINISHED_GOOD', 'SAMPLE')",
                   "name": "Product_type_check_767d5e7a",
                   "prefix": "Product_type_check"
@@ -1506,10 +1582,25 @@
                   "nativeType": "timestamptz",
                   "nullable": false
                 },
-                "description": {
+                "descriptionEn": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
                   "nullable": true
+                },
+                "descriptionFr": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "gallery": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": []
+                  },
+                  "many": true,
+                  "nativeType": "text",
+                  "nullable": false
                 },
                 "id": {
                   "codecId": "pg/text@1",
@@ -1530,7 +1621,12 @@
                   "nativeType": "bool",
                   "nullable": false
                 },
-                "name": {
+                "nameEn": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "nameFr": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
                   "nullable": false
@@ -1700,7 +1796,12 @@
                   "nativeType": "text",
                   "nullable": true
                 },
-                "colorName": {
+                "colorNameEn": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "colorNameFr": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
                   "nullable": true
@@ -2054,7 +2155,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "dd12b12cac21e08269380c54e285f83a0655fd4eb046958e62aee823855b629e"
+    "storageHash": "cdf5916f05f3c60bccfa95fa558afe218024a946779dc5989b2c617171e0aa39"
   },
   "execution": {
     "executionHash": "b57369726cf2f96b8975525143dc5d1c0f55f0f7c08110a4a65cdceab7f910d3",

@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import { brand } from "@/lib/content";
+import { useTranslations } from "next-intl";
 
 export function ContactForm() {
   const [sent, setSent] = useState(false);
+  const t = useTranslations("ContactForm");
 
   return (
     <form
@@ -16,13 +18,13 @@ export function ContactForm() {
     >
       {sent ? (
         <p className="font-serif text-2xl italic">
-          Merci. Nous revenons vers vous très bientôt.
+          {t("successMessage")}
         </p>
       ) : (
         <>
           <label className="block">
             <span className="mb-2 block text-[10px] uppercase tracking-[0.28em]">
-              Nom
+              {t("name")}
             </span>
             <input
               required
@@ -32,7 +34,7 @@ export function ContactForm() {
           </label>
           <label className="block">
             <span className="mb-2 block text-[10px] uppercase tracking-[0.28em]">
-              Email
+              {t("email")}
             </span>
             <input
               required
@@ -43,7 +45,7 @@ export function ContactForm() {
           </label>
           <label className="block">
             <span className="mb-2 block text-[10px] uppercase tracking-[0.28em]">
-              Projet
+              {t("project")}
             </span>
             <textarea
               required
@@ -56,10 +58,10 @@ export function ContactForm() {
             type="submit"
             className="mt-4 justify-self-start text-[11px] uppercase tracking-[0.28em] underline decoration-[0.7px] underline-offset-[10px]"
           >
-            Envoyer
+            {t("send")}
           </button>
           <p className="text-xs text-[#1c1b19]/60">
-            Ou écrivez-nous directement : {brand.email}
+            {t("directEmail")}{brand.email}
           </p>
         </>
       )}

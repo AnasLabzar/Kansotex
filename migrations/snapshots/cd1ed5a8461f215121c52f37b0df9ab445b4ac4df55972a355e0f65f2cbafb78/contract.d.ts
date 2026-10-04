@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'cdf5916f05f3c60bccfa95fa558afe218024a946779dc5989b2c617171e0aa39'>;
+  StorageHashBase<'cd1ed5a8461f215121c52f37b0df9ab445b4ac4df55972a355e0f65f2cbafb78'>;
 export type ExecutionHash =
   ExecutionHashBase<'b57369726cf2f96b8975525143dc5d1c0f55f0f7c08110a4a65cdceab7f910d3'>;
 export type ProfileHash =
@@ -251,11 +251,9 @@ type DefaultLiteralValue<CodecId extends string, Encoded> = CodecId extends keyo
 export type FieldOutputTypes = {
   readonly public: {
     readonly Category: {
-      readonly descriptionEn: CodecTypes['pg/text@1']['output'] | null;
-      readonly descriptionFr: CodecTypes['pg/text@1']['output'] | null;
+      readonly description: CodecTypes['pg/text@1']['output'] | null;
       readonly id: CodecTypes['pg/text@1']['output'];
-      readonly nameEn: CodecTypes['pg/text@1']['output'] | null;
-      readonly nameFr: CodecTypes['pg/text@1']['output'];
+      readonly name: CodecTypes['pg/text@1']['output'];
       readonly slug: CodecTypes['pg/text@1']['output'];
     };
     readonly DyeLot: {
@@ -284,14 +282,12 @@ export type FieldOutputTypes = {
       readonly basePrice: CodecTypes['pg/float8@1']['output'];
       readonly categoryId: CodecTypes['pg/text@1']['output'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly descriptionEn: CodecTypes['pg/text@1']['output'] | null;
-      readonly descriptionFr: CodecTypes['pg/text@1']['output'] | null;
+      readonly description: CodecTypes['pg/text@1']['output'] | null;
       readonly gallery: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly image: CodecTypes['pg/text@1']['output'] | null;
       readonly isActive: CodecTypes['pg/bool@1']['output'];
-      readonly nameEn: CodecTypes['pg/text@1']['output'] | null;
-      readonly nameFr: CodecTypes['pg/text@1']['output'];
+      readonly name: CodecTypes['pg/text@1']['output'];
       readonly slug: CodecTypes['pg/text@1']['output'];
       readonly type: 'FABRIC_BY_METER' | 'FINISHED_GOOD' | 'SAMPLE';
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
@@ -311,8 +307,7 @@ export type FieldOutputTypes = {
     };
     readonly ProductVariant: {
       readonly colorHex: CodecTypes['pg/text@1']['output'] | null;
-      readonly colorNameEn: CodecTypes['pg/text@1']['output'] | null;
-      readonly colorNameFr: CodecTypes['pg/text@1']['output'] | null;
+      readonly colorName: CodecTypes['pg/text@1']['output'] | null;
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly productId: CodecTypes['pg/text@1']['output'];
       readonly size: CodecTypes['pg/text@1']['output'] | null;
@@ -352,11 +347,9 @@ export type FieldOutputTypes = {
 export type FieldInputTypes = {
   readonly public: {
     readonly Category: {
-      readonly descriptionEn: CodecTypes['pg/text@1']['input'] | null;
-      readonly descriptionFr: CodecTypes['pg/text@1']['input'] | null;
+      readonly description: CodecTypes['pg/text@1']['input'] | null;
       readonly id: CodecTypes['pg/text@1']['input'];
-      readonly nameEn: CodecTypes['pg/text@1']['input'] | null;
-      readonly nameFr: CodecTypes['pg/text@1']['input'];
+      readonly name: CodecTypes['pg/text@1']['input'];
       readonly slug: CodecTypes['pg/text@1']['input'];
     };
     readonly DyeLot: {
@@ -385,14 +378,12 @@ export type FieldInputTypes = {
       readonly basePrice: CodecTypes['pg/float8@1']['input'];
       readonly categoryId: CodecTypes['pg/text@1']['input'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly descriptionEn: CodecTypes['pg/text@1']['input'] | null;
-      readonly descriptionFr: CodecTypes['pg/text@1']['input'] | null;
+      readonly description: CodecTypes['pg/text@1']['input'] | null;
       readonly gallery: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly image: CodecTypes['pg/text@1']['input'] | null;
       readonly isActive: CodecTypes['pg/bool@1']['input'];
-      readonly nameEn: CodecTypes['pg/text@1']['input'] | null;
-      readonly nameFr: CodecTypes['pg/text@1']['input'];
+      readonly name: CodecTypes['pg/text@1']['input'];
       readonly slug: CodecTypes['pg/text@1']['input'];
       readonly type: 'FABRIC_BY_METER' | 'FINISHED_GOOD' | 'SAMPLE';
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
@@ -412,8 +403,7 @@ export type FieldInputTypes = {
     };
     readonly ProductVariant: {
       readonly colorHex: CodecTypes['pg/text@1']['input'] | null;
-      readonly colorNameEn: CodecTypes['pg/text@1']['input'] | null;
-      readonly colorNameFr: CodecTypes['pg/text@1']['input'] | null;
+      readonly colorName: CodecTypes['pg/text@1']['input'] | null;
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly productId: CodecTypes['pg/text@1']['input'];
       readonly size: CodecTypes['pg/text@1']['input'] | null;
@@ -453,11 +443,9 @@ export type FieldInputTypes = {
 export type StorageColumnTypes = {
   readonly public: {
     readonly Category: {
-      readonly descriptionEn: CodecTypes['pg/text@1']['output'] | null;
-      readonly descriptionFr: CodecTypes['pg/text@1']['output'] | null;
+      readonly description: CodecTypes['pg/text@1']['output'] | null;
       readonly id: CodecTypes['pg/text@1']['output'];
-      readonly nameEn: CodecTypes['pg/text@1']['output'] | null;
-      readonly nameFr: CodecTypes['pg/text@1']['output'];
+      readonly name: CodecTypes['pg/text@1']['output'];
       readonly slug: CodecTypes['pg/text@1']['output'];
     };
     readonly DyeLot: {
@@ -486,14 +474,12 @@ export type StorageColumnTypes = {
       readonly basePrice: CodecTypes['pg/float8@1']['output'];
       readonly categoryId: CodecTypes['pg/text@1']['output'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly descriptionEn: CodecTypes['pg/text@1']['output'] | null;
-      readonly descriptionFr: CodecTypes['pg/text@1']['output'] | null;
+      readonly description: CodecTypes['pg/text@1']['output'] | null;
       readonly gallery: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly image: CodecTypes['pg/text@1']['output'] | null;
       readonly isActive: CodecTypes['pg/bool@1']['output'];
-      readonly nameEn: CodecTypes['pg/text@1']['output'] | null;
-      readonly nameFr: CodecTypes['pg/text@1']['output'];
+      readonly name: CodecTypes['pg/text@1']['output'];
       readonly slug: CodecTypes['pg/text@1']['output'];
       readonly type: 'FABRIC_BY_METER' | 'FINISHED_GOOD' | 'SAMPLE';
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
@@ -513,8 +499,7 @@ export type StorageColumnTypes = {
     };
     readonly ProductVariant: {
       readonly colorHex: CodecTypes['pg/text@1']['output'] | null;
-      readonly colorNameEn: CodecTypes['pg/text@1']['output'] | null;
-      readonly colorNameFr: CodecTypes['pg/text@1']['output'] | null;
+      readonly colorName: CodecTypes['pg/text@1']['output'] | null;
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly productId: CodecTypes['pg/text@1']['output'];
       readonly size: CodecTypes['pg/text@1']['output'] | null;
@@ -554,11 +539,9 @@ export type StorageColumnTypes = {
 export type StorageColumnInputTypes = {
   readonly public: {
     readonly Category: {
-      readonly descriptionEn: CodecTypes['pg/text@1']['input'] | null;
-      readonly descriptionFr: CodecTypes['pg/text@1']['input'] | null;
+      readonly description: CodecTypes['pg/text@1']['input'] | null;
       readonly id: CodecTypes['pg/text@1']['input'];
-      readonly nameEn: CodecTypes['pg/text@1']['input'] | null;
-      readonly nameFr: CodecTypes['pg/text@1']['input'];
+      readonly name: CodecTypes['pg/text@1']['input'];
       readonly slug: CodecTypes['pg/text@1']['input'];
     };
     readonly DyeLot: {
@@ -587,14 +570,12 @@ export type StorageColumnInputTypes = {
       readonly basePrice: CodecTypes['pg/float8@1']['input'];
       readonly categoryId: CodecTypes['pg/text@1']['input'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly descriptionEn: CodecTypes['pg/text@1']['input'] | null;
-      readonly descriptionFr: CodecTypes['pg/text@1']['input'] | null;
+      readonly description: CodecTypes['pg/text@1']['input'] | null;
       readonly gallery: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly image: CodecTypes['pg/text@1']['input'] | null;
       readonly isActive: CodecTypes['pg/bool@1']['input'];
-      readonly nameEn: CodecTypes['pg/text@1']['input'] | null;
-      readonly nameFr: CodecTypes['pg/text@1']['input'];
+      readonly name: CodecTypes['pg/text@1']['input'];
       readonly slug: CodecTypes['pg/text@1']['input'];
       readonly type: 'FABRIC_BY_METER' | 'FINISHED_GOOD' | 'SAMPLE';
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
@@ -614,8 +595,7 @@ export type StorageColumnInputTypes = {
     };
     readonly ProductVariant: {
       readonly colorHex: CodecTypes['pg/text@1']['input'] | null;
-      readonly colorNameEn: CodecTypes['pg/text@1']['input'] | null;
-      readonly colorNameFr: CodecTypes['pg/text@1']['input'] | null;
+      readonly colorName: CodecTypes['pg/text@1']['input'] | null;
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly productId: CodecTypes['pg/text@1']['input'];
       readonly size: CodecTypes['pg/text@1']['input'] | null;
@@ -655,11 +635,9 @@ export type StorageColumnInputTypes = {
 
 export namespace Models {
   export type public_Category = {
-    descriptionEn: CodecTypes['pg/text@1']['output'] | null;
-    descriptionFr: CodecTypes['pg/text@1']['output'] | null;
+    description: CodecTypes['pg/text@1']['output'] | null;
     id: CodecTypes['pg/text@1']['output'];
-    nameEn: CodecTypes['pg/text@1']['output'] | null;
-    nameFr: CodecTypes['pg/text@1']['output'];
+    name: CodecTypes['pg/text@1']['output'];
     slug: CodecTypes['pg/text@1']['output'];
     products: public_Product[];
     readonly [RelationKeys]?: 'products';
@@ -697,14 +675,12 @@ export namespace Models {
     basePrice: CodecTypes['pg/float8@1']['output'];
     categoryId: CodecTypes['pg/text@1']['output'];
     createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
-    descriptionEn: CodecTypes['pg/text@1']['output'] | null;
-    descriptionFr: CodecTypes['pg/text@1']['output'] | null;
+    description: CodecTypes['pg/text@1']['output'] | null;
     gallery: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
     id: CodecTypes['pg/text@1']['output'];
     image: CodecTypes['pg/text@1']['output'] | null;
     isActive: CodecTypes['pg/bool@1']['output'];
-    nameEn: CodecTypes['pg/text@1']['output'] | null;
-    nameFr: CodecTypes['pg/text@1']['output'];
+    name: CodecTypes['pg/text@1']['output'];
     slug: CodecTypes['pg/text@1']['output'];
     type: 'FABRIC_BY_METER' | 'FINISHED_GOOD' | 'SAMPLE';
     updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
@@ -730,8 +706,7 @@ export namespace Models {
   };
   export type public_ProductVariant = {
     colorHex: CodecTypes['pg/text@1']['output'] | null;
-    colorNameEn: CodecTypes['pg/text@1']['output'] | null;
-    colorNameFr: CodecTypes['pg/text@1']['output'] | null;
+    colorName: CodecTypes['pg/text@1']['output'] | null;
     id: CodecTypes['pg/text@1']['output'];
     productId: CodecTypes['pg/text@1']['output'];
     size: CodecTypes['pg/text@1']['output'] | null;
@@ -812,12 +787,7 @@ type ContractBase = Omit<
           readonly table: {
             readonly Category: {
               columns: {
-                readonly descriptionEn: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: true;
-                };
-                readonly descriptionFr: {
+                readonly description: {
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: true;
@@ -827,12 +797,7 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
                 };
-                readonly nameEn: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: true;
-                };
-                readonly nameFr: {
+                readonly name: {
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
@@ -1038,12 +1003,7 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/timestamptz-string@1';
                   readonly nullable: false;
                 };
-                readonly descriptionEn: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: true;
-                };
-                readonly descriptionFr: {
+                readonly description: {
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: true;
@@ -1076,12 +1036,7 @@ type ContractBase = Omit<
                     readonly value: DefaultLiteralValue<'pg/bool@1', true>;
                   };
                 };
-                readonly nameEn: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: true;
-                };
-                readonly nameFr: {
+                readonly name: {
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
@@ -1214,12 +1169,7 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/text@1';
                   readonly nullable: true;
                 };
-                readonly colorNameEn: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: true;
-                };
-                readonly colorNameFr: {
+                readonly colorName: {
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: true;
@@ -1512,11 +1462,7 @@ type ContractBase = Omit<
         readonly models: {
           readonly Category: {
             readonly fields: {
-              readonly descriptionEn: {
-                readonly nullable: true;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly descriptionFr: {
+              readonly description: {
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
@@ -1524,11 +1470,7 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
-              readonly nameEn: {
-                readonly nullable: true;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly nameFr: {
+              readonly name: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
@@ -1554,11 +1496,9 @@ type ContractBase = Omit<
               readonly table: 'Category';
               readonly namespaceId: 'public';
               readonly fields: {
-                readonly descriptionEn: { readonly column: 'descriptionEn' };
-                readonly descriptionFr: { readonly column: 'descriptionFr' };
+                readonly description: { readonly column: 'description' };
                 readonly id: { readonly column: 'id' };
-                readonly nameEn: { readonly column: 'nameEn' };
-                readonly nameFr: { readonly column: 'nameFr' };
+                readonly name: { readonly column: 'name' };
                 readonly slug: { readonly column: 'slug' };
               };
             };
@@ -1746,11 +1686,7 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/timestamptz-string@1';
                 };
               };
-              readonly descriptionEn: {
-                readonly nullable: true;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly descriptionFr: {
+              readonly description: {
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
@@ -1771,11 +1707,7 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/bool@1' };
               };
-              readonly nameEn: {
-                readonly nullable: true;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly nameFr: {
+              readonly name: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
@@ -1839,14 +1771,12 @@ type ContractBase = Omit<
                 readonly basePrice: { readonly column: 'basePrice' };
                 readonly categoryId: { readonly column: 'categoryId' };
                 readonly createdAt: { readonly column: 'createdAt' };
-                readonly descriptionEn: { readonly column: 'descriptionEn' };
-                readonly descriptionFr: { readonly column: 'descriptionFr' };
+                readonly description: { readonly column: 'description' };
                 readonly gallery: { readonly column: 'gallery' };
                 readonly id: { readonly column: 'id' };
                 readonly image: { readonly column: 'image' };
                 readonly isActive: { readonly column: 'isActive' };
-                readonly nameEn: { readonly column: 'nameEn' };
-                readonly nameFr: { readonly column: 'nameFr' };
+                readonly name: { readonly column: 'name' };
                 readonly slug: { readonly column: 'slug' };
                 readonly type: { readonly column: 'type' };
                 readonly updatedAt: { readonly column: 'updatedAt' };
@@ -1938,11 +1868,7 @@ type ContractBase = Omit<
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
-              readonly colorNameEn: {
-                readonly nullable: true;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly colorNameFr: {
+              readonly colorName: {
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
@@ -1997,8 +1923,7 @@ type ContractBase = Omit<
               readonly namespaceId: 'public';
               readonly fields: {
                 readonly colorHex: { readonly column: 'colorHex' };
-                readonly colorNameEn: { readonly column: 'colorNameEn' };
-                readonly colorNameFr: { readonly column: 'colorNameFr' };
+                readonly colorName: { readonly column: 'colorName' };
                 readonly id: { readonly column: 'id' };
                 readonly productId: { readonly column: 'productId' };
                 readonly size: { readonly column: 'size' };
