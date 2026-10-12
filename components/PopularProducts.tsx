@@ -28,7 +28,8 @@ export async function PopularProducts() {
     discount = session?.tradeDiscount || 0;
   } catch (err: any) {
     const dbUrl = process.env.DATABASE_URL || "MISSING";
-    errorMsg = `DB_URL: ${dbUrl.substring(0, 30)}... \n\n` + err.message + "\n" + err.stack;
+    const detailedError = JSON.stringify(err, Object.getOwnPropertyNames(err), 2);
+    errorMsg = `DB_URL: ${dbUrl.substring(0, 40)}... \n\n` + detailedError;
   }
 
   if (errorMsg) {

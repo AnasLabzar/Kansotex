@@ -7,6 +7,7 @@ import { pillars, universes } from "@/lib/content";
 import { PopularProducts } from "@/components/PopularProducts";
 import { getTranslations, getLocale } from "next-intl/server";
 import { Suspense } from "react";
+import { removeAccents } from "@/lib/text";
 
 export const dynamic = "force-dynamic";
 
@@ -49,17 +50,17 @@ export default async function Home() {
             {/* Center: Main Title */}
             <FadeIn delay={1.5} className="mx-auto flex flex-col items-center gap-3 text-center drop-shadow-md">
               <h2 className="font-termina text-[18px] font-bold uppercase tracking-[0.1em]">
-                {t("heroTitle")}
+                {removeAccents(t("heroTitle"))}
               </h2>
               <p className="font-termina text-[10px] font-bold uppercase tracking-[0.3em] text-[#f3eee6]/90">
-                {t("heroSubtitle")}
+                {removeAccents(t("heroSubtitle"))}
               </p>
             </FadeIn>
 
             {/* Bottom: Link */}
             <FadeIn delay={1.8} className="flex justify-center">
               <UnderlineLink href="/univers" light className="font-termina text-[10px] uppercase tracking-widest">
-                {t("heroLink")}
+                {removeAccents(t("heroLink"))}
               </UnderlineLink>
             </FadeIn>
           </div>
@@ -81,9 +82,9 @@ export default async function Home() {
 
             <FadeIn delay={1.5} className="mx-auto mt-auto flex max-w-md flex-col items-center gap-10 pb-0 text-center md:flex-1 md:justify-center">
               <p className="font-termina text-[13px] font-bold uppercase leading-relaxed tracking-[0.42em]">
-                {t("desktopHeroLine1")}
+                {removeAccents(t("desktopHeroLine1"))}
                 <br />
-                {t("desktopHeroLine2")}
+                {removeAccents(t("desktopHeroLine2"))}
               </p>
             </FadeIn>
 
@@ -127,7 +128,7 @@ export default async function Home() {
                     />
                   </div>
                   <h3 className="font-termina mt-8 text-[11px] font-bold uppercase tracking-[0.28em] text-[#1c1b19]">
-                    {t(pillarTitleKey)}
+                    {removeAccents(t(pillarTitleKey))}
                   </h3>
                   <p className="mx-auto mt-4 max-w-[280px] font-sans text-[13px] font-light leading-relaxed text-[#1c1b19]/80">
                     {t(pillarTextKey)}
@@ -139,7 +140,7 @@ export default async function Home() {
 
           <div className="mt-14 flex justify-center">
             <UnderlineLink href="/savoir-faire" className="font-termina text-[11px] font-bold uppercase tracking-widest text-[#1c1b19]">
-              {t("savoirFaireLink")}
+              {removeAccents(t("savoirFaireLink"))}
             </UnderlineLink>
           </div>
         </section>
@@ -170,8 +171,8 @@ export default async function Home() {
                   />
                   <div className="absolute inset-0 bg-[#1c1b19]/35 transition-colors duration-700 group-hover:bg-[#1c1b19]/25" />
                   <div className="relative z-10 flex h-full w-full min-h-[52vh] flex-col items-center justify-center px-6 text-center text-[#f3eee6]">
-                    <p className="font-termina text-[10px] font-bold uppercase tracking-[0.4em]">{kicker.replace(/[éèêÉÈÊ]/g, 'e')}</p>
-                    <h3 className="font-termina mt-4 text-3xl font-bold uppercase tracking-widest md:text-4xl">{(t(("universe_" + item.slug) as any)).replace(/[éèêÉÈÊ]/g, 'e')}</h3>
+                    <p className="font-termina text-[10px] font-bold uppercase tracking-[0.4em]">{removeAccents(kicker)}</p>
+                    <h3 className="font-termina mt-4 text-3xl font-bold uppercase tracking-widest md:text-4xl">{removeAccents(t(("universe_" + item.slug) as any))}</h3>
                   </div>
                 </Link>
               </StaggerItem>
@@ -182,7 +183,7 @@ export default async function Home() {
         <section className="bg-cream px-6 py-20 md:px-12 md:py-28">
           <FadeIn>
             <p className="font-termina mb-10 text-center text-[11px] font-bold uppercase tracking-widest text-[#1c1b19]">
-              {t("tousUniversTitle")}
+              {removeAccents(t("tousUniversTitle"))}
             </p>
           </FadeIn>
           
@@ -200,7 +201,7 @@ export default async function Home() {
                     />
                   </div>
                   <h3 className="font-termina mt-5 text-center text-[10px] font-bold uppercase tracking-widest text-[#1c1b19]">
-                    {(t(("universe_" + item.slug) as any)).replace(/[éèêÉÈÊ]/g, 'e')}
+                    {removeAccents(t(("universe_" + item.slug) as any))}
                   </h3>
                 </Link>
               </StaggerItem>
@@ -208,7 +209,7 @@ export default async function Home() {
           </StaggerContainer>
 
           <div className="mt-14 flex justify-center">
-            <UnderlineLink href="/univers" className="font-termina text-[11px] font-bold uppercase tracking-widest text-[#1c1b19]">{t("tousUniversLink")}</UnderlineLink>
+            <UnderlineLink href="/univers" className="font-termina text-[11px] font-bold uppercase tracking-widest text-[#1c1b19]">{removeAccents(t("tousUniversLink"))}</UnderlineLink>
           </div>
         </section>
 
@@ -249,7 +250,7 @@ export default async function Home() {
             
             <FadeIn delay={0.3}>
               <span className="font-termina mt-auto mb-auto text-[11px] font-bold uppercase tracking-[0.3em]">
-                {t("tousProjetsLink")}
+                {removeAccents(t("tousProjetsLink"))}
               </span>
             </FadeIn>
             
@@ -276,8 +277,8 @@ export default async function Home() {
             <div className="max-w-2xl">
               <FadeIn>
                 <h2 className="font-termina text-[15px] font-bold uppercase leading-loose tracking-[0.15em] sm:text-xl md:text-4xl md:leading-snug">
-                  {t("projetTitle1")}<br />
-                  <span className="text-[#a49a8d]">{t("projetTitle2")}</span>
+                  {removeAccents(t("projetTitle1"))}<br />
+                  <span className="text-[#a49a8d]">{removeAccents(t("projetTitle2"))}</span>
                 </h2>
               </FadeIn>
             </div>
@@ -289,7 +290,7 @@ export default async function Home() {
                 </p>
                 <div className="mt-8">
                   <UnderlineLink href="/contact" light className="font-termina text-[10px] font-bold uppercase tracking-widest text-[#f3eee6]">
-                    {t("projetLink")}
+                    {removeAccents(t("projetLink"))}
                   </UnderlineLink>
                 </div>
               </FadeIn>

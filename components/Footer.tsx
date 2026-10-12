@@ -5,12 +5,30 @@ import { Wordmark } from "./Logo";
 import { CurrencySelector } from "./CurrencySelector";
 import { LanguageSelector } from "./LanguageSelector";
 import { useTranslations } from "next-intl";
+import { removeAccents } from "@/lib/text";
+import { NewsletterForm } from "./NewsletterForm";
 
 export function Footer() {
   const t = useTranslations("Footer");
   return (
-    <footer className="bg-[#1c1b19] px-6 pb-10 pt-20 text-[#f3eee6] md:px-12 md:pt-32">
-      <div className="mx-auto max-w-7xl">
+    <footer className="relative overflow-hidden bg-[#1c1b19] px-6 pb-10 pt-20 text-[#f3eee6] md:px-12 md:pt-32">
+      {/* Background Logistics & Shipping Truck Visual (Bottom Left) */}
+      <div className="pointer-events-none absolute bottom-0 left-0 z-0 w-[280px] sm:w-[380px] md:w-[480px] lg:w-[580px] select-none opacity-45 sm:opacity-55 lg:opacity-65 transition-opacity">
+        <div className="relative aspect-[16/10] w-full">
+          <Image
+            src="/gallery/Kansotex-logistique-shipping.jpg"
+            alt="Kansotex Logistique & Expédition"
+            fill
+            className="object-contain object-left-bottom mix-blend-lighten"
+            sizes="(max-width: 768px) 380px, (max-width: 1200px) 580px, 640px"
+          />
+          {/* Subtle gradient fades so edges blend into the dark footer background */}
+          <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-[#1c1b19]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#1c1b19]" />
+        </div>
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-7xl">
         {/* Massive Centered Logo */}
         <div className="mb-20 flex justify-center border-b border-[#f3eee6]/15 pb-16">
           <Link href="/" aria-label="Kansotex" className="transition-opacity hover:opacity-80">
@@ -28,21 +46,12 @@ export function Footer() {
         <div className="mb-24 flex flex-col items-center text-center">
           <div className="w-full max-w-lg">
             <h3 className="font-termina mb-5 text-[15px] font-bold uppercase leading-relaxed tracking-[0.15em] sm:text-lg md:text-xl">
-              {t("joinKansotex")}
+              {removeAccents(t("joinKansotex"))}
             </h3>
             <p className="font-sans mb-10 text-[13px] font-light leading-[1.8] text-[#f3eee6]/70">
               {t("newsletterDesc")}
             </p>
-            <form className="mx-auto flex max-w-sm items-end border-b border-[#f3eee6]/30 pb-3 transition-colors focus-within:border-[#f3eee6]">
-              <input 
-                type="email" 
-                placeholder={t("emailPlaceholder")} 
-                className="w-full bg-transparent font-termina text-[10px] font-bold uppercase tracking-[0.2em] outline-none placeholder:text-[#f3eee6]/30" 
-              />
-              <button type="submit" className="font-termina text-[10px] font-bold uppercase tracking-[0.3em] transition-colors hover:text-[#a49a8d]">
-                {t("subscribe")}
-              </button>
-            </form>
+            <NewsletterForm />
           </div>
         </div>
 
@@ -51,7 +60,7 @@ export function Footer() {
           
           {/* Navigation */}
           <div>
-            <h4 className="font-termina mb-8 text-[11px] font-bold uppercase tracking-[0.2em] text-[#a49a8d]">{t("discover")}</h4>
+            <h4 className="font-termina mb-8 text-[11px] font-bold uppercase tracking-[0.2em] text-[#a49a8d]">{removeAccents(t("discover"))}</h4>
             <ul className="flex flex-col gap-5">
               {nav.map((item) => {
                 let translationKey = "navUnivers";
@@ -61,7 +70,7 @@ export function Footer() {
                 return (
                   <li key={item.href}>
                     <Link href={item.href} className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">
-                      {(t as any)(translationKey)}
+                      {removeAccents((t as any)(translationKey))}
                     </Link>
                   </li>
                 );
@@ -71,39 +80,51 @@ export function Footer() {
 
           {/* Customer Service */}
           <div>
-            <h4 className="font-termina mb-8 text-[11px] font-bold uppercase tracking-[0.2em] text-[#a49a8d]">{t("customerService")}</h4>
+            <h4 className="font-termina mb-8 text-[11px] font-bold uppercase tracking-[0.2em] text-[#a49a8d]">{removeAccents(t("customerService"))}</h4>
             <ul className="flex flex-col gap-5">
-              <li><Link href="/faq" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">{t("faq")}</Link></li>
-              <li><Link href="/livraison" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">{t("shippingReturns")}</Link></li>
-              <li><Link href="/echantillons" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">{t("samples")}</Link></li>
-              <li><Link href="/guide" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">{t("careGuide")}</Link></li>
+              <li><Link href="/faq" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">{removeAccents(t("faq"))}</Link></li>
+              <li><Link href="/livraison" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">{removeAccents(t("shippingReturns"))}</Link></li>
+              <li><Link href="/echantillons" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">{removeAccents(t("samples"))}</Link></li>
+              <li><Link href="/guide" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">{removeAccents(t("careGuide"))}</Link></li>
             </ul>
           </div>
 
           {/* Contact */}
           <div>
-            <h4 className="font-termina mb-8 text-[11px] font-bold uppercase tracking-[0.2em] text-[#a49a8d]">{t("contactUs")}</h4>
-            <ul className="flex flex-col gap-5">
+            <h4 className="font-termina mb-8 text-[11px] font-bold uppercase tracking-[0.2em] text-[#a49a8d]">{removeAccents(t("contactUs"))}</h4>
+            <ul className="flex flex-col gap-3 font-sans text-xs">
               <li>
-                <a href={`mailto:${brand.email}`} className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">
+                <a href={`mailto:${brand.email}`} className="font-semibold text-white/90 hover:text-white transition-colors block">
                   {brand.email}
                 </a>
               </li>
               <li>
-                <a href={`tel:${brand.phone.replace(/\s/g, "")}`} className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">
+                <span className="text-[10px] uppercase tracking-wider text-[#a49a8d] block">Général</span>
+                <a href={`tel:${brand.phone.replace(/\s/g, "")}`} className="text-white/80 hover:text-white transition-colors">
                   {brand.phone}
                 </a>
               </li>
-              <li className="font-sans mt-3 text-[13px] font-light leading-[1.8] text-[#f3eee6]/60">
-                {t("showroom")}<br/>
-                {brand.city === "Maroc" ? (t as any)("city") || brand.city : brand.city}
+              <li>
+                <span className="text-[10px] uppercase tracking-wider text-[#a49a8d] block">Bureau Pros &amp; WhatsApp</span>
+                <a href={brand.whatsappUrl} target="_blank" rel="noopener noreferrer" className="text-white/80 hover:text-white transition-colors">
+                  {brand.phonePro}
+                </a>
+              </li>
+              <li>
+                <span className="text-[10px] uppercase tracking-wider text-[#a49a8d] block">Manufacture</span>
+                <a href={`tel:${brand.phoneManufacture.replace(/\s/g, "")}`} className="text-white/80 hover:text-white transition-colors">
+                  {brand.phoneManufacture}
+                </a>
+              </li>
+              <li className="pt-2 text-[11px] font-light leading-relaxed text-[#f3eee6]/60 border-t border-white/10">
+                {brand.address}
               </li>
             </ul>
           </div>
 
           {/* Social */}
           <div>
-            <h4 className="font-termina mb-8 text-[11px] font-bold uppercase tracking-[0.2em] text-[#a49a8d]">{t("socials")}</h4>
+            <h4 className="font-termina mb-8 text-[11px] font-bold uppercase tracking-[0.2em] text-[#a49a8d]">{removeAccents(t("socials"))}</h4>
             <ul className="flex flex-col gap-5">
               <li>
                 <a href={brand.instagram} target="_blank" rel="noreferrer" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">
@@ -127,16 +148,16 @@ export function Footer() {
         {/* Bottom Footer */}
         <div className="mt-28 flex flex-col items-center justify-between gap-8 border-t border-[#f3eee6]/10 pt-10 font-sans text-xs font-light text-[#f3eee6]/40 md:flex-row">
           <div className="flex items-center gap-6">
-            <p className="font-termina text-[9px] font-bold uppercase tracking-[0.2em]">© 2026 {brand.name}. {t("allRightsReserved")}</p>
+            <p className="font-termina text-[9px] font-bold uppercase tracking-[0.2em]">© 2026 {brand.name} · {brand.legalName}. {removeAccents(t("allRightsReserved"))}</p>
             <div className="hidden md:block w-px h-3 bg-[#f3eee6]/20"></div>
             <CurrencySelector isDark={true} />
             <div className="hidden md:block w-px h-3 bg-[#f3eee6]/20"></div>
             <LanguageSelector />
           </div>
           <ul className="flex flex-wrap justify-center gap-6 md:gap-10">
-            <li><Link href="/mentions-legales" className="font-termina text-[9px] font-bold uppercase tracking-[0.2em] hover:text-[#f3eee6]">{t("legalNotices")}</Link></li>
-            <li><Link href="/confidentialite" className="font-termina text-[9px] font-bold uppercase tracking-[0.2em] hover:text-[#f3eee6]">{t("privacy")}</Link></li>
-            <li><Link href="/cgv" className="font-termina text-[9px] font-bold uppercase tracking-[0.2em] hover:text-[#f3eee6]">{t("cgv")}</Link></li>
+            <li><Link href="/mentions-legales" className="font-termina text-[9px] font-bold uppercase tracking-[0.2em] hover:text-[#f3eee6]">{removeAccents(t("legalNotices"))}</Link></li>
+            <li><Link href="/confidentialite" className="font-termina text-[9px] font-bold uppercase tracking-[0.2em] hover:text-[#f3eee6]">{removeAccents(t("privacy"))}</Link></li>
+            <li><Link href="/cgv" className="font-termina text-[9px] font-bold uppercase tracking-[0.2em] hover:text-[#f3eee6]">{removeAccents(t("cgv"))}</Link></li>
           </ul>
         </div>
       </div>

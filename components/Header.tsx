@@ -11,7 +11,9 @@ import { useSession } from "@/lib/SessionContext";
 import { logout } from "@/lib/session";
 import { SearchBar } from "./SearchBar";
 import { CurrencySelector } from "./CurrencySelector";
+import { NavbarRightActions } from "./NavbarRightActions";
 import { useTranslations } from "next-intl";
+import { removeAccents } from "@/lib/text";
 
 type HeaderProps = {
   overlay?: boolean;
@@ -96,39 +98,22 @@ export function Header({ overlay = false }: HeaderProps) {
                   );
                 })}
               </nav>
-              <div className="flex items-center gap-6">
-                {session?.isPro && (
-                  <button 
-                    onClick={async () => {
-                      await logout();
-                      window.location.reload();
-                    }}
-                    className="hidden lg:block text-[8px] uppercase tracking-widest font-termina bg-red-900/10 text-red-900 px-2 py-1 rounded-sm hover:bg-red-900/20 transition-colors"
-                  >
-                    {t("logoutB2B")}
-                  </button>
-                )}
-                <button onClick={() => setSearchOpen(true)} aria-label="Recherche" className="transition-opacity hover:opacity-70">
-                  <SearchIcon className="h-[18px] w-[18px]" />
-                </button>
-                <Link href="/pro" aria-label="Compte" className="hidden transition-opacity hover:opacity-70 sm:block">
-                  <UserIcon className="h-[18px] w-[18px]" />
-                </Link>
-                <CartButton cartCount={cartCount} openCart={openCart} />
+              <div className="flex items-center gap-3">
+                <NavbarRightActions />
                 <MenuButton open={open} onClick={() => { setMenuOrigin("right"); setOpen((v) => !v); }} />
               </div>
             </div>
           ) : (
             /* --- OTHER PAGES MINIMAL HEADER --- */
-            <div className="grid grid-cols-3 items-center px-5 py-2 md:px-8 h-[70px]">
+            <div className="flex items-center justify-between px-5 py-2 md:px-8 h-[70px]">
               {/* Left: Burger Menu (Always visible) */}
-              <div className="flex items-center justify-start">
+              <div className="flex items-center justify-start z-10">
                 <MenuButton open={open} onClick={() => { setMenuOrigin("left"); setOpen((v) => !v); }} forceVisible={true} />
               </div>
 
               {/* Center: Logo */}
-              <div className="flex justify-center">
-                <Link href="/" aria-label="Kansotex" className="shrink-0 flex items-center justify-center">
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+                <Link href="/" aria-label="Kansotex" className="pointer-events-auto shrink-0 flex items-center justify-center">
                   <Image 
                     src="/KANSOTEX-marque-Black.png" 
                     alt="Kansotex" 
@@ -140,27 +125,9 @@ export function Header({ overlay = false }: HeaderProps) {
                 </Link>
               </div>
 
-              {/* Right: Icons */}
-              <div className="flex items-center justify-end gap-5">
-                <CurrencySelector />
-                {session?.isPro && (
-                  <button 
-                    onClick={async () => {
-                      await logout();
-                      window.location.reload();
-                    }}
-                    className="hidden xl:block text-[8px] uppercase tracking-widest font-termina bg-red-900/10 text-red-900 px-2 py-1 rounded-sm hover:bg-red-900/20 transition-colors"
-                  >
-                    {t("logoutB2B")}
-                  </button>
-                )}
-                <button onClick={() => setSearchOpen(true)} aria-label="Recherche" className="transition-opacity hover:opacity-70">
-                  <SearchIcon className="h-[18px] w-[18px]" />
-                </button>
-                <Link href="/pro" aria-label="Compte" className="hidden sm:block transition-opacity hover:opacity-70">
-                  <UserIcon className="h-[18px] w-[18px]" />
-                </Link>
-                <CartButton cartCount={cartCount} openCart={openCart} />
+              {/* Right: Actions */}
+              <div className="flex items-center justify-end z-10">
+                <NavbarRightActions />
               </div>
             </div>
           )
@@ -172,13 +139,13 @@ export function Header({ overlay = false }: HeaderProps) {
                 onClick={() => { setMenuOrigin("left"); setOpen((v) => !v); }}
                 className="font-termina text-[11px] font-bold uppercase tracking-widest hover:opacity-70"
               >
-                {t("menu")}
+                {removeAccents(t("menu"))}
               </button>
               <Link
                 href="/contact"
                 className="font-termina text-[11px] font-bold uppercase tracking-widest hover:opacity-70"
               >
-                {t("contact")}
+                {removeAccents(t("contact"))}
               </Link>
             </div>
             <nav className="hidden grid-cols-4 gap-y-2 px-10 py-5 md:grid">
@@ -193,7 +160,7 @@ export function Header({ overlay = false }: HeaderProps) {
                     href={item.href}
                     className="font-termina text-center text-[10px] font-bold uppercase tracking-[0.32em] hover:opacity-70"
                   >
-                    {(t as any)(translationKey)}
+                    {removeAccents((t as any)(translationKey))}
                   </Link>
                 );
               })}
@@ -223,7 +190,7 @@ export function Header({ overlay = false }: HeaderProps) {
               className="fixed top-[70px] md:top-[80px] right-4 md:right-12 w-full max-w-[380px] z-[70] bg-cream shadow-2xl border border-ink/10 rounded-sm overflow-hidden flex flex-col"
             >
               <div className="p-4 border-b border-ink/5 flex justify-between items-center bg-[#f8f5f0]">
-                <span className="text-[10px] font-termina uppercase tracking-widest text-ink/50">{t("quickSearch")}</span>
+                <span className="text-[10px] font-termina uppercase tracking-widest text-ink/50">{removeAccents(t("quickSearch"))}</span>
                 <button onClick={() => setSearchOpen(false)} className="text-ink/50 hover:text-ink transition-colors">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M18 6L6 18M6 6l12 12"/>
@@ -249,12 +216,12 @@ export function Header({ overlay = false }: HeaderProps) {
           className="absolute right-6 top-6 text-[11px] uppercase tracking-[0.28em] hover:opacity-70 font-termina"
           onClick={() => setOpen(false)}
         >
-          {t("close")}
+          {removeAccents(t("close"))}
         </button>
         <ul className="mt-8 space-y-8 px-6 flex-1 max-w-2xl mx-auto w-full">
           <li>
             <Link href="/" className="font-termina text-2xl md:text-4xl font-bold uppercase tracking-widest text-cream hover:opacity-70 transition-opacity" onClick={() => setOpen(false)}>
-              {t("home")}
+              {removeAccents(t("home"))}
             </Link>
           </li>
           {nav.map((item) => {
@@ -265,7 +232,7 @@ export function Header({ overlay = false }: HeaderProps) {
             return (
               <li key={item.href}>
                 <Link href={item.href} className="font-termina text-2xl md:text-4xl font-bold uppercase tracking-widest text-cream hover:opacity-70 transition-opacity" onClick={() => setOpen(false)}>
-                  {(t as any)(translationKey)}
+                  {removeAccents((t as any)(translationKey))}
                 </Link>
               </li>
             );
@@ -361,7 +328,7 @@ function NavItem({
         active ? "underline underline-offset-8 decoration-[0.6px]" : ""
       }`}
     >
-      {label}
+      {removeAccents(label)}
     </Link>
   );
 }

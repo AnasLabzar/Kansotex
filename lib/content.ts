@@ -1,11 +1,26 @@
 export const brand = {
   name: "Kansotex",
+  legalName: "Kanso Business SARL",
+  legalForm: "Société à Responsabilité Limitée (SARL)",
+  capital: "100 000 MAD",
+  establishedYear: 2012,
   tagline: "In & Outdoor",
   email: "contact@kansotex.com",
-  phone: "+212 5 24 00 00 00",
+  emailPro: "pro@kansotex.com",
+  emailAtelier: "atelier@kansotex.com",
+  phone: "+212 5 24 20 09 96",
+  phoneGenerale: "+212 5 24 20 09 96",
+  phonePro: "+212 6 61 09 09 50",
+  phoneManufacture: "+212 8 08 54 16 86",
+  whatsappNumber: "+212 6 61 09 09 50",
+  whatsappUrl: "https://wa.me/212661090950",
+  address: "983 Al Massar, Rte de Safi, Marrakech 40100",
+  registeredAddress: "Magasin 7, Rue Tétouan, Immeuble Le Consulat, Marrakech-Médina",
+  activity: "Import-export, tapisserie et vente au détail de tissus et d'étoffes d'ameublement au mètre",
+  city: "Marrakech",
+  country: "Maroc",
   instagram: "https://www.instagram.com/",
   facebook: "https://www.facebook.com/",
-  city: "Maroc",
 };
 
 export type Universe = {
@@ -52,7 +67,7 @@ export const universes: Universe[] = [
     description:
       "Le linge de maison Kansotex célèbre le geste du quotidien : nappes, serviettes de table, plaids et housses. Des fibres nobles, des finitions nettes, une palette calme qui dialogue avec l’architecture marocaine et contemporaine.",
     image:
-      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1600&q=80",
+      "/gallery/linge-de-maison-indoor-villa-kansotex.jpg",
     tone: "#6B5A4A",
   },
   {
@@ -64,7 +79,7 @@ export const universes: Universe[] = [
     description:
       "Parures de lit, draps-housses, housses de couette et taies. Nous travaillons le lin lavé, le percale et les tissages denses pour un tombé fluide, une main douce et une longévité digne de l’hôtellerie.",
     image:
-      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1600&q=80",
+      "/gallery/linge-de-lite-villa-marrakech-kansotex.jpg",
     tone: "#5C534A",
   },
   {
@@ -88,7 +103,7 @@ export const universes: Universe[] = [
     description:
       "Pour les projets qui demandent plus qu’un standard. Kansotex sourit le détail : textures techniques, éditions limitées, coloris sur-mesure et accompagnement jusqu’à la pose. Une haute gamme de tissus, indoor comme outdoor.",
     image:
-      "https://images.unsplash.com/photo-1584992236310-6edddc08acff?auto=format&fit=crop&w=1600&q=80",
+      "/gallery/tissus-haut-de-gamme.jpg",
     tone: "#2F2C28",
   },
 ];
@@ -98,19 +113,19 @@ export const pillars = [
     title: "La matière",
     text: "Nous parlons un langage commun avec nos clients : celui du beau et du durable. Œil aiguisé, main exigeante, tissus sélectionnés pour leur tenue, leur tombé et leur présence.",
     image:
-      "/gallery/Kansotex-indoor-riad-tissus-pinterest.png",
+      "/gallery/matiere-tissus-outdoor-rooftop.jpg",
   },
   {
     title: "In & outdoor",
     text: "Une même exigence des deux côtés du seuil. Indoor pour habiller l’espace, outdoor pour affronter le soleil, l’eau et le temps — sans jamais sacrifier l’esthétique.",
     image:
-      "/gallery/Kansotex-indoor-riad-tissus-pinterest-1.png",
+      "/gallery/Kansotex-indoor-riad-tissus-pinterest-2.png",
   },
   {
     title: "L’accompagnement",
     text: "Du brief à la livraison : échantillons, conseil coloris, métrages et suivi de projet. Une équipe dédiée pour les professionnels comme pour les particuliers.",
     image:
-      "/gallery/Kansotex-indoor-riad-tissus-pinterest-2.png",
+      "/gallery/accompagnement-equipe-kansotex.jpg",
   },
 ];
 
