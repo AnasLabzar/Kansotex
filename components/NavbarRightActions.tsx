@@ -253,33 +253,22 @@ export function NavbarRightActions({
                 aria-label="Rechercher produit ou commande"
               />
 
-              {/* Clear Query Button */}
-              {searchQuery && (
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSearchQuery("");
-                    setSearchResults([]);
-                    inputRef.current?.focus();
-                  }}
-                  className="text-[#1c1b19]/40 hover:text-[#1c1b19] text-[10px] p-0.5 transition-colors rounded-full"
-                  aria-label="Effacer recherche"
-                >
-                  ✕
-                </button>
-              )}
-
-              {/* Close / Collapse Search Button */}
+              {/* Single Unified Close / Clear Button (Never duplicated!) */}
               <button
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleCloseSearch();
+                  if (searchQuery) {
+                    setSearchQuery("");
+                    setSearchResults([]);
+                    inputRef.current?.focus();
+                  } else {
+                    handleCloseSearch();
+                  }
                 }}
-                className="text-[#1c1b19]/40 hover:text-[#1c1b19] text-xs p-0.5 ml-0.5 transition-colors rounded-full"
-                title="Fermer la recherche"
-                aria-label="Fermer la recherche"
+                className="text-[#1c1b19]/40 hover:text-[#1c1b19] text-xs w-5 h-5 flex items-center justify-center rounded-full hover:bg-[#f2eee6] transition-colors shrink-0 ml-1"
+                title={searchQuery ? "Effacer recherche" : "Fermer la recherche"}
+                aria-label={searchQuery ? "Effacer recherche" : "Fermer la recherche"}
               >
                 ✕
               </button>
@@ -448,6 +437,7 @@ export function NavbarRightActions({
 
       {/* ============================================================ */}
       {/* 4. DYNAMIC CTA BUTTON vs AUTHENTICATED PROFILE BUTTON */}
+      {/* STRICTLY FIXED WIDTH SO IT NEVER WIDENS / SHRINKS ON TEXT ROTATION */}
       {/* ============================================================ */}
       {isAuthenticated ? (
         /* Authenticated: Dynamic button becomes Profile pill button */
@@ -457,11 +447,11 @@ export function NavbarRightActions({
             whileTap={{ scale: 0.98 }}
             type="button"
             onClick={() => setProfileMenuOpen((prev) => !prev)}
-            className="relative overflow-hidden inline-flex items-center justify-center h-9 px-3.5 sm:px-4 rounded-full text-xs font-sans font-medium bg-[#1c1b19] text-[#faf8f5] hover:bg-[#2b2925] transition-all shadow-xs hover:shadow-md min-w-[120px] sm:min-w-[145px] gap-2 shrink-0 cursor-pointer outline-none focus:outline-none"
+            className="relative overflow-hidden inline-flex items-center justify-center h-9 w-[130px] sm:w-[145px] rounded-full text-xs font-sans font-medium bg-[#1c1b19] text-[#faf8f5] hover:bg-[#2b2925] transition-all shadow-xs hover:shadow-md gap-2 shrink-0 cursor-pointer outline-none focus:outline-none"
             title="Mon Profil Pro"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 animate-pulse" />
-            <span className="text-[11px] font-sans uppercase tracking-widest whitespace-nowrap">
+            <span className="text-[10px] font-sans uppercase tracking-widest whitespace-nowrap truncate px-1">
               {session?.role ? `PRO ${session.role}` : "ESPACE PRO"}
             </span>
           </motion.button>
@@ -520,10 +510,11 @@ export function NavbarRightActions({
         </div>
       ) : (
         /* Not Authenticated: Kept as the Dynamic Rotating CTA Button */
+        /* FIXED WIDTH (w-[150px] sm:w-[165px]) so rotating text never changes button width! */
         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
           <Link
             href={contactHref}
-            className="relative overflow-hidden inline-flex items-center justify-center h-9 px-4 sm:px-5 rounded-full text-xs font-sans font-medium bg-[#1c1b19] text-[#faf8f5] hover:bg-[#2b2925] transition-all shadow-xs hover:shadow-md min-w-[135px] sm:min-w-[155px] shrink-0 outline-none focus:outline-none"
+            className="relative overflow-hidden inline-flex items-center justify-center h-9 w-[150px] sm:w-[165px] px-2 rounded-full text-xs font-sans font-medium bg-[#1c1b19] text-[#faf8f5] hover:bg-[#2b2925] transition-all shadow-xs hover:shadow-md shrink-0 outline-none focus:outline-none"
             title="Demander un devis ou Contacter Kansotex"
           >
             <AnimatePresence mode="wait" initial={false}>
@@ -532,8 +523,8 @@ export function NavbarRightActions({
                 initial={{ opacity: 0, y: 5 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -5 }}
-                transition={{ duration: 0.28, ease: "easeInOut" }}
-                className="inline-flex items-center whitespace-nowrap text-[11px] font-sans uppercase tracking-widest text-center"
+                transition={{ duration: 0.25, ease: "easeInOut" }}
+                className="inline-flex items-center justify-center w-full whitespace-nowrap text-[10px] sm:text-[10.5px] font-sans uppercase tracking-wider text-center truncate px-1"
               >
                 <span>{toTermina(dynamicLabels[ctaIndex])}</span>
               </motion.span>
