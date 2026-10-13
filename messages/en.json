@@ -198,6 +198,7 @@
     "navSavoirFaire": "Our expertise",
     "navAbout": "About us",
     "navContact": "Contact us",
+    "navGallery": "Gallery",
     "city": "Marrakech"
   },
   "Products": {
@@ -228,5 +229,32 @@
     "outOfStock": "Out of Stock",
     "dyeLots": "Dye Lots",
     "lot": "Lot"
+  },
+  "Gallery": {
+    "title": "Gallery & Inspirations",
+    "kicker": "Kansotex Studio",
+    "heroDescription": "Explore our creations in motion through our Instagram Reels and Pinterest moodboards. Premium fabrics, bespoke tailoring, and exceptional decors in Marrakech.",
+    "tabAll": "Explore All",
+    "tabReels": "Reels & Videos",
+    "tabPins": "Pinterest Pins",
+    "reelsTitle": "Videos & Instagram Reels",
+    "reelsSubtitle": "Our projects, bespoke curtains, and atmospheres in motion",
+    "reelsAccount": "@kansotex.maroc",
+    "reelsFollow": "Follow on Instagram",
+    "reelsWatch": "Watch Reel",
+    "reelsOpenInsta": "Open on Instagram",
+    "pinsTitle": "Pins & Pinterest Moodboards",
+    "pinsSubtitle": "Textile inspirations, noble materials, and atmospheres",
+    "pinsAccount": "@kansotex",
+    "pinsFollow": "Follow on Pinterest",
+    "pinsSave": "Save Pin",
+    "loadMoreReels": "Learn more — Load more Reels",
+    "loadMorePins": "Learn more — Load more Pins",
+    "showLess": "Show less",
+    "allLoaded": "All content is displayed",
+    "exploreMoreInsta": "Discover all our Reels on Instagram",
+    "exploreMorePinterest": "Discover all our Moodboards on Pinterest",
+    "badgeVideo": "Video",
+    "badgePin": "Pin"
   }
 }

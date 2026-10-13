@@ -198,6 +198,7 @@
     "navSavoirFaire": "Notre savoir-faire",
     "navAbout": "A propos de nous",
     "navContact": "Nous contacter",
+    "navGallery": "Galerie",
     "city": "Marrakech"
   },
   "Products": {
@@ -228,5 +229,32 @@
     "outOfStock": "Épuisé",
     "dyeLots": "Bains de teinture",
     "lot": "Lot"
+  },
+  "Gallery": {
+    "title": "Galerie & Inspirations",
+    "kicker": "Kansotex Studio",
+    "heroDescription": "Explorez nos créations en mouvement à travers nos Reels Instagram et nos tableaux Pinterest. Tissus haut de gamme, confection sur-mesure et décors d'exception à Marrakech.",
+    "tabAll": "Tout explorer",
+    "tabReels": "Reels & Vidéos",
+    "tabPins": "Épingles Pinterest",
+    "reelsTitle": "Vidéos & Reels Instagram",
+    "reelsSubtitle": "Nos réalisations, rideaux et ambiances en mouvement",
+    "reelsAccount": "@kansotex.maroc",
+    "reelsFollow": "Suivre sur Instagram",
+    "reelsWatch": "Regarder le Reel",
+    "reelsOpenInsta": "Ouvrir sur Instagram",
+    "pinsTitle": "Épingles & Moodboards Pinterest",
+    "pinsSubtitle": "Inspirations textiles, matières nobles et décors",
+    "pinsAccount": "@kansotex",
+    "pinsFollow": "Suivre sur Pinterest",
+    "pinsSave": "Épingler",
+    "loadMoreReels": "En savoir plus — Voir plus de Reels",
+    "loadMorePins": "En savoir plus — Voir plus d'épingles",
+    "showLess": "Voir moins",
+    "allLoaded": "Tous les contenus sont affichés",
+    "exploreMoreInsta": "Découvrir tous nos Reels sur Instagram",
+    "exploreMorePinterest": "Découvrir tous nos Moodboards sur Pinterest",
+    "badgeVideo": "Vidéo",
+    "badgePin": "Épingle"
   }
 }

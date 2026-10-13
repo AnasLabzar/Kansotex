@@ -75,6 +75,11 @@ export function Footer() {
                   </li>
                 );
               })}
+              <li>
+                <Link href="/gallery" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">
+                  {removeAccents((t as any)("navGallery"))}
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -137,7 +142,7 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="https://pinterest.com" target="_blank" rel="noreferrer" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">
+                <a href={brand.pinterest} target="_blank" rel="noreferrer" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">
                   PINTEREST
                 </a>
               </li>

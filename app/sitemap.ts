@@ -84,6 +84,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       image: `${BASE_URL}/gallery/accompagnement-equipe-kansotex.jpg`,
     },
     {
+      path: "/gallery",
+      priority: 0.80,
+      changeFrequency: "weekly",
+      image: `${BASE_URL}/gallery/Kansotex-indoor-riad-tissus-pinterest-1.webp`,
+    },
+    {
       path: "/mentions-legales",
       priority: 0.30,
       changeFrequency: "yearly",

@@ -106,7 +106,10 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-  }
+  },
+  other: {
+    "p:domain_verify": "33dd61d6a90f26a330463e04397a6ecb",
+  },
 };
 
 const structuredData = {
