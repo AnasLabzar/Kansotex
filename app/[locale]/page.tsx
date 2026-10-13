@@ -8,6 +8,7 @@ import { PopularProducts } from "@/components/PopularProducts";
 import { getTranslations, getLocale } from "next-intl/server";
 import { Suspense } from "react";
 import { removeAccents } from "@/lib/text";
+import { HeroBackground } from "@/components/HeroBackground";
 
 export const dynamic = "force-dynamic";
 
@@ -21,16 +22,12 @@ export default async function Home() {
         <IntroScreen />
         
         <section className="relative flex min-h-[100dvh] flex-col overflow-hidden">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 h-full w-full object-cover"
-          >
-            <source src="/video-rideau-villa_kansotex.mp4" type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-[#1a1410]/45" />
+          {/* Ultra-optimized Hero Background: Instant WebP/AVIF LCP poster + Deferred Luxury Video */}
+          <HeroBackground 
+            videoSrc="/video-rideau-villa_kansotex.mp4"
+            posterSrc="/gallery/Kansotex-indoor-riad-tissus-pinterest-1.webp"
+            overlayOpacityClass="bg-[#1a1410]/45"
+          />
           <Header overlay />
 
           {/* MOBILE HERO (Maison Nicole style) */}

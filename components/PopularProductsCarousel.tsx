@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useCurrency } from "@/lib/CurrencyContext";
 import { useTranslations, useLocale } from "next-intl";
 import { UnderlineLink } from "@/components/UnderlineLink";
@@ -60,10 +61,12 @@ export function PopularProductsCarousel({ products, isPro, discount }: { product
               <div key={product.id} className="min-w-[280px] md:min-w-[320px] w-[70vw] md:w-[320px] snap-start shrink-0">
                 <Link href={`/products/${product.slug}`} className="group block">
                   <div className="aspect-[4/5] relative overflow-hidden bg-[#e8e4db] mb-4">
-                    <img 
-                      src={product.image || "/gallery/Kansotex-indoor-riad-tissus-pinterest-1.png"}
+                    <Image 
+                      src={product.image || "/gallery/Kansotex-indoor-riad-tissus-pinterest-1.webp"}
                       alt={product.nameFr}
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
+                      fill
+                      sizes="(min-width: 768px) 320px, 70vw"
+                      className="object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
                     />
                   </div>
                   <div className="flex flex-col">

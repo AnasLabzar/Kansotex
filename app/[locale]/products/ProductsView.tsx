@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { SearchBar } from "@/components/SearchBar";
@@ -18,11 +19,10 @@ export function ProductsView({ products, isPro, discount }: { products: Product[
   const t = useTranslations("ProductsView");
   const locale = useLocale();
 
-  // Derive filtered products
+  // Derive filtered products (without tapis focus)
   const filteredProducts = products.filter(p => {
     if (activeCategory === "TOUT") return true;
     if (activeCategory === "TISSU") return p.type === "FABRIC_BY_METER";
-    if (activeCategory === "TAPIS") return p.categoryId === "cat-6";
     if (activeCategory === "LINGE DE LIT") return p.categoryId === "cat-1";
     if (activeCategory === "LINGE DE BAIN") return p.categoryId === "cat-2";
     if (activeCategory === "LINGE DE TABLE") return p.categoryId === "cat-3";
@@ -40,11 +40,10 @@ export function ProductsView({ products, isPro, discount }: { products: Product[
       case "LINGE DE LIT": return { title: t("bedLinen"), image: "/gallery/bed_set_percale_1791048617304.jpg" };
       case "LINGE DE BAIN": return { title: t("bathLinen"), image: "/gallery/bathrobe_velour_1791048626440.jpg" };
       case "LINGE DE TABLE": return { title: t("tableLinen"), image: "/gallery/tablecloth_linen_1791048647057.jpg" };
-      case "TAPIS": return { title: t("rugs"), image: "/gallery/rug_beniouarain_1791049165733.jpg" };
-      case "TISSU": return { title: t("fabric"), image: "/gallery/Kansotex-indoor-riad-tissus-pinterest-2.png" };
+      case "TISSU": return { title: t("fabric"), image: "/gallery/Kansotex-indoor-riad-tissus-pinterest-2.webp" };
       case "TOUT": 
       default: 
-        return { title: t("all"), image: "/gallery/Kansotex-indoor-riad-tissus-pinterest-2.png" };
+        return { title: t("all"), image: "/gallery/Kansotex-indoor-riad-tissus-pinterest-2.webp" };
     }
   }
   const heroContent = getHeroContent();
@@ -53,14 +52,14 @@ export function ProductsView({ products, isPro, discount }: { products: Product[
     <>
       {/* 1. Dynamic Hero Header Section */}
       <div className="w-full h-[40vh] md:h-[55vh] relative overflow-hidden bg-[#2a3c24]">
-        <motion.img 
+        <Image 
           key={heroContent.image}
-          initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 0.8, scale: 1 }}
-          transition={{ duration: 1 }}
           src={heroContent.image} 
-          alt={heroContent.title} 
-          className="absolute inset-0 w-full h-full object-cover"
+          alt={heroContent.title}
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
         />
         <div className="absolute inset-0 bg-black/30" />
         <div className="absolute inset-0 flex items-center justify-center">
@@ -69,7 +68,7 @@ export function ProductsView({ products, isPro, discount }: { products: Product[
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="font-termina text-[8vw] sm:text-4xl md:text-6xl lg:text-7xl text-white tracking-[0.2em] uppercase text-center px-4 drop-shadow-xl"
+            className="font-termina text-[8vw] sm:text-4xl md:text-6xl lg:text-7xl text-white tracking-[0.2em] uppercase text-center px-4 drop-shadow-xl z-10"
           >
             {heroContent.title}
           </motion.h1>
@@ -78,10 +77,9 @@ export function ProductsView({ products, isPro, discount }: { products: Product[
 
       <div className="border-b border-ink/10 relative z-10 bg-cream">
         <div className="px-6 md:px-12 py-5 flex items-center gap-8 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          {["TOUT", "TISSU", "TAPIS", "LINGE DE LIT", "LINGE DE BAIN", "LINGE DE TABLE"].map((cat) => {
+          {["TOUT", "TISSU", "LINGE DE LIT", "LINGE DE BAIN", "LINGE DE TABLE"].map((cat) => {
             let label = t("all");
             if (cat === "TISSU") label = t("fabric");
-            if (cat === "TAPIS") label = t("rugs");
             if (cat === "LINGE DE LIT") label = t("bedLinen");
             if (cat === "LINGE DE BAIN") label = t("bathLinen");
             if (cat === "LINGE DE TABLE") label = t("tableLinen");
@@ -208,10 +206,12 @@ export function ProductsView({ products, isPro, discount }: { products: Product[
                   className="group block"
                 >
                   <div className="aspect-[4/5] sm:aspect-square relative overflow-hidden bg-[#e8e4db] mb-4">
-                    <img 
-                      src={product.image || "/gallery/Kansotex-indoor-riad-tissus-pinterest-1.png"}
+                    <Image 
+                      src={product.image || "/gallery/Kansotex-indoor-riad-tissus-pinterest-1.webp"}
                       alt={product.nameFr}
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
+                      fill
+                      sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
+                      className="object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
                     />
                   </div>
                   
