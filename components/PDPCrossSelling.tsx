@@ -1,7 +1,10 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { toTermina } from "@/lib/text";
+import { useCurrency } from "@/lib/CurrencyContext";
 
 interface ProductItem {
   id: string;
@@ -38,6 +41,7 @@ export function PDPCrossSelling({
   isPro = false,
 }: PDPCrossSellingProps) {
   const isEn = locale === "en";
+  const { formatPrice } = useCurrency();
   const currentCatSlug = currentProduct.category?.slug?.toLowerCase() || "";
 
   // Smart algorithmic pairing: filter out current product and rugs/tapis
@@ -91,17 +95,103 @@ export function PDPCrossSelling({
   const items = pairedProducts.slice(0, 4);
   if (items.length === 0) return null;
 
+  // Curated Thematic Collections for bottom architectural exploration
+  const collections = [
+    {
+      href: `/${locale}/univers/outdoor`,
+      title: isEn ? "Tissus Outdoor & Terrasses" : "Tissus Outdoor & Terrasses",
+      subtitle: isEn ? "Water-repellent fabrics & sunny riad banquettes" : "Toiles déperlantes, banquettes & salons d'été",
+      tag: isEn ? "TERRACES & POOL" : "TERRASSES & RIADS",
+      isProHighlight: false,
+      icon: (
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+          <circle cx="12" cy="12" r="4" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+        </svg>
+      ),
+    },
+    {
+      href: `/${locale}/univers/indoor`,
+      title: isEn ? "Tissus d'Intérieur, Lin & Velours" : "Tissus d'Intérieur, Lin & Velours",
+      subtitle: isEn ? "Heavy drapery, corduroy & Atlas upholstery" : "Draperies lourdes, velours côtelé & sièges",
+      tag: isEn ? "LIVING & CURTAINS" : "AMEUBLEMENT & RIDEAUX",
+      isProHighlight: false,
+      icon: (
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4 18v3h16v-3M3 14a3 3 0 013-3h12a3 3 0 013 3v3H3zM6 11V6a2 2 0 012-2h8a2 2 0 012 2v5" />
+        </svg>
+      ),
+    },
+    {
+      href: `/${locale}/univers/linge-de-lit`,
+      title: isEn ? "Linge de Lit Hôtelier Grand Luxe" : "Linge de Lit Hôtelier Grand Luxe",
+      subtitle: isEn ? "Egyptian cotton percale & washed pure linen" : "Percale d'Égypte 400 fils & pur lin lavé",
+      tag: isEn ? "SUITES & BEDROOMS" : "SUITES & GRAND HÔTEL",
+      isProHighlight: false,
+      icon: (
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M2 19h20M2 15h20M4 15V7a2 2 0 012-2h12a2 2 0 012 2v8M6 9h4v2H6zm8 0h4v2h-4z" />
+        </svg>
+      ),
+    },
+    {
+      href: `/${locale}/univers/linge-de-bain`,
+      title: isEn ? "Linge de Bain Spa & Wellness" : "Linge de Bain Spa & Wellness",
+      subtitle: isEn ? "Combed cotton 600g/m² & luxury waffle bathrobes" : "Éponge peignée 600g/m² & peignoirs de riad",
+      tag: isEn ? "BATH & WELLNESS" : "SPA & NID D'ABEILLE",
+      isProHighlight: false,
+      icon: (
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 6h6a3 3 0 013 3v8a2 2 0 01-2 2H8a2 2 0 01-2-2V9a3 3 0 013-3zM9 3v3m6-3v3" />
+        </svg>
+      ),
+    },
+    {
+      href: `/${locale}/savoir-faire`,
+      title: isEn ? "Manufacture & Ateliers Marrakech" : "Manufacture & Ateliers Marrakech",
+      subtitle: isEn ? "Straight-grain cutting, weighted hems & bespoke craft" : "Coupe au fil droit & confection sur-mesure",
+      tag: isEn ? "ATELIER CRAFT" : "ATELIER SUR-MESURE",
+      isProHighlight: false,
+      icon: (
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+          <circle cx="6" cy="6" r="3" />
+          <circle cx="6" cy="18" r="3" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M20 4L8.12 15.88M14.47 14.48L20 20M8.12 8.12L12 12" />
+        </svg>
+      ),
+    },
+    {
+      href: `/${locale}/pro`,
+      title: isEn ? "Portail Hôtellerie & Prescripteurs" : "Portail Hôtellerie & Prescripteurs",
+      subtitle: isEn ? "Trade discounts, 48h swatch box & express quotes" : "Remises éditeur directes & échantillons 48h",
+      tag: isEn ? "PRO ACCESS" : "ESPACE ARCHITECTES B2B",
+      isProHighlight: true,
+      icon: (
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+          <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" />
+        </svg>
+      ),
+    },
+  ];
+
   return (
-    <section className="mt-16 sm:mt-24 pt-12 sm:pt-16 border-t border-ink/10">
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 gap-4">
+    <section className="mt-16 sm:mt-24 pt-12 sm:pt-16 border-t border-[#e8e2d5]">
+      {/* ------------------------------------------------------------------ */}
+      {/* 1. SECTION HEADER */}
+      {/* ------------------------------------------------------------------ */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-10 gap-4">
         <div>
-          <span className="text-[9px] font-termina tracking-[0.3em] uppercase text-olive font-bold block mb-1">
-            {toTermina(isEn ? "Harmonious Combinations" : "Associations & Ventes Croisees")}
-          </span>
-          <h3 className="font-termina uppercase text-xl sm:text-2xl font-bold text-ink tracking-wide">
-            {toTermina(isEn ? "Complete the Ensemble" : "Completer Votre Selection")}
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#c5a880]" />
+            <span className="text-[9px] sm:text-[10px] font-termina tracking-[0.3em] uppercase text-[#938573] font-bold">
+              {toTermina(isEn ? "Harmonious Combinations" : "Associations & Ventes Croisées")}
+            </span>
+          </div>
+          <h3 className="font-termina uppercase text-xl sm:text-2xl md:text-3xl font-bold text-[#1c1b19] tracking-wide leading-tight">
+            {toTermina(isEn ? "Complete the Ensemble" : "Compléter Votre Sélection")}
           </h3>
-          <p className="text-xs sm:text-sm text-muted font-sans font-light mt-1">
+          <p className="text-xs sm:text-sm text-[#736b60] font-sans font-light mt-1.5 max-w-xl">
             {isEn
               ? "Recommended complementary textures, fabrics and linens curated by our interior stylists."
               : "Étoffes coordonnées, coussins et pièces de linge pensés pour dialoguer parfaitement ensemble."}
@@ -110,14 +200,17 @@ export function PDPCrossSelling({
 
         <Link
           href={`/${locale}/products`}
-          className="text-[9px] font-termina uppercase tracking-widest text-ink font-bold underline underline-offset-4 hover:text-olive transition-colors shrink-0"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#d8d0c2] bg-white/80 hover:bg-[#1c1b19] hover:text-[#faf8f5] hover:border-[#1c1b19] transition-all duration-300 text-[9px] sm:text-[10px] font-termina uppercase tracking-widest text-[#1c1b19] font-medium shadow-2xs hover:shadow-xs group/btn shrink-0"
         >
-          {toTermina(isEn ? "View Complete Catalog →" : "Voir Tout le Catalogue →")}
+          <span>{toTermina(isEn ? "View Complete Catalog" : "Voir Tout le Catalogue")}</span>
+          <span className="text-xs transition-transform duration-300 group-hover/btn:translate-x-1">→</span>
         </Link>
       </div>
 
-      {/* Grid of Recommended Products */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+      {/* ------------------------------------------------------------------ */}
+      {/* 2. REFINED LUXURY CARDS GRID */}
+      {/* ------------------------------------------------------------------ */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
         {items.map((item) => {
           const itemName = isEn ? item.nameEn || item.nameFr : item.nameFr;
           const categoryName = item.category
@@ -125,47 +218,64 @@ export function PDPCrossSelling({
             : "";
           const isItemFabric = item.type === "FABRIC_BY_METER";
           const imageSrc = item.image || "/gallery/Kansotex-indoor-riad-tissus-pinterest-1.webp";
+          const priceObj = formatPrice(item.basePrice);
 
           return (
             <Link
               key={item.id}
               href={`/${locale}/products/${item.slug}`}
-              className="group flex flex-col bg-white/40 border border-ink/5 p-3 rounded-xs hover:border-ink/20 transition-all hover:shadow-xs"
+              className="group relative flex flex-col bg-white rounded-[16px] border border-[#e8e2d5] hover:border-[#b8a690] p-3 sm:p-3.5 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(28,27,25,0.09)]"
             >
-              <div className="aspect-[4/5] relative overflow-hidden bg-[#e8e4db] mb-3 rounded-xs">
+              {/* Product Visual Container */}
+              <div className="aspect-[4/5] relative overflow-hidden bg-[#f0eae1] rounded-[12px] mb-3.5">
                 <Image
                   src={imageSrc}
                   alt={itemName}
                   fill
                   sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-108"
                 />
-                <span className="absolute top-2 left-2 text-[8px] font-termina uppercase tracking-wider bg-cream/90 text-ink px-1.5 py-0.5 rounded-xs backdrop-blur-xs">
-                  {toTermina(isItemFabric ? (isEn ? "By Meter" : "Au Metre") : (isEn ? "Finished" : "Piece"))}
-                </span>
-              </div>
 
-              <div className="flex flex-col flex-1 justify-between">
-                <div>
-                  <span className="text-[8px] font-termina uppercase tracking-wider text-muted block mb-0.5 truncate">
-                    {toTermina(categoryName)}
+                {/* Subtle Hover Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+
+                {/* Haute Étofferie Type Badge */}
+                <div className="absolute top-2.5 left-2.5 z-10">
+                  <span className="backdrop-blur-md bg-white/90 text-[#1c1b19] border border-white/60 text-[8px] font-termina uppercase tracking-[0.2em] font-bold px-2.5 py-1 rounded-full shadow-2xs flex items-center gap-1.5">
+                    <span className="w-1 h-1 rounded-full bg-[#c5a880]" />
+                    {toTermina(isItemFabric ? (isEn ? "By Meter" : "Au Mètre") : (isEn ? "Confection" : "Pièce"))}
                   </span>
-                  <h4 className="font-sans text-xs sm:text-sm font-medium text-ink group-hover:text-olive transition-colors line-clamp-1">
-                    {itemName}
-                  </h4>
-                  {item.metadata?.composition && (
-                    <p className="text-[10px] text-muted font-sans font-light truncate mt-0.5">
-                      {item.metadata.composition}
-                    </p>
-                  )}
                 </div>
 
-                <div className="mt-3 pt-2 border-t border-ink/5 flex items-baseline justify-between">
-                  <span className="font-sans text-xs font-semibold text-ink">
-                    {item.basePrice.toLocaleString(isEn ? "en-US" : "fr-FR", { minimumFractionDigits: 2 })} MAD
+                {/* Quick Action Pill on Hover */}
+                <div className="absolute bottom-3 inset-x-3 z-10 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 pointer-events-none">
+                  <div className="bg-[#1c1b19]/90 backdrop-blur-md text-[#faf8f5] text-[9px] font-termina uppercase tracking-[0.22em] font-medium py-2 rounded-full text-center flex items-center justify-center gap-1.5 shadow-md">
+                    <span>{isEn ? "Discover" : "Découvrir"}</span>
+                    <span className="text-xs transition-transform duration-300 group-hover:translate-x-0.5">→</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Product Metadata & Price */}
+              <div className="flex flex-col flex-1 justify-between px-1">
+                <div>
+                  <span className="text-[9px] font-termina uppercase tracking-[0.25em] text-[#938573] font-semibold block mb-1 truncate">
+                    {toTermina(categoryName)}
                   </span>
-                  <span className="text-[9px] font-termina uppercase text-muted">
-                    {toTermina(isItemFabric ? (isEn ? "/ m" : "/ m") : (isEn ? "/ unit" : "/ unite"))}
+                  <h4 className="font-sans text-[13px] sm:text-[14px] font-semibold text-[#1c1b19] group-hover:text-[#8c7a65] transition-colors line-clamp-1 leading-snug">
+                    {itemName}
+                  </h4>
+                  <p className="text-[11px] font-sans text-[#787168] font-light line-clamp-1 mt-1">
+                    {item.metadata?.composition || (isItemFabric ? "Tissage artisanal noble" : "Confection atelier d'Atlas")}
+                  </p>
+                </div>
+
+                <div className="mt-3.5 pt-3 border-t border-[#ede7dc] flex items-baseline justify-between">
+                  <span className="font-sans text-sm sm:text-[15px] font-semibold text-[#1c1b19] tracking-tight">
+                    {priceObj.value} {priceObj.symbol}
+                  </span>
+                  <span className="text-[9px] font-termina uppercase tracking-wider text-[#9e9486]">
+                    {toTermina(isItemFabric ? (isEn ? "/ m" : "/ m") : (isEn ? "/ pièce" : "/ pièce"))}
                   </span>
                 </div>
               </div>
@@ -174,50 +284,70 @@ export function PDPCrossSelling({
         })}
       </div>
 
-      {/* --------------------------------------------------------------------- */}
-      {/* Maillage Interne Sémantique (SEO Contextual Links to Universes) */}
-      {/* --------------------------------------------------------------------- */}
-      <div className="mt-12 sm:mt-16 pt-8 border-t border-ink/5 bg-cream/50 p-6 sm:p-7 rounded-xs">
-        <span className="text-[9px] font-termina uppercase tracking-[0.25em] text-muted font-bold block mb-3">
-          {toTermina(isEn ? "Explore Kansotex Universes & Collections" : "Explorer les Univers & Matieres Kansotex")}
-        </span>
-        <div className="flex flex-wrap gap-2.5">
-          <Link
-            href={`/${locale}/univers/outdoor`}
-            className="text-[9px] font-termina uppercase tracking-wider bg-white/70 border border-ink/10 px-3.5 py-2 rounded-xs text-ink hover:bg-ink hover:text-cream transition-colors"
-          >
-            {toTermina(isEn ? "Outdoor Fabrics & Riads Terraces" : "Tissus Outdoor & Terrasses de Riad")}
-          </Link>
-          <Link
-            href={`/${locale}/univers/indoor`}
-            className="text-[9px] font-termina uppercase tracking-wider bg-white/70 border border-ink/10 px-3.5 py-2 rounded-xs text-ink hover:bg-ink hover:text-cream transition-colors"
-          >
-            {toTermina(isEn ? "Indoor Upholstery & Velvet" : "Tissus d'Interieur, Lin & Velours")}
-          </Link>
-          <Link
-            href={`/${locale}/univers/linge-de-lit`}
-            className="text-[9px] font-termina uppercase tracking-wider bg-white/70 border border-ink/10 px-3.5 py-2 rounded-xs text-ink hover:bg-ink hover:text-cream transition-colors"
-          >
-            {toTermina(isEn ? "Luxury Bed Linen (Percale & Satin)" : "Linge de Lit Hotelier (Lin & Percale)")}
-          </Link>
-          <Link
-            href={`/${locale}/univers/linge-de-bain`}
-            className="text-[9px] font-termina uppercase tracking-wider bg-white/70 border border-ink/10 px-3.5 py-2 rounded-xs text-ink hover:bg-ink hover:text-cream transition-colors"
-          >
-            {toTermina(isEn ? "Resort Bath & Spa Linens 600g/m2" : "Linge de Bain Spa 600g/m2")}
-          </Link>
-          <Link
-            href={`/${locale}/savoir-faire`}
-            className="text-[9px] font-termina uppercase tracking-wider bg-white/70 border border-ink/10 px-3.5 py-2 rounded-xs text-ink hover:bg-ink hover:text-cream transition-colors"
-          >
-            {toTermina(isEn ? "Marrakech Confection Atelier" : "Manufacture & Atelier Marrakech")}
-          </Link>
-          <Link
-            href={`/${locale}/pro`}
-            className="text-[9px] font-termina uppercase tracking-wider bg-olive/10 border border-olive/30 px-3.5 py-2 rounded-xs text-olive font-bold hover:bg-olive hover:text-cream transition-colors"
-          >
-            {toTermina(isEn ? "Trade & Hospitality B2B" : "Portail Hotellerie & Riads B2B")}
-          </Link>
+      {/* ------------------------------------------------------------------ */}
+      {/* 3. ARCHITECTURAL DISCOVERY SECTION (Section l-Taht Re-designed)    */}
+      {/* ------------------------------------------------------------------ */}
+      <div className="mt-14 sm:mt-20 pt-8 sm:pt-10 border-t border-[#e8e2d5] bg-[#fbf9f5] p-5 sm:p-8 rounded-[20px] border border-[#e5dfd3] shadow-2xs">
+        <div className="mb-6 sm:mb-8">
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#c5a880]" />
+            <span className="text-[9px] font-termina uppercase tracking-[0.3em] text-[#938573] font-bold">
+              {toTermina(isEn ? "Thematic Exploration & Universes" : "Exploration Thématique & Univers")}
+            </span>
+          </div>
+          <h4 className="font-termina uppercase text-base sm:text-xl font-bold text-[#1c1b19] tracking-wide">
+            {toTermina(isEn ? "Kansotex Textile House Collections" : "Les Grandes Collections de la Maison")}
+          </h4>
+          <p className="text-xs sm:text-sm text-[#736b60] font-sans font-light mt-1 max-w-2xl">
+            {isEn
+              ? "Navigate our editorial textile curations, from solar outdoor upholstery to grand hotel percale suites."
+              : "Parcourez nos éditoriaux de matières, des toiles solaires d'extérieur aux parures de lit grand hôtel."}
+          </p>
+        </div>
+
+        {/* 6 Luxury Universe Capsules Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+          {collections.map((col) => (
+            <Link
+              key={col.href}
+              href={col.href}
+              className={`group flex items-center justify-between p-3.5 sm:p-4 rounded-[14px] bg-white border transition-all duration-300 shadow-2xs hover:shadow-md hover:-translate-y-0.5 ${
+                col.isProHighlight
+                  ? "border-[#c5a880]/50 hover:border-[#1c1b19] bg-gradient-to-br from-white to-[#fbf8f2]"
+                  : "border-[#e6e0d4] hover:border-[#1c1b19]"
+              }`}
+            >
+              <div className="flex items-start gap-3 min-w-0">
+                {/* Micro-Icon Box */}
+                <div className={`w-8 sm:w-9 h-8 sm:h-9 rounded-full flex items-center justify-center shrink-0 transition-colors duration-300 ${
+                  col.isProHighlight
+                    ? "bg-[#c5a880]/15 text-[#8c7352] group-hover:bg-[#1c1b19] group-hover:text-[#faf8f5]"
+                    : "bg-[#f4efe6] text-[#8c7a65] group-hover:bg-[#1c1b19] group-hover:text-[#faf8f5]"
+                }`}>
+                  {col.icon}
+                </div>
+
+                <div className="min-w-0">
+                  <span className={`text-[8px] font-termina uppercase tracking-[0.2em] font-semibold block mb-0.5 truncate ${
+                    col.isProHighlight ? "text-[#9d7d4f]" : "text-[#9c8e7c]"
+                  }`}>
+                    {toTermina(col.tag)}
+                  </span>
+                  <h5 className="font-termina uppercase text-[10px] sm:text-[11px] font-bold text-[#1c1b19] group-hover:text-[#8c7a65] transition-colors tracking-wide leading-tight truncate">
+                    {toTermina(col.title)}
+                  </h5>
+                  <p className="text-[11px] font-sans text-[#787168] font-light mt-0.5 line-clamp-1">
+                    {col.subtitle}
+                  </p>
+                </div>
+              </div>
+
+              {/* Arrow Indicator */}
+              <div className="w-6 h-6 rounded-full border border-[#ded6c7] group-hover:border-[#1c1b19] group-hover:bg-[#1c1b19] group-hover:text-white transition-all duration-300 flex items-center justify-center text-[#1c1b19] text-[10px] shrink-0 ml-2">
+                <span className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </section>
