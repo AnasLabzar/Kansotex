@@ -8,6 +8,7 @@ import { useSession } from "@/lib/SessionContext";
 import { useCurrency, CurrencyCode } from "@/lib/CurrencyContext";
 import { logout } from "@/lib/session";
 import { motion, AnimatePresence } from "framer-motion";
+import { toTermina } from "@/lib/text";
 
 const DEFAULT_ROTATING_LABELS = [
   "Demander un devis",
@@ -45,15 +46,44 @@ export function NavbarRightActions({
   }, [dynamicLabels.length, isAuthenticated]);
 
   // Search state
+  const [searchExpanded, setSearchExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [searchDropdownOpen, setSearchDropdownOpen] = useState(false);
   const searchWrapperRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // Profile menu dropdown state for authenticated user
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const profileWrapperRef = useRef<HTMLDivElement>(null);
+
+  // Open search input with smooth focus
+  const handleOpenSearch = () => {
+    setSearchExpanded(true);
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 60);
+  };
+
+  // Close search and reset
+  const handleCloseSearch = () => {
+    setSearchExpanded(false);
+    setSearchDropdownOpen(false);
+    setSearchQuery("");
+    setSearchResults([]);
+  };
+
+  // Keyboard navigation (Escape to close search)
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape" && searchExpanded) {
+        handleCloseSearch();
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [searchExpanded]);
 
   // Click outside listener for search & profile dropdowns
   useEffect(() => {
@@ -63,6 +93,10 @@ export function NavbarRightActions({
         !searchWrapperRef.current.contains(event.target as Node)
       ) {
         setSearchDropdownOpen(false);
+        // If search query is empty, collapse back to circular icon button
+        if (!searchQuery.trim()) {
+          setSearchExpanded(false);
+        }
       }
       if (
         profileWrapperRef.current &&
@@ -73,7 +107,7 @@ export function NavbarRightActions({
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [searchQuery]);
 
   // Fetch search results with debouncing
   useEffect(() => {
@@ -100,11 +134,11 @@ export function NavbarRightActions({
   }, [searchQuery]);
 
   // Is this an order search query? (e.g. starts with KTX, ORD, #, or digits)
-  const isOrderQuery =
-    /^(ktx|ord|#|\d{3,})/i.test(searchQuery.trim());
+  const isOrderQuery = /^(ktx|ord|#|\d{3,})/i.test(searchQuery.trim());
 
   return (
     <div className="flex items-center gap-2 sm:gap-2.5 md:gap-3 z-10">
+      
       {/* ============================================================ */}
       {/* 0. CURRENCY SELECTOR (ONLY SHOWN ON CHECKOUT PAGE) */}
       {/* ============================================================ */}
@@ -128,12 +162,33 @@ export function NavbarRightActions({
       )}
 
       {/* ============================================================ */}
-      {/* 1. SEARCH BAR (SEARCH PRODUCTS & BY ORDER) */}
+      {/* 1. ANIMATED EXPANDABLE SEARCH (ICON AT REST -> PRO ANIMATED) */}
       {/* ============================================================ */}
-      <div ref={searchWrapperRef} className="relative">
-        <div className="relative flex items-center h-9 rounded-full bg-white/80 border border-[#e2ddd3] hover:border-[#1c1b19] focus-within:border-[#1c1b19] px-2.5 sm:px-3 transition-all shadow-2xs">
+      <div
+        ref={searchWrapperRef}
+        className={`relative transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          searchExpanded
+            ? "w-[200px] sm:w-[250px] md:w-[290px]"
+            : "w-9"
+        }`}
+      >
+        <div
+          className={`relative flex items-center h-9 rounded-full bg-white/85 border transition-all duration-300 overflow-hidden shadow-2xs focus-within:shadow-xs ${
+            searchExpanded
+              ? "w-full border-[#cfc8bc] bg-white px-3 shadow-xs ring-1 ring-[#cfc8bc]/40"
+              : "w-9 border-[#e2ddd3] hover:border-[#cfc8bc] hover:bg-white justify-center cursor-pointer hover:shadow-xs hover:scale-105 active:scale-95"
+          }`}
+          onClick={() => {
+            if (!searchExpanded) handleOpenSearch();
+          }}
+          role={!searchExpanded ? "button" : undefined}
+          aria-label="Rechercher"
+        >
+          {/* Search Icon */}
           <svg
-            className="w-3.5 h-3.5 text-[#1c1b19]/50 shrink-0"
+            className={`w-4 h-4 text-[#1c1b19]/70 shrink-0 transition-transform duration-200 ${
+              !searchExpanded ? "hover:scale-110" : ""
+            }`}
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -141,34 +196,65 @@ export function NavbarRightActions({
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth="1.8"
+              strokeWidth="1.6"
               d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
             />
           </svg>
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-              setSearchDropdownOpen(true);
-            }}
-            onFocus={() => setSearchDropdownOpen(true)}
-            placeholder="Rechercher..."
-            className="w-[72px] sm:w-[110px] md:w-[145px] lg:w-[170px] focus:w-[100px] sm:focus:w-[150px] md:focus:w-[190px] bg-transparent pl-2 pr-1 text-xs text-[#1c1b19] placeholder:text-[#1c1b19]/40 outline-none font-sans font-light transition-all"
-            aria-label="Rechercher produit ou commande"
-          />
-          {searchQuery && (
-            <button
-              type="button"
-              onClick={() => {
-                setSearchQuery("");
-                setSearchResults([]);
-              }}
-              className="text-[#1c1b19]/40 hover:text-[#1c1b19] text-[10px] p-0.5 ml-0.5 transition-colors"
-              aria-label="Effacer recherche"
+
+          {/* Search Input (Expands smoothly with animation) */}
+          {searchExpanded && (
+            <motion.div
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -8 }}
+              transition={{ duration: 0.2 }}
+              className="flex items-center flex-1 min-w-0 ml-2"
             >
-              ✕
-            </button>
+              <input
+                ref={inputRef}
+                type="text"
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setSearchDropdownOpen(true);
+                }}
+                onFocus={() => setSearchDropdownOpen(true)}
+                placeholder="Rechercher tissu, réf..."
+                className="w-full bg-transparent text-xs text-[#1c1b19] placeholder:text-[#1c1b19]/40 outline-none font-sans font-light border-none ring-0 focus:ring-0 focus:outline-none"
+                aria-label="Rechercher produit ou commande"
+              />
+
+              {/* Clear Query Button */}
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSearchQuery("");
+                    setSearchResults([]);
+                    inputRef.current?.focus();
+                  }}
+                  className="text-[#1c1b19]/40 hover:text-[#1c1b19] text-[10px] p-1 transition-colors rounded-full hover:bg-[#f2eee6]"
+                  aria-label="Effacer recherche"
+                >
+                  ✕
+                </button>
+              )}
+
+              {/* Close / Collapse Search Button */}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleCloseSearch();
+                }}
+                className="text-[#1c1b19]/40 hover:text-[#1c1b19] text-xs p-1 ml-0.5 transition-colors rounded-full hover:bg-[#f2eee6]"
+                title="Fermer la recherche"
+                aria-label="Fermer la recherche"
+              >
+                ✕
+              </button>
+            </motion.div>
           )}
         </div>
 
@@ -217,18 +303,21 @@ export function NavbarRightActions({
                       <Link
                         key={product.id}
                         href={`/products/${product.slug}`}
-                        onClick={() => setSearchDropdownOpen(false)}
+                        onClick={() => {
+                          setSearchDropdownOpen(false);
+                          setSearchExpanded(false);
+                        }}
                         className="flex items-center gap-3 p-2 rounded-xl hover:bg-[#faf7f2] transition-colors group"
                       >
-                        <div className="w-10 h-10 rounded-lg overflow-hidden relative bg-[#eee9e0] shrink-0">
+                        <div className="w-10 h-10 rounded-lg overflow-hidden relative bg-[#eee9e0] shrink-0 border border-ink/5">
                           <img
-                            src={product.image || "/gallery/tissus-haut-de-gamme.jpg"}
+                            src={product.image || "/gallery/Kansotex-indoor-riad-tissus-pinterest-1.png"}
                             alt={product.nameFr}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                           />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h4 className="text-xs font-medium text-[#1c1b19] truncate group-hover:text-[#a49a8d] transition-colors">
+                          <h4 className="text-xs font-medium text-[#1c1b19] truncate group-hover:text-olive transition-colors">
                             {product.nameFr}
                           </h4>
                           <p className="text-[9px] font-mono text-[#1c1b19]/50 uppercase">
@@ -245,10 +334,13 @@ export function NavbarRightActions({
                     ))}
                     <Link
                       href="/products"
-                      onClick={() => setSearchDropdownOpen(false)}
+                      onClick={() => {
+                        setSearchDropdownOpen(false);
+                        setSearchExpanded(false);
+                      }}
                       className="block pt-2 text-center text-[10px] font-termina font-bold uppercase tracking-wider text-[#1c1b19]/60 hover:text-[#1c1b19] transition-colors"
                     >
-                      VOIR TOUTES LES ÉTOFFES
+                      VOIR TOUTES LES ÉTOFFES →
                     </Link>
                   </div>
                 ) : (
@@ -264,44 +356,46 @@ export function NavbarRightActions({
 
       {/* ============================================================ */}
       {/* 2. ACCOUNT PROFILE BUTTON (ONLY SHOWN WHEN NOT LOGGED IN) */}
-      {/* "zid button b7al panier dyal account profile" */}
       {/* ============================================================ */}
       {!isAuthenticated && (
-        <Link
-          href="/pro"
-          className="relative flex items-center justify-center h-9 w-9 rounded-full bg-white/80 border border-[#e2ddd3] hover:border-[#1c1b19] transition-colors text-[#1c1b19] shrink-0"
-          aria-label="Mon Compte & Espace Pro"
-          title="Connexion / Espace Pro"
-        >
-          <svg
-            className="w-4 h-4 text-[#1c1b19]"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <Link
+            href="/pro"
+            className="relative flex items-center justify-center h-9 w-9 rounded-full bg-white/80 border border-[#e2ddd3] hover:border-[#cfc8bc] hover:bg-white transition-all text-[#1c1b19] shrink-0 shadow-2xs hover:shadow-xs outline-none focus:outline-none"
+            aria-label="Mon Compte & Espace Pro"
+            title="Connexion / Espace Pro"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="1.5"
-              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-            />
-          </svg>
-        </Link>
+            <svg
+              className="w-4 h-4 text-[#1c1b19]/80"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.5"
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              />
+            </svg>
+          </Link>
+        </motion.div>
       )}
 
       {/* ============================================================ */}
       {/* 3. PANIER BUTTON */}
-      {/* "3ad button dyal panier" */}
       {/* ============================================================ */}
-      <button
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
         type="button"
         onClick={openCart}
-        className="relative flex items-center justify-center h-9 w-9 rounded-full bg-white/80 border border-[#e2ddd3] hover:border-[#1c1b19] transition-colors text-[#1c1b19] shrink-0 cursor-pointer"
+        className="relative flex items-center justify-center h-9 w-9 rounded-full bg-white/80 border border-[#e2ddd3] hover:border-[#cfc8bc] hover:bg-white transition-all text-[#1c1b19] shrink-0 cursor-pointer shadow-2xs hover:shadow-xs outline-none focus:outline-none"
         aria-label="Ouvrir le Panier"
         title="Panier"
       >
         <svg
-          className="w-4 h-4 text-[#1c1b19]"
+          className="w-4 h-4 text-[#1c1b19]/80"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -318,27 +412,27 @@ export function NavbarRightActions({
             {cartCount}
           </span>
         )}
-      </button>
+      </motion.button>
 
       {/* ============================================================ */}
       {/* 4. DYNAMIC CTA BUTTON vs AUTHENTICATED PROFILE BUTTON */}
-      {/* "walakin hadi fi 7alat makan ddayr auth ama ila kan dasyrha */}
-      {/* fblasst dak button dyal dynamic aywli b7alo dyal profile" */}
       {/* ============================================================ */}
       {isAuthenticated ? (
         /* Authenticated: Dynamic button becomes Profile pill button */
         <div ref={profileWrapperRef} className="relative">
-          <button
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             type="button"
             onClick={() => setProfileMenuOpen((prev) => !prev)}
-            className="relative overflow-hidden inline-flex items-center justify-center h-9 px-3.5 sm:px-4 rounded-full text-xs font-sans font-medium bg-[#1c1b19] text-[#faf8f5] hover:bg-black transition-all shadow-xs min-w-[120px] sm:min-w-[145px] gap-2 shrink-0 cursor-pointer"
+            className="relative overflow-hidden inline-flex items-center justify-center h-9 px-3.5 sm:px-4 rounded-full text-xs font-sans font-medium bg-[#1c1b19] text-[#faf8f5] hover:bg-[#2b2925] transition-all shadow-xs hover:shadow-md min-w-[120px] sm:min-w-[145px] gap-2 shrink-0 cursor-pointer outline-none focus:outline-none"
             title="Mon Profil Pro"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 animate-pulse" />
             <span className="text-[11px] font-sans uppercase tracking-widest whitespace-nowrap">
               {session?.role ? `PRO ${session.role}` : "ESPACE PRO"}
             </span>
-          </button>
+          </motion.button>
 
           {/* Quick Profile Popover */}
           <AnimatePresence>
@@ -383,7 +477,7 @@ export function NavbarRightActions({
                       await logout();
                       window.location.reload();
                     }}
-                    className="w-full text-left px-3 py-2 text-xs text-red-700 rounded-xl hover:bg-red-50 transition-colors"
+                    className="w-full text-left px-3 py-2 text-xs text-red-700 rounded-xl hover:bg-red-50 transition-colors font-medium"
                   >
                     Déconnexion
                   </button>
@@ -394,24 +488,26 @@ export function NavbarRightActions({
         </div>
       ) : (
         /* Not Authenticated: Kept as the Dynamic Rotating CTA Button */
-        <Link
-          href={contactHref}
-          className="relative overflow-hidden inline-flex items-center justify-center h-9 px-4 sm:px-5 rounded-full text-xs font-sans font-medium bg-[#1c1b19] text-[#faf8f5] hover:bg-black transition-all shadow-xs min-w-[135px] sm:min-w-[155px] shrink-0"
-          title="Demander un devis ou Contacter Kansotex"
-        >
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.span
-              key={dynamicLabels[ctaIndex]}
-              initial={{ opacity: 0, y: 5 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -5 }}
-              transition={{ duration: 0.28, ease: "easeInOut" }}
-              className="inline-flex items-center whitespace-nowrap text-[11px] font-sans uppercase tracking-widest text-center"
-            >
-              <span>{dynamicLabels[ctaIndex]}</span>
-            </motion.span>
-          </AnimatePresence>
-        </Link>
+        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+          <Link
+            href={contactHref}
+            className="relative overflow-hidden inline-flex items-center justify-center h-9 px-4 sm:px-5 rounded-full text-xs font-sans font-medium bg-[#1c1b19] text-[#faf8f5] hover:bg-[#2b2925] transition-all shadow-xs hover:shadow-md min-w-[135px] sm:min-w-[155px] shrink-0 outline-none focus:outline-none"
+            title="Demander un devis ou Contacter Kansotex"
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span
+                key={dynamicLabels[ctaIndex]}
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -5 }}
+                transition={{ duration: 0.28, ease: "easeInOut" }}
+                className="inline-flex items-center whitespace-nowrap text-[11px] font-sans uppercase tracking-widest text-center"
+              >
+                <span>{toTermina(dynamicLabels[ctaIndex])}</span>
+              </motion.span>
+            </AnimatePresence>
+          </Link>
+        </motion.div>
       )}
     </div>
   );
