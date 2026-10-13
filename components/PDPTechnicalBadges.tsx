@@ -27,273 +27,429 @@ export function PDPTechnicalBadges({ product, locale = "fr" }: PDPTechnicalBadge
   const isBedLinen = catSlug.includes("linge-de-lit");
   const isBathLinen = catSlug.includes("linge-de-bain");
 
+  // =========================================================================
+  // FABRICS IN & OUTDOOR (Fer de lance vs Mozaieq & ASD)
+  // =========================================================================
   if (isFabric) {
     return (
-      <section className="mt-16 sm:mt-24 pt-12 sm:pt-16 border-t border-ink/10">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-3">
+      <section className="mt-20 sm:mt-28 pt-14 sm:pt-16 border-t border-ink/15">
+        
+        {/* Editorial Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-6 border-b border-ink/10 gap-4">
           <div>
-            <span className="text-[9px] font-termina tracking-[0.3em] uppercase text-olive font-bold block mb-1">
-              {toTermina(isEn ? "Hospitality & Outdoor Specifications" : "Cahier des Charges & Normes")}
-            </span>
-            <h3 className="font-termina uppercase text-xl sm:text-2xl font-bold text-ink tracking-wide">
-              {toTermina(isEn ? "Technical Performance & Certification" : "Performances Techniques & Normes In & Outdoor")}
+            <div className="flex items-center gap-2 mb-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-olive" />
+              <span className="font-termina text-[10px] tracking-[0.3em] uppercase text-olive font-bold">
+                {toTermina(isEn ? "Technical Specifications · Contract Grade" : "Cahier des Charges Technique · Qualite Contract")}
+              </span>
+            </div>
+            <h3 className="editorial text-3xl sm:text-4xl text-ink font-normal italic">
+              {isEn ? "In & Outdoor Performance Standards" : "Performances In & Outdoor & Haute Facture"}
             </h3>
           </div>
-          <span className="text-[9px] font-termina tracking-widest text-olive uppercase bg-olive/10 px-3 py-1 rounded-xs border border-olive/20 self-start sm:self-end">
-            {toTermina(isOutdoor ? (isEn ? "Outdoor High Resistance" : "Haute Resistance Exterieure") : (isEn ? "Contract & Luxury Grade" : "Qualite Contract & Residentiel"))}
-          </span>
+          
+          <div className="flex items-center gap-2 shrink-0 self-start md:self-end">
+            <span className="font-termina text-[9px] uppercase tracking-widest px-3.5 py-1.5 border border-olive/30 bg-olive/5 text-olive font-bold">
+              {toTermina(isOutdoor ? (isEn ? "Outdoor High Resistance" : "Haute Resistance Exterieure") : (isEn ? "Contract & Luxury Grade" : "Qualite Contract & Residentiel"))}
+            </span>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {/* 1. Solidité UV & Lumière */}
-          <div className="bg-white/60 border border-ink/10 p-5 rounded-xs flex flex-col gap-2 hover:border-ink/30 transition-all shadow-xs">
-            <div className="flex items-center gap-2.5">
-              <span className="w-7 h-7 rounded-full bg-olive/10 flex items-center justify-center shrink-0">
-                <svg className="w-4 h-4 text-olive" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <circle cx="12" cy="12" r="4" strokeWidth="1.5" />
-                  <path strokeLinecap="round" strokeWidth="1.5" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41m14.14-14.14l-1.41 1.41" />
-                </svg>
-              </span>
-              <span className="text-[10px] font-termina font-bold uppercase tracking-wider text-ink">
-                {toTermina(isEn ? "UV Resistance (Grade 7/8)" : "Solidite UV & Plein Soleil")}
-              </span>
+        {/* Architectural Hairline Matrix (Bespoke Pro Icons) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border-t border-l border-ink/15 bg-white/40">
+          
+          {/* 1. Solidité UV & Lumière (ISO 105-B02 Grade 7/8) */}
+          <div className="p-7 sm:p-8 border-r border-b border-ink/15 flex flex-col justify-between hover:bg-white/70 transition-colors group">
+            <div>
+              <div className="flex items-center justify-between mb-5">
+                <span className="w-11 h-11 rounded-full border border-ink/15 bg-cream/90 flex items-center justify-center text-olive group-hover:border-olive group-hover:scale-105 transition-all">
+                  {/* Pro Icon: Sun ray aperture with solar shield */}
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="4" />
+                    <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.93 4.93l1.77 1.77M17.3 17.3l1.77 1.77M4.93 19.07l1.77-1.77M17.3 6.7l1.77-1.77" />
+                    <circle cx="12" cy="12" r="7.5" strokeDasharray="1 3" />
+                  </svg>
+                </span>
+                <span className="font-termina text-[10px] text-olive/60 font-bold tracking-widest">01</span>
+              </div>
+              <h4 className="font-termina text-xs font-bold uppercase tracking-wider text-ink mb-2">
+                {toTermina(isEn ? "UV Resistance Grade 7/8" : "Solidite UV & Plein Soleil")}
+              </h4>
+              <p className="font-sans text-xs text-muted font-light leading-relaxed">
+                {isEn
+                  ? "Certified ISO 105-B02 colorfastness rating 7/8. Mass-dyed fibers resist extreme desert and coastal UV exposure without fading."
+                  : "Certification ISO 105-B02 indice 7/8. Teint dans la masse, le tissu ne décolore pas face au soleil zénithal de Marrakech et aux fortes luminosités."}
+              </p>
             </div>
-            <p className="text-xs text-muted font-sans font-light leading-relaxed">
-              {isEn ? "ISO 105-B02 colorfastness rating 7/8. Sun and fade resistant even under intense Moroccan sunlight." : "Norme ISO 105-B02 indice 7/8. Garanti grand teint, ne décolore pas face au soleil zénithal de Marrakech."}
-            </p>
+            <div className="mt-6 pt-3 border-t border-ink/5 flex items-center justify-between text-[10px] font-termina text-ink/50 uppercase tracking-widest">
+              <span>{toTermina(isEn ? "Standard" : "Norme")}</span>
+              <span className="font-bold text-ink">ISO 105-B02</span>
+            </div>
           </div>
 
-          {/* 2. Déperlance & Anti-taches */}
-          <div className="bg-white/60 border border-ink/10 p-5 rounded-xs flex flex-col gap-2 hover:border-ink/30 transition-all shadow-xs">
-            <div className="flex items-center gap-2.5">
-              <span className="w-7 h-7 rounded-full bg-olive/10 flex items-center justify-center shrink-0">
-                <svg className="w-4 h-4 text-olive" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z" />
-                </svg>
-              </span>
-              <span className="text-[10px] font-termina font-bold uppercase tracking-wider text-ink">
-                {toTermina(isEn ? "Water & Stain Repellent" : "Deperlance & Anti-Taches")}
-              </span>
+          {/* 2. Déperlance & Anti-taches Signature */}
+          <div className="p-7 sm:p-8 border-r border-b border-ink/15 flex flex-col justify-between hover:bg-white/70 transition-colors group">
+            <div>
+              <div className="flex items-center justify-between mb-5">
+                <span className="w-11 h-11 rounded-full border border-ink/15 bg-cream/90 flex items-center justify-center text-olive group-hover:border-olive group-hover:scale-105 transition-all">
+                  {/* Pro Icon: Water pearl beading upon woven fabric grid */}
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 2.5C12 2.5 6 9.5 6 14a6 6 0 0 0 12 0c0-4.5-6-11.5-6-11.5z" />
+                    <path d="M3 21h18M5 18h14M7 15h10" strokeDasharray="1.5 1.5" />
+                    <circle cx="10" cy="12" r="1" fill="currentColor" />
+                  </svg>
+                </span>
+                <span className="font-termina text-[10px] text-olive/60 font-bold tracking-widest">02</span>
+              </div>
+              <h4 className="font-termina text-xs font-bold uppercase tracking-wider text-ink mb-2">
+                {toTermina(isEn ? "Hydrophobic & Stain Shield" : "Deperlance & Barriere Anti-Taches")}
+              </h4>
+              <p className="font-sans text-xs text-muted font-light leading-relaxed">
+                {isEn
+                  ? "Treated with invisible fluorocarbon shield that causes water, poolside splashes, coffee, and wine to bead up on contact for effortless cleaning."
+                  : "Traitement hydrophobe invisible haute tenue : l'eau de piscine, les pluies battantes, le café et les graisses perlent en surface sans pénétrer la fibre."}
+              </p>
             </div>
-            <p className="text-xs text-muted font-sans font-light leading-relaxed">
-              {isEn ? "Hydrophobic fluorocarbon shield protects against pool water splashes, rain, wine, and tea stains." : "Traitement hydrophobe haute efficacité contre les éclaboussures de piscine, pluies battantes, boissons et graisses."}
-            </p>
+            <div className="mt-6 pt-3 border-t border-ink/5 flex items-center justify-between text-[10px] font-termina text-ink/50 uppercase tracking-widest">
+              <span>{toTermina(isEn ? "Finishing" : "Traitement")}</span>
+              <span className="font-bold text-ink">{toTermina(isEn ? "Easy Clean" : "Anti-Taches")}</span>
+            </div>
           </div>
 
-          {/* 3. Martindale Abrasion */}
-          <div className="bg-white/60 border border-ink/10 p-5 rounded-xs flex flex-col gap-2 hover:border-ink/30 transition-all shadow-xs">
-            <div className="flex items-center gap-2.5">
-              <span className="w-7 h-7 rounded-full bg-olive/10 flex items-center justify-center shrink-0">
-                <svg className="w-4 h-4 text-olive" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-              </span>
-              <span className="text-[10px] font-termina font-bold uppercase tracking-wider text-ink">
-                {toTermina(product.metadata?.martindale ? `Martindale ${product.metadata.martindale.toLocaleString()} Tours` : "Martindale Intensif")}
-              </span>
+          {/* 3. Martindale Abrasion Heavy Contract */}
+          <div className="p-7 sm:p-8 border-r border-b border-ink/15 flex flex-col justify-between hover:bg-white/70 transition-colors group">
+            <div>
+              <div className="flex items-center justify-between mb-5">
+                <span className="w-11 h-11 rounded-full border border-ink/15 bg-cream/90 flex items-center justify-center text-olive group-hover:border-olive group-hover:scale-105 transition-all">
+                  {/* Pro Icon: Precision friction orbital gauge */}
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M12 6v6l4 2" />
+                    <path d="M9 3l3-2 3 2M9 21l3 2 3-2" />
+                  </svg>
+                </span>
+                <span className="font-termina text-[10px] text-olive/60 font-bold tracking-widest">03</span>
+              </div>
+              <h4 className="font-termina text-xs font-bold uppercase tracking-wider text-ink mb-2">
+                {toTermina(product.metadata?.martindale ? `Martindale ${product.metadata.martindale.toLocaleString()} Tours` : "Test Martindale Intensif")}
+              </h4>
+              <p className="font-sans text-xs text-muted font-light leading-relaxed">
+                {isEn
+                  ? "Rated for heavy contract hospitality use. Withstands intensive friction on hotel seating, banquettes, and restaurant terraces without premature wear."
+                  : "Homologué usage contract intensif. Résistance exceptionnelle à l'usure mécanique, idéal pour assises de riads, banquettes d'hôtels et restaurants."}
+              </p>
             </div>
-            <p className="text-xs text-muted font-sans font-light leading-relaxed">
-              {isEn ? "Heavy commercial contract seating grade designed for high-traffic hotels, restaurants and riad courtyards." : "Usage contract intensif sans boulochage pour assises d'hôtels, restaurants, salons de riad et terrasses."}
-            </p>
+            <div className="mt-6 pt-3 border-t border-ink/5 flex items-center justify-between text-[10px] font-termina text-ink/50 uppercase tracking-widest">
+              <span>{toTermina(isEn ? "Grade" : "Usage")}</span>
+              <span className="font-bold text-ink">{toTermina(isEn ? "Heavy Duty" : "Grand Passage")}</span>
+            </div>
           </div>
 
-          {/* 4. Anti-Moisissure & Respirabilité */}
-          <div className="bg-white/60 border border-ink/10 p-5 rounded-xs flex flex-col gap-2 hover:border-ink/30 transition-all shadow-xs">
-            <div className="flex items-center gap-2.5">
-              <span className="w-7 h-7 rounded-full bg-olive/10 flex items-center justify-center shrink-0">
-                <svg className="w-4 h-4 text-olive" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 00-9.78 2.096A4.001 4.001 0 003 15z" />
-                </svg>
-              </span>
-              <span className="text-[10px] font-termina font-bold uppercase tracking-wider text-ink">
-                {toTermina(isEn ? "Mildew Resistant & Rot-Proof" : "Anti-Moisissures & Imputrescible")}
-              </span>
+          {/* 4. Anti-Moisissures & Imputrescibilité */}
+          <div className="p-7 sm:p-8 border-r border-b border-ink/15 flex flex-col justify-between hover:bg-white/70 transition-colors group">
+            <div>
+              <div className="flex items-center justify-between mb-5">
+                <span className="w-11 h-11 rounded-full border border-ink/15 bg-cream/90 flex items-center justify-center text-olive group-hover:border-olive group-hover:scale-105 transition-all">
+                  {/* Pro Icon: Breathable cross-perforated weave grid */}
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                    <path d="M3 9h18M3 15h18M9 3v18M15 3v18" strokeDasharray="1 2" />
+                    <path d="M8 8l8 8M16 8l-8 8" />
+                  </svg>
+                </span>
+                <span className="font-termina text-[10px] text-olive/60 font-bold tracking-widest">04</span>
+              </div>
+              <h4 className="font-termina text-xs font-bold uppercase tracking-wider text-ink mb-2">
+                {toTermina(isEn ? "Anti-Mildew & Rot-Proof" : "Anti-Moisissures & Imputrescible")}
+              </h4>
+              <p className="font-sans text-xs text-muted font-light leading-relaxed">
+                {isEn
+                  ? "Engineered with quick-drying breathable structure. Resists condensation, mold, and odor build-up on outdoor cushions left outside year-round."
+                  : "Structure respirante à séchage rapide. Empêche le développement des moisissures, champignons et odeurs sur les mousses de coussins d'extérieur."}
+              </p>
             </div>
-            <p className="text-xs text-muted font-sans font-light leading-relaxed">
-              {isEn ? "Breathable construction prevents condensation, mold growth, and odor buildup on outdoor furniture." : "Fibre respirante à séchage ultra-rapide évitant le développement de moisissures sur les mousses et banquettes."}
-            </p>
+            <div className="mt-6 pt-3 border-t border-ink/5 flex items-center justify-between text-[10px] font-termina text-ink/50 uppercase tracking-widest">
+              <span>{toTermina(isEn ? "Property" : "Propriete")}</span>
+              <span className="font-bold text-ink">{toTermina(isEn ? "Rot-Proof" : "Imputrescible")}</span>
+            </div>
           </div>
 
-          {/* 5. Norme Non-Feu M1 / Contract */}
-          <div className="bg-white/60 border border-ink/10 p-5 rounded-xs flex flex-col gap-2 hover:border-ink/30 transition-all shadow-xs">
-            <div className="flex items-center gap-2.5">
-              <span className="w-7 h-7 rounded-full bg-olive/10 flex items-center justify-center shrink-0">
-                <svg className="w-4 h-4 text-olive" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343a7.975 7.975 0 010 11.314z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              </span>
-              <span className="text-[10px] font-termina font-bold uppercase tracking-wider text-ink">
-                {toTermina(isEn ? "Contract Non-Feu M1 / BS5852" : "Normes Non-Feu M1 / ERP")}
-              </span>
+          {/* 5. Normes Non-Feu M1 / Contract ERP */}
+          <div className="p-7 sm:p-8 border-r border-b border-ink/15 flex flex-col justify-between hover:bg-white/70 transition-colors group">
+            <div>
+              <div className="flex items-center justify-between mb-5">
+                <span className="w-11 h-11 rounded-full border border-ink/15 bg-cream/90 flex items-center justify-center text-olive group-hover:border-olive group-hover:scale-105 transition-all">
+                  {/* Pro Icon: Safety flame within an architectural heraldic shield */}
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    <path d="M12 8c1.5 2 2.5 3 2.5 4.5a2.5 2.5 0 0 1-5 0c0-1.5 1-2.5 2.5-4.5z" fill="currentColor" fillOpacity="0.2" />
+                  </svg>
+                </span>
+                <span className="font-termina text-[10px] text-olive/60 font-bold tracking-widest">05</span>
+              </div>
+              <h4 className="font-termina text-xs font-bold uppercase tracking-wider text-ink mb-2">
+                {toTermina(isEn ? "Contract Fire Retardant M1 / BS5852" : "Normes Non-Feu M1 / ERP")}
+              </h4>
+              <p className="font-sans text-xs text-muted font-light leading-relaxed">
+                {isEn
+                  ? "Meets strict hospitality fire regulations. Certifications M1, BS 5852 Crib 5 and CAL 117 available upon request for public establishments."
+                  : "Conforme aux exigences de sécurité incendie des ERP. Traitements ignifuges certifiés M1 / BS 5852 disponibles sur demande pour vos chantiers."}
+              </p>
             </div>
-            <p className="text-xs text-muted font-sans font-light leading-relaxed">
-              {isEn ? "Flame-retardant contract certification available on request for public hospitality establishments (ERP)." : "Certifications ignifuges conformes aux exigences de sécurité des établissements recevant du public."}
-            </p>
+            <div className="mt-6 pt-3 border-t border-ink/5 flex items-center justify-between text-[10px] font-termina text-ink/50 uppercase tracking-widest">
+              <span>{toTermina(isEn ? "Fire Safety" : "Securite")}</span>
+              <span className="font-bold text-ink">{toTermina("M1 / BS 5852")}</span>
+            </div>
           </div>
 
           {/* 6. Confection Sur-Mesure Atelier Marrakech */}
-          <div className="bg-white/60 border border-ink/10 p-5 rounded-xs flex flex-col gap-2 hover:border-ink/30 transition-all shadow-xs">
-            <div className="flex items-center gap-2.5">
-              <span className="w-7 h-7 rounded-full bg-olive/10 flex items-center justify-center shrink-0">
-                <svg className="w-4 h-4 text-olive" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879a3 3 0 11-4.242-4.242L10.757 8.757M9 12l-2-2m5 5l2 2" />
-                </svg>
-              </span>
-              <span className="text-[10px] font-termina font-bold uppercase tracking-wider text-ink">
-                {toTermina(isEn ? "Marrakech Bespoke Tailoring" : "Confection Sur-Mesure Marrakech")}
-              </span>
+          <div className="p-7 sm:p-8 border-r border-b border-ink/15 flex flex-col justify-between hover:bg-white/70 transition-colors group">
+            <div>
+              <div className="flex items-center justify-between mb-5">
+                <span className="w-11 h-11 rounded-full border border-ink/15 bg-cream/90 flex items-center justify-center text-olive group-hover:border-olive group-hover:scale-105 transition-all">
+                  {/* Pro Icon: Master tailor scissors crossed with ribbon */}
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="6" cy="6" r="3" />
+                    <circle cx="6" cy="18" r="3" />
+                    <line x1="8.5" y1="8.5" x2="20" y2="20" />
+                    <line x1="8.5" y1="15.5" x2="20" y2="4" />
+                  </svg>
+                </span>
+                <span className="font-termina text-[10px] text-olive/60 font-bold tracking-widest">06</span>
+              </div>
+              <h4 className="font-termina text-xs font-bold uppercase tracking-wider text-ink mb-2">
+                {toTermina(isEn ? "Marrakech Bespoke Workshop" : "Atelier & Confection Marrakech")}
+              </h4>
+              <p className="font-sans text-xs text-muted font-light leading-relaxed">
+                {isEn
+                  ? "Crafted by master upholsterers directly in our Marrakech manufacture. Bespoke drapery, roman shades, outdoor seating and cushions made to measure."
+                  : "Façonnage sur mesure dans notre manufacture à Marrakech. Prise de cotes, rideaux doublés, stores bateaux, coussins d'assise et banquettes."}
+              </p>
             </div>
-            <p className="text-xs text-muted font-sans font-light leading-relaxed">
-              {isEn ? "Handcrafted curtains, roman blinds, daybeds and decorative cushions cut and sewn in our local workshop." : "Façonnage sur mesure dans notre manufacture à Marrakech : rideaux, stores bateaux, coussins et banquettes d'extérieur."}
-            </p>
+            <div className="mt-6 pt-3 border-t border-ink/5 flex items-center justify-between text-[10px] font-termina text-ink/50 uppercase tracking-widest">
+              <span>{toTermina(isEn ? "Origin" : "Origine")}</span>
+              <span className="font-bold text-ink">{toTermina("Marrakech")}</span>
+            </div>
           </div>
+
         </div>
       </section>
     );
   }
 
-  // -------------------------------------------------------------------------
-  // Linge de Lit & Bain de Luxe
-  // -------------------------------------------------------------------------
+  // =========================================================================
+  // LUXURY BED & BATH LINEN (Face à Easy Linge & concurrents)
+  // =========================================================================
   return (
-    <section className="mt-16 sm:mt-24 pt-12 sm:pt-16 border-t border-ink/10">
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-3">
+    <section className="mt-20 sm:mt-28 pt-14 sm:pt-16 border-t border-ink/15">
+      
+      {/* Editorial Section Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-6 border-b border-ink/10 gap-4">
         <div>
-          <span className="text-[9px] font-termina tracking-[0.3em] uppercase text-olive font-bold block mb-1">
-            {toTermina(isEn ? "Hospitality Excellence Standards" : "Standards Hôteliers 5 Étoiles")}
-          </span>
-          <h3 className="font-termina uppercase text-xl sm:text-2xl font-bold text-ink tracking-wide">
-            {toTermina(isEn ? "Luxury Hospitality Standards & Care" : "Excellence Hôtelière & Savoir-Faire Linge")}
+          <div className="flex items-center gap-2 mb-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-olive" />
+            <span className="font-termina text-[10px] tracking-[0.3em] uppercase text-olive font-bold">
+              {toTermina(isEn ? "Hospitality Excellence Standards · 5 Stars" : "Standards Hotellerie de Luxe · 5 Etoiles")}
+            </span>
+          </div>
+          <h3 className="editorial text-3xl sm:text-4xl text-ink font-normal italic">
+            {isEn ? "Luxury Bed & Bath Linen Excellence" : "Excellence Hôtelière & Savoir-Faire Linge"}
           </h3>
         </div>
-        <span className="text-[9px] font-termina tracking-widest text-olive uppercase bg-olive/10 px-3 py-1 rounded-xs border border-olive/20 self-start sm:self-end">
-          {toTermina(
-            isBedLinen
-              ? (isEn ? "5-Star Riad & Suite Grade" : "Standards Palaces & Riads")
-              : isBathLinen
-              ? (isEn ? "Luxury Spa & Resort 600g/m2" : "Spa & Residences 600g/m2")
-              : (isEn ? "Fine Table Linen" : "Haute Table d'Hôtes")
-          )}
-        </span>
+        
+        <div className="flex items-center gap-2 shrink-0 self-start md:self-end">
+          <span className="font-termina text-[9px] uppercase tracking-widest px-3.5 py-1.5 border border-olive/30 bg-olive/5 text-olive font-bold">
+            {toTermina(
+              isBedLinen
+                ? (isEn ? "5-Star Riad & Suite Grade" : "Standards Palaces & Riads")
+                : isBathLinen
+                ? (isEn ? "Luxury Spa & Resort 600g/m2" : "Spa & Residences 600g/m2")
+                : (isEn ? "Fine Table Linen" : "Haute Table d'Hotes")
+            )}
+          </span>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {/* 1. Résistance Blanchisserie Industrielle */}
-        <div className="bg-white/60 border border-ink/10 p-5 rounded-xs flex flex-col gap-2 hover:border-ink/30 transition-all shadow-xs">
-          <div className="flex items-center gap-2.5">
-            <span className="w-7 h-7 rounded-full bg-olive/10 flex items-center justify-center shrink-0">
-              <svg className="w-4 h-4 text-olive" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-            </span>
-            <span className="text-[10px] font-termina font-bold uppercase tracking-wider text-ink">
-              {toTermina(isEn ? "Industrial Laundry 60-90C" : "Lavage Intensif 60-90 C")}
-            </span>
+      {/* Architectural Hairline Matrix (Bespoke Pro Icons) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border-t border-l border-ink/15 bg-white/40">
+        
+        {/* 1. Résistance Blanchisserie Industrielle (60°-90°C) */}
+        <div className="p-7 sm:p-8 border-r border-b border-ink/15 flex flex-col justify-between hover:bg-white/70 transition-colors group">
+          <div>
+            <div className="flex items-center justify-between mb-5">
+              <span className="w-11 h-11 rounded-full border border-ink/15 bg-cream/90 flex items-center justify-center text-olive group-hover:border-olive group-hover:scale-105 transition-all">
+                {/* Pro Icon: Architectural laundry vat with temperature stamp */}
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M4 6h16l-2 13a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L4 6z" />
+                  <path d="M3 6h18" />
+                  <path d="M9 11c1.5 1.5 4.5 1.5 6 0" />
+                  <circle cx="12" cy="15" r="1" fill="currentColor" />
+                  <path d="M8 2l2 2M16 2l-2 2" strokeDasharray="1 1" />
+                </svg>
+              </span>
+              <span className="font-termina text-[10px] text-olive/60 font-bold tracking-widest">01</span>
+            </div>
+            <h4 className="font-termina text-xs font-bold uppercase tracking-wider text-ink mb-2">
+              {toTermina(isEn ? "Industrial Wash 60-90C" : "Lavage Intensif 60-90 C")}
+            </h4>
+            <p className="font-sans text-xs text-muted font-light leading-relaxed">
+              {isEn
+                ? "Tested for industrial laundry calenders. Maintains dimensional stability, fiber density, and silken touch through hundreds of professional cycles."
+                : "Conçu pour les calandres et blanchisseries professionnelles. Résiste aux lavages à haute température (60°-90°C) sans rétrécir, ni pelucher, ni vriller."}
+            </p>
           </div>
-          <p className="text-xs text-muted font-sans font-light leading-relaxed">
-            {isEn
-              ? "Withstands repeated industrial laundry cycles without pilling, loss of softness or seam distortion."
-              : "Conçu pour résister aux blanchisseries professionnelles et lavages fréquents sans rétrécir ni pelucher."}
-          </p>
+          <div className="mt-6 pt-3 border-t border-ink/5 flex items-center justify-between text-[10px] font-termina text-ink/50 uppercase tracking-widest">
+            <span>{toTermina(isEn ? "Thermal Stability" : "Temperature")}</span>
+            <span className="font-bold text-ink">60°C - 90°C</span>
+          </div>
         </div>
 
-        {/* 2. Fibres Nobles d'Exception */}
-        <div className="bg-white/60 border border-ink/10 p-5 rounded-xs flex flex-col gap-2 hover:border-ink/30 transition-all shadow-xs">
-          <div className="flex items-center gap-2.5">
-            <span className="w-7 h-7 rounded-full bg-olive/10 flex items-center justify-center shrink-0">
-              <svg className="w-4 h-4 text-olive" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-              </svg>
-            </span>
-            <span className="text-[10px] font-termina font-bold uppercase tracking-wider text-ink">
-              {toTermina(isEn ? "Certified Noble Fibers" : "Fibres Nobles Certifiees")}
-            </span>
+        {/* 2. Fibres d'Exception Longues Fibres */}
+        <div className="p-7 sm:p-8 border-r border-b border-ink/15 flex flex-col justify-between hover:bg-white/70 transition-colors group">
+          <div>
+            <div className="flex items-center justify-between mb-5">
+              <span className="w-11 h-11 rounded-full border border-ink/15 bg-cream/90 flex items-center justify-center text-olive group-hover:border-olive group-hover:scale-105 transition-all">
+                {/* Pro Icon: Botanical Egyptian cotton boll / flax filament */}
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 21c-4-4-7-8-7-12a7 7 0 0 1 14 0c0 4-3 8-7 12z" />
+                  <circle cx="12" cy="10" r="3" />
+                  <path d="M12 7v6M9 10h6" />
+                </svg>
+              </span>
+              <span className="font-termina text-[10px] text-olive/60 font-bold tracking-widest">02</span>
+            </div>
+            <h4 className="font-termina text-xs font-bold uppercase tracking-wider text-ink mb-2">
+              {toTermina(isEn ? "Long-Staple Noble Fibers" : "Fibres Nobles d'Exception")}
+            </h4>
+            <p className="font-sans text-xs text-muted font-light leading-relaxed">
+              {product.metadata?.composition
+                ? product.metadata.composition
+                : isEn
+                ? "Woven exclusively from certified long-staple combed cotton or European Flax certified French washed linen with natural softness."
+                : "Coton peigné longues fibres d'Égypte (percale 300 fils ou satin 500 fils) et pur lin lavé de France certifié European Flax, au toucher incomparable."}
+            </p>
           </div>
-          <p className="text-xs text-muted font-sans font-light leading-relaxed">
-            {product.metadata?.composition
-              ? product.metadata.composition
-              : isEn
-              ? "Long-staple combed Egyptian cotton or European Flax certified French washed linen."
-              : "Coton peigné longues fibres d'Égypte ou pur lin lavé certifié European Flax, au toucher d'exception."}
-          </p>
+          <div className="mt-6 pt-3 border-t border-ink/5 flex items-center justify-between text-[10px] font-termina text-ink/50 uppercase tracking-widest">
+            <span>{toTermina(isEn ? "Fiber Grade" : "Certification")}</span>
+            <span className="font-bold text-ink">European Flax / Giza</span>
+          </div>
         </div>
 
-        {/* 3. Thermorégulateur & Douceur */}
-        <div className="bg-white/60 border border-ink/10 p-5 rounded-xs flex flex-col gap-2 hover:border-ink/30 transition-all shadow-xs">
-          <div className="flex items-center gap-2.5">
-            <span className="w-7 h-7 rounded-full bg-olive/10 flex items-center justify-center shrink-0">
-              <svg className="w-4 h-4 text-olive" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-              </svg>
-            </span>
-            <span className="text-[10px] font-termina font-bold uppercase tracking-wider text-ink">
-              {toTermina(isEn ? "Natural Thermoregulation" : "Thermoregulation Naturelle")}
-            </span>
+        {/* 3. Thermorégulation Naturelle */}
+        <div className="p-7 sm:p-8 border-r border-b border-ink/15 flex flex-col justify-between hover:bg-white/70 transition-colors group">
+          <div>
+            <div className="flex items-center justify-between mb-5">
+              <span className="w-11 h-11 rounded-full border border-ink/15 bg-cream/90 flex items-center justify-center text-olive group-hover:border-olive group-hover:scale-105 transition-all">
+                {/* Pro Icon: Dual microclimate thermal vector (breathable breeze wave) */}
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 12h8a2 2 0 1 0-2-2" />
+                  <path d="M3 17h12a2 2 0 1 0-2-2" />
+                  <path d="M3 7h15a2 2 0 1 0-2-2" />
+                </svg>
+              </span>
+              <span className="font-termina text-[10px] text-olive/60 font-bold tracking-widest">03</span>
+            </div>
+            <h4 className="font-termina text-xs font-bold uppercase tracking-wider text-ink mb-2">
+              {toTermina(isEn ? "Active Thermoregulation" : "Thermoregulation Naturelle")}
+            </h4>
+            <p className="font-sans text-xs text-muted font-light leading-relaxed">
+              {isEn
+                ? "Highly breathable natural structure ensures a crisp, cool sensation during warm Moroccan summer nights and a cozy, enveloping warmth in winter."
+                : "Pouvoir respirant élevé permettant une régulation thermique idéale : fraîcheur aérée durant les nuits d'été et chaleur douce en hiver."}
+            </p>
           </div>
-          <p className="text-xs text-muted font-sans font-light leading-relaxed">
-            {isEn
-              ? "Naturally breathable structure regulates temperature, ensuring fresh summer nights and cozy winter sleep."
-              : "Fibre active hautement respirante : sensation de fraîcheur en été marocain et chaleur enveloppante en hiver."}
-          </p>
+          <div className="mt-6 pt-3 border-t border-ink/5 flex items-center justify-between text-[10px] font-termina text-ink/50 uppercase tracking-widest">
+            <span>{toTermina(isEn ? "Comfort" : "Climat")}</span>
+            <span className="font-bold text-ink">{toTermina(isEn ? "All Seasons" : "4 Saisons")}</span>
+          </div>
         </div>
 
-        {/* 4. Densité & Grammage Hôtelier */}
-        <div className="bg-white/60 border border-ink/10 p-5 rounded-xs flex flex-col gap-2 hover:border-ink/30 transition-all shadow-xs">
-          <div className="flex items-center gap-2.5">
-            <span className="w-7 h-7 rounded-full bg-olive/10 flex items-center justify-center shrink-0">
-              <svg className="w-4 h-4 text-olive" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
-              </svg>
-            </span>
-            <span className="text-[10px] font-termina font-bold uppercase tracking-wider text-ink">
+        {/* 4. Densité & Grammage Hôtelier (600 g/m²) */}
+        <div className="p-7 sm:p-8 border-r border-b border-ink/15 flex flex-col justify-between hover:bg-white/70 transition-colors group">
+          <div>
+            <div className="flex items-center justify-between mb-5">
+              <span className="w-11 h-11 rounded-full border border-ink/15 bg-cream/90 flex items-center justify-center text-olive group-hover:border-olive group-hover:scale-105 transition-all">
+                {/* Pro Icon: Heavy weight density balance medallion */}
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 3v18M3 7l9-4 9 4M6 16l-3-6h6l-3 6zM18 16l-3-6h6l-3 6z" />
+                  <circle cx="12" cy="18" r="2" />
+                </svg>
+              </span>
+              <span className="font-termina text-[10px] text-olive/60 font-bold tracking-widest">04</span>
+            </div>
+            <h4 className="font-termina text-xs font-bold uppercase tracking-wider text-ink mb-2">
               {toTermina(product.metadata?.weight ? `${product.metadata.weight} g/m2 Certifie` : "Densite Superieure")}
-            </span>
+            </h4>
+            <p className="font-sans text-xs text-muted font-light leading-relaxed">
+              {isEn
+                ? "Ultra-plush combed cotton loops deliver immediate capillary absorption and luxurious weight for bath sheets, and fluid, crisp drape for bed sets."
+                : "Boucles généreuses en coton peigné offrant une absorption instantanée pour le bain et un tombé lourd digne des plus prestigieux spas et riads."}
+            </p>
           </div>
-          <p className="text-xs text-muted font-sans font-light leading-relaxed">
-            {isEn
-              ? "Generous weight ensures maximum water absorption for bath linen and a crisp, opulent drape for bed linen."
-              : "Grammage généreux garantissant une absorption maximale pour le bain et un tombé impeccable pour les lits."}
-          </p>
+          <div className="mt-6 pt-3 border-t border-ink/5 flex items-center justify-between text-[10px] font-termina text-ink/50 uppercase tracking-widest">
+            <span>{toTermina(isEn ? "Density" : "Grammage")}</span>
+            <span className="font-bold text-ink">{product.metadata?.weight ? `${product.metadata.weight} g/m²` : "600 g/m²"}</span>
+          </div>
         </div>
 
-        {/* 5. Personnalisation & Monogramme Riads */}
-        <div className="bg-white/60 border border-ink/10 p-5 rounded-xs flex flex-col gap-2 hover:border-ink/30 transition-all shadow-xs">
-          <div className="flex items-center gap-2.5">
-            <span className="w-7 h-7 rounded-full bg-olive/10 flex items-center justify-center shrink-0">
-              <svg className="w-4 h-4 text-olive" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-              </svg>
-            </span>
-            <span className="text-[10px] font-termina font-bold uppercase tracking-wider text-ink">
-              {toTermina(isEn ? "Bespoke Monogram Embroidery" : "Broderie & Monogramme Riad")}
-            </span>
+        {/* 5. Broderie & Monogramme Sur-Mesure */}
+        <div className="p-7 sm:p-8 border-r border-b border-ink/15 flex flex-col justify-between hover:bg-white/70 transition-colors group">
+          <div>
+            <div className="flex items-center justify-between mb-5">
+              <span className="w-11 h-11 rounded-full border border-ink/15 bg-cream/90 flex items-center justify-center text-olive group-hover:border-olive group-hover:scale-105 transition-all">
+                {/* Pro Icon: Haute couture needle & monogram silk stitch */}
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 3l-6 6M15 9l-2-2 6-6 2 2-6 6z" />
+                  <path d="M13 11c-2 2-4 3-6 1s0-4 2-5 5-2 5-4-2-3-4-2-2 3-1 5" strokeDasharray="1 1.5" />
+                  <circle cx="4" cy="20" r="2" />
+                </svg>
+              </span>
+              <span className="font-termina text-[10px] text-olive/60 font-bold tracking-widest">05</span>
+            </div>
+            <h4 className="font-termina text-xs font-bold uppercase tracking-wider text-ink mb-2">
+              {toTermina(isEn ? "Bespoke Monogram Embroidery" : "Broderie & Armoiries Riad")}
+            </h4>
+            <p className="font-sans text-xs text-muted font-light leading-relaxed">
+              {isEn
+                ? "Custom embroidery of your hotel emblem, monogram or property signature executed with precision silk threads in our Marrakech workshop."
+                : "Personnalisation brodée aux armoiries, monogrammes ou emblèmes de votre Riad, boutique-hôtel ou domaine de prestige à Marrakech."}
+            </p>
           </div>
-          <p className="text-xs text-muted font-sans font-light leading-relaxed">
-            {isEn
-              ? "Custom embroidery of your hotel emblem, monogram or riad signature handcrafted directly in Marrakech."
-              : "Service de broderie personnalisée aux armoiries ou initiales de votre riad, hôtel ou villa de prestige."}
-          </p>
+          <div className="mt-6 pt-3 border-t border-ink/5 flex items-center justify-between text-[10px] font-termina text-ink/50 uppercase tracking-widest">
+            <span>{toTermina(isEn ? "Finishing" : "Finition")}</span>
+            <span className="font-bold text-ink">{toTermina(isEn ? "Bespoke" : "Sur-Mesure")}</span>
+          </div>
         </div>
 
         {/* 6. Normes Écologiques & Oeko-Tex */}
-        <div className="bg-white/60 border border-ink/10 p-5 rounded-xs flex flex-col gap-2 hover:border-ink/30 transition-all shadow-xs">
-          <div className="flex items-center gap-2.5">
-            <span className="w-7 h-7 rounded-full bg-olive/10 flex items-center justify-center shrink-0">
-              <svg className="w-4 h-4 text-olive" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </span>
-            <span className="text-[10px] font-termina font-bold uppercase tracking-wider text-ink">
+        <div className="p-7 sm:p-8 border-r border-b border-ink/15 flex flex-col justify-between hover:bg-white/70 transition-colors group">
+          <div>
+            <div className="flex items-center justify-between mb-5">
+              <span className="w-11 h-11 rounded-full border border-ink/15 bg-cream/90 flex items-center justify-center text-olive group-hover:border-olive group-hover:scale-105 transition-all">
+                {/* Pro Icon: Organic circular seal with pure botanical leaf */}
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                  <path d="M7 12c3-4 7-4 10 0-3 4-7 4-10 0z" />
+                  <path d="M12 8v8" />
+                </svg>
+              </span>
+              <span className="font-termina text-[10px] text-olive/60 font-bold tracking-widest">06</span>
+            </div>
+            <h4 className="font-termina text-xs font-bold uppercase tracking-wider text-ink mb-2">
               {toTermina(isEn ? "Oeko-Tex Standard 100" : "Teintures Saines Oeko-Tex")}
-            </span>
+            </h4>
+            <p className="font-sans text-xs text-muted font-light leading-relaxed">
+              {isEn
+                ? "Certified free of toxic dyes, heavy metals and harsh chemical finishes. Completely hypoallergenic and soothing on sensitive skin."
+                : "Teintures éco-responsables certifiées sans métaux lourds ni substances allergènes. Confort absolu pour les peaux les plus exigeantes."}
+            </p>
           </div>
-          <p className="text-xs text-muted font-sans font-light leading-relaxed">
-            {isEn
-              ? "Dyes and finishing processes certified hypoallergenic and free of heavy metals or harmful irritants."
-              : "Colorants hypoallergéniques certifiés sans substances nocives, garantissant un respect absolu de la peau."}
-          </p>
+          <div className="mt-6 pt-3 border-t border-ink/5 flex items-center justify-between text-[10px] font-termina text-ink/50 uppercase tracking-widest">
+            <span>{toTermina(isEn ? "Health Standard" : "Sante")}</span>
+            <span className="font-bold text-ink">Oeko-Tex 100</span>
+          </div>
         </div>
+
       </div>
     </section>
   );
