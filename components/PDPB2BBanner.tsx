@@ -22,7 +22,7 @@ export function PDPB2BBanner({
   );
 
   return (
-    <section className="mt-16 sm:mt-24 bg-[#1e1c18] text-[#f3eee6] p-8 sm:p-12 lg:p-14 border border-white/10 relative overflow-hidden shadow-lg">
+    <section className="mt-16 sm:mt-24 bg-[#1a1815] text-[#f3eee6] p-8 sm:p-12 lg:p-14 border border-white/10 relative overflow-hidden shadow-xl">
       <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8 sm:gap-10">
         <div className="max-w-2xl">
           <div className="flex items-center gap-2.5 mb-3">
@@ -46,18 +46,24 @@ export function PDPB2BBanner({
                 : "Équipement complet de suites de riad, broderie de vos armoiries sur-mesure et résistance garantie aux cycles répétés de blanchisserie industrielle."}
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-5 border-t border-white/10 text-[11px] font-sans text-cream/80">
-            <div className="flex items-center gap-2">
-              <span className="text-[#c19a86] font-bold">✓</span>
-              <span>{isEn ? "Trade rolls pricing" : "Remises au rouleau complet"}</span>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-5 border-t border-white/10 text-[11px] font-sans text-cream/85">
+            <div className="flex items-center gap-2.5">
+              <span className="w-5 h-5 border border-[#c19a86]/40 flex items-center justify-center text-[#c19a86] shrink-0 text-[10px]">
+                ◆
+              </span>
+              <span>{isEn ? "Wholesale roll pricing" : "Remises au rouleau complet"}</span>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-[#c19a86] font-bold">✓</span>
-              <span>{isEn ? "Express sample box" : "Échantillonnage express chantiers"}</span>
+            <div className="flex items-center gap-2.5">
+              <span className="w-5 h-5 border border-[#c19a86]/40 flex items-center justify-center text-[#c19a86] shrink-0 text-[10px]">
+                ◆
+              </span>
+              <span>{isEn ? "Express material swatch box" : "Échantillonnage express chantiers"}</span>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-[#c19a86] font-bold">✓</span>
-              <span>{isEn ? "24h quotes with VAT" : "Devis technique sous 24h"}</span>
+            <div className="flex items-center gap-2.5">
+              <span className="w-5 h-5 border border-[#c19a86]/40 flex items-center justify-center text-[#c19a86] shrink-0 text-[10px]">
+                ◆
+              </span>
+              <span>{isEn ? "24h quotes with deductible VAT" : "Devis sous 24h avec TVA"}</span>
             </div>
           </div>
         </div>
