@@ -175,6 +175,30 @@ export function PDPCrossSelling({
     },
   ];
 
+  // Helper for rich technical details & composition
+  const getProductDetail = (item: ProductItem) => {
+    if (item.metadata?.composition) return item.metadata.composition;
+    const slug = (item.slug || "").toLowerCase();
+    const cat = (item.category?.slug || "").toLowerCase();
+    if (slug.includes("peignoir")) return "100% Coton Peigné 450g/m² · Col Châle";
+    if (slug.includes("serviette") || slug.includes("spa")) return "100% Coton Égyptien 600g/m² · Bouclette Riad";
+    if (slug.includes("satin")) return "100% Satin de Coton · Tissage 500 Fils";
+    if (slug.includes("lin")) return "100% Pur Lin Français Lavé · Finition Frangée";
+    if (slug.includes("percale")) return "100% Percale de Coton · 300 Fils Fraîcheur";
+    if (cat.includes("bain")) return "100% Coton Supima · Bouclette Éponge Double Face";
+    if (cat.includes("lit")) return "100% Fibres Naturelles d'Origine Contrôlée";
+    if (cat.includes("outdoor")) return "100% Acrylique Teint Masse · Traitement Téflon";
+    if (cat.includes("ameublement")) return "Lin & Coton d'Édition · Raccord Droit";
+    return item.type === "FABRIC_BY_METER" ? "Tissage artisanal noble · Grande largeur" : "Confection atelier sur-mesure";
+  };
+
+  const getProductBadge = (item: ProductItem) => {
+    if (item.metadata?.weight) return `${item.metadata.weight} g/m²`;
+    if (item.metadata?.martindale) return `${item.metadata.martindale.toLocaleString()} Tours`;
+    const isItemFabric = item.type === "FABRIC_BY_METER";
+    return isItemFabric ? "Usage Siège & Rideaux" : "Haute Confection Atelier";
+  };
+
   return (
     <section className="mt-16 sm:mt-24 pt-12 sm:pt-16 border-t border-[#e8e2d5]">
       {/* ------------------------------------------------------------------ */}
@@ -200,7 +224,7 @@ export function PDPCrossSelling({
 
         <Link
           href={`/${locale}/products`}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#d8d0c2] bg-white/80 hover:bg-[#1c1b19] hover:text-[#faf8f5] hover:border-[#1c1b19] transition-all duration-300 text-[9px] sm:text-[10px] font-termina uppercase tracking-widest text-[#1c1b19] font-medium shadow-2xs hover:shadow-xs group/btn shrink-0"
+          className="inline-flex items-center gap-2.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full border border-[#1c1b19]/25 hover:border-[#1c1b19] bg-transparent text-[#1c1b19] hover:bg-[#1c1b19] hover:text-[#faf8f5] transition-all duration-300 text-[9.5px] sm:text-[10px] font-termina uppercase tracking-[0.2em] font-semibold group/btn shrink-0"
         >
           <span>{toTermina(isEn ? "View Complete Catalog" : "Voir Tout le Catalogue")}</span>
           <span className="text-xs transition-transform duration-300 group-hover/btn:translate-x-1">→</span>
@@ -208,9 +232,9 @@ export function PDPCrossSelling({
       </div>
 
       {/* ------------------------------------------------------------------ */}
-      {/* 2. REFINED LUXURY CARDS GRID */}
+      {/* 2. REFINED LUXURY CARDS GRID (NO BACKGROUND, PRO & DETAILS)        */}
       {/* ------------------------------------------------------------------ */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-7">
         {items.map((item) => {
           const itemName = isEn ? item.nameEn || item.nameFr : item.nameFr;
           const categoryName = item.category
@@ -224,57 +248,77 @@ export function PDPCrossSelling({
             <Link
               key={item.id}
               href={`/${locale}/products/${item.slug}`}
-              className="group relative flex flex-col bg-white rounded-[16px] border border-[#e8e2d5] hover:border-[#b8a690] p-3 sm:p-3.5 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(28,27,25,0.09)]"
+              className="group relative flex flex-col bg-transparent transition-all duration-300"
             >
               {/* Product Visual Container */}
-              <div className="aspect-[4/5] relative overflow-hidden bg-[#f0eae1] rounded-[12px] mb-3.5">
+              <div className="aspect-[4/5] relative overflow-hidden bg-[#e8e4db] rounded-[18px] sm:rounded-[22px] mb-3.5 border border-[#ded6c7]/80 group-hover:border-[#c5a880]/70 transition-all duration-500 shadow-2xs group-hover:shadow-md">
                 <Image
                   src={imageSrc}
                   alt={itemName}
                   fill
                   sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
-                  className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-108"
+                  className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-106"
                 />
 
                 {/* Subtle Hover Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-                {/* Haute Étofferie Type Badge */}
-                <div className="absolute top-2.5 left-2.5 z-10">
-                  <span className="backdrop-blur-md bg-white/90 text-[#1c1b19] border border-white/60 text-[8px] font-termina uppercase tracking-[0.2em] font-bold px-2.5 py-1 rounded-full shadow-2xs flex items-center gap-1.5">
-                    <span className="w-1 h-1 rounded-full bg-[#c5a880]" />
-                    {toTermina(isItemFabric ? (isEn ? "By Meter" : "Au Mètre") : (isEn ? "Confection" : "Pièce"))}
+                {/* Refined Type Badge */}
+                <div className="absolute top-3 left-3 z-10">
+                  <span className="backdrop-blur-md bg-[#faf8f5]/90 text-[#1c1b19] border border-[#1c1b19]/10 text-[8px] sm:text-[8.5px] font-termina uppercase tracking-[0.2em] font-bold px-2.5 py-1 rounded-full shadow-2xs flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#c5a880]" />
+                    {toTermina(isItemFabric ? (isEn ? "Au Mètre" : "Au Mètre") : (isEn ? "Pièce" : "Pièce"))}
                   </span>
                 </div>
 
                 {/* Quick Action Pill on Hover */}
                 <div className="absolute bottom-3 inset-x-3 z-10 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 pointer-events-none">
                   <div className="bg-[#1c1b19]/90 backdrop-blur-md text-[#faf8f5] text-[9px] font-termina uppercase tracking-[0.22em] font-medium py-2 rounded-full text-center flex items-center justify-center gap-1.5 shadow-md">
-                    <span>{isEn ? "Discover" : "Découvrir"}</span>
+                    <span>{isEn ? "Découvrir" : "Découvrir la pièce"}</span>
                     <span className="text-xs transition-transform duration-300 group-hover:translate-x-0.5">→</span>
                   </div>
                 </div>
               </div>
 
-              {/* Product Metadata & Price */}
-              <div className="flex flex-col flex-1 justify-between px-1">
+              {/* Product Metadata & Price (No background container) */}
+              <div className="flex flex-col flex-1 justify-between">
                 <div>
-                  <span className="text-[9px] font-termina uppercase tracking-[0.25em] text-[#938573] font-semibold block mb-1 truncate">
-                    {toTermina(categoryName)}
-                  </span>
-                  <h4 className="font-sans text-[13px] sm:text-[14px] font-semibold text-[#1c1b19] group-hover:text-[#8c7a65] transition-colors line-clamp-1 leading-snug">
+                  <div className="flex items-center justify-between gap-2 text-[9px] font-termina uppercase tracking-[0.24em] text-[#938573] font-semibold mb-1">
+                    <span className="truncate">{toTermina(categoryName)}</span>
+                    <span className="text-[8.5px] font-sans uppercase tracking-widest text-[#a89d8d] shrink-0 font-medium">
+                      {isItemFabric ? "Édition B2B" : "Manufacture"}
+                    </span>
+                  </div>
+
+                  <h4 className="font-sans text-[14px] sm:text-[15px] font-semibold text-[#1c1b19] group-hover:text-[#8c7352] transition-colors line-clamp-1 leading-snug">
                     {itemName}
                   </h4>
-                  <p className="text-[11px] font-sans text-[#787168] font-light line-clamp-1 mt-1">
-                    {item.metadata?.composition || (isItemFabric ? "Tissage artisanal noble" : "Confection atelier d'Atlas")}
+
+                  <p className="text-[11.5px] sm:text-[12px] font-sans text-[#787168] font-light line-clamp-1 mt-1">
+                    {getProductDetail(item)}
                   </p>
+
+                  {/* Technical Spec Badge */}
+                  <div className="flex items-center gap-1.5 mt-2 flex-wrap">
+                    <span className="inline-flex items-center text-[9.5px] font-sans text-[#7a7266] bg-[#eae4d8]/60 px-2 py-0.5 rounded-md border border-[#ded6c7]">
+                      {getProductBadge(item)}
+                    </span>
+                    <span className="inline-flex items-center text-[9.5px] font-sans text-[#7a7266] bg-[#eae4d8]/60 px-2 py-0.5 rounded-md border border-[#ded6c7]">
+                      Marrakech
+                    </span>
+                  </div>
                 </div>
 
-                <div className="mt-3.5 pt-3 border-t border-[#ede7dc] flex items-baseline justify-between">
-                  <span className="font-sans text-sm sm:text-[15px] font-semibold text-[#1c1b19] tracking-tight">
-                    {priceObj.value} {priceObj.symbol}
-                  </span>
-                  <span className="text-[9px] font-termina uppercase tracking-wider text-[#9e9486]">
+                <div className="mt-3.5 pt-2.5 border-t border-[#ded6c7] flex items-baseline justify-between">
+                  <div className="flex items-baseline gap-1">
+                    <span className="font-sans text-[15px] sm:text-[16px] font-bold text-[#1c1b19] tracking-tight">
+                      {priceObj.value}
+                    </span>
+                    <span className="font-sans text-[11px] font-semibold text-[#1c1b19]/80 uppercase">
+                      {priceObj.symbol}
+                    </span>
+                  </div>
+                  <span className="text-[9.5px] font-termina uppercase tracking-wider text-[#938573] font-semibold">
                     {toTermina(isItemFabric ? (isEn ? "/ m" : "/ m") : (isEn ? "/ pièce" : "/ pièce"))}
                   </span>
                 </div>
@@ -285,9 +329,9 @@ export function PDPCrossSelling({
       </div>
 
       {/* ------------------------------------------------------------------ */}
-      {/* 3. ARCHITECTURAL DISCOVERY SECTION (Section l-Taht Re-designed)    */}
+      {/* 3. ARCHITECTURAL DISCOVERY SECTION                                 */}
       {/* ------------------------------------------------------------------ */}
-      <div className="mt-14 sm:mt-20 pt-8 sm:pt-10 border-t border-[#e8e2d5] bg-[#fbf9f5] p-5 sm:p-8 rounded-[20px] border border-[#e5dfd3] shadow-2xs">
+      <div className="mt-14 sm:mt-20 pt-8 sm:pt-10 border-t border-[#e8e2d5]">
         <div className="mb-6 sm:mb-8">
           <div className="flex items-center gap-2 mb-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-[#c5a880]" />
@@ -311,10 +355,10 @@ export function PDPCrossSelling({
             <Link
               key={col.href}
               href={col.href}
-              className={`group flex items-center justify-between p-3.5 sm:p-4 rounded-[14px] bg-white border transition-all duration-300 shadow-2xs hover:shadow-md hover:-translate-y-0.5 ${
+              className={`group flex items-center justify-between p-3.5 sm:p-4 rounded-[16px] bg-transparent hover:bg-white/70 border transition-all duration-300 hover:shadow-xs hover:-translate-y-0.5 ${
                 col.isProHighlight
-                  ? "border-[#c5a880]/50 hover:border-[#1c1b19] bg-gradient-to-br from-white to-[#fbf8f2]"
-                  : "border-[#e6e0d4] hover:border-[#1c1b19]"
+                  ? "border-[#c5a880]/60 hover:border-[#1c1b19] bg-gradient-to-br from-[#c5a880]/10 to-transparent"
+                  : "border-[#dfd8cc] hover:border-[#1c1b19]"
               }`}
             >
               <div className="flex items-start gap-3 min-w-0">
