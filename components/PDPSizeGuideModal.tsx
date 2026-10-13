@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { toTermina } from "@/lib/text";
 
 interface PDPSizeGuideModalProps {
   type: "bed" | "bath" | "table";
@@ -19,10 +20,10 @@ export function PDPSizeGuideModal({ type, locale = "fr" }: PDPSizeGuideModalProp
         onClick={() => setIsOpen(true)}
         className="inline-flex items-center gap-1.5 text-[9px] font-termina uppercase tracking-[0.2em] text-ink/70 hover:text-ink underline underline-offset-4 transition-colors cursor-pointer"
       >
-        <svg className="w-3.5 h-3.5 text-olive" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="w-3.5 h-3.5 text-olive shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
         </svg>
-        {isEn ? "View Hotel Size Guide" : "Guide des Tailles Hôtelier"}
+        {toTermina(isEn ? "View Hotel Size Guide" : "Guide des Tailles Hotelier")}
       </button>
 
       <AnimatePresence>
@@ -47,14 +48,16 @@ export function PDPSizeGuideModal({ type, locale = "fr" }: PDPSizeGuideModalProp
               <div className="flex items-start justify-between pb-4 border-b border-ink/10 mb-6">
                 <div>
                   <span className="text-[9px] font-termina tracking-[0.3em] uppercase text-olive font-bold">
-                    {isEn ? "Kansotex Hospitality Reference" : "Standards Hôtellerie de Luxe"}
+                    {toTermina(isEn ? "Kansotex Hospitality Reference" : "Standards Hotellerie de Luxe")}
                   </span>
                   <h3 className="font-termina text-xl uppercase font-bold text-ink mt-1">
-                    {type === "bed"
-                      ? isEn ? "Bed Linen Size Guide" : "Guide des Tailles — Linge de Lit"
-                      : type === "bath"
-                      ? isEn ? "Bath & Spa Size Guide" : "Guide des Tailles — Linge de Bain"
-                      : isEn ? "Table Linen Size Guide" : "Guide des Tailles — Linge de Table"}
+                    {toTermina(
+                      type === "bed"
+                        ? isEn ? "Bed Linen Size Guide" : "Guide des Tailles — Linge de Lit"
+                        : type === "bath"
+                        ? isEn ? "Bath & Spa Size Guide" : "Guide des Tailles — Linge de Bain"
+                        : isEn ? "Table Linen Size Guide" : "Guide des Tailles — Linge de Table"
+                    )}
                   </h3>
                 </div>
                 <button
@@ -80,10 +83,10 @@ export function PDPSizeGuideModal({ type, locale = "fr" }: PDPSizeGuideModalProp
                     <table className="w-full text-left border-collapse text-xs">
                       <thead>
                         <tr className="border-b border-ink/20 font-termina text-[9px] uppercase tracking-wider text-ink">
-                          <th className="py-2.5 pr-4">{isEn ? "Bed Size" : "Dimensions Lit"}</th>
-                          <th className="py-2.5 px-4">{isEn ? "Duvet Cover" : "Housse Couette"}</th>
-                          <th className="py-2.5 px-4">{isEn ? "Fitted Sheet" : "Drap Housse"}</th>
-                          <th className="py-2.5 pl-4">{isEn ? "Pillowcases" : "Taies d'Oreiller"}</th>
+                          <th className="py-2.5 pr-4">{toTermina(isEn ? "Bed Size" : "Dimensions Lit")}</th>
+                          <th className="py-2.5 px-4">{toTermina(isEn ? "Duvet Cover" : "Housse Couette")}</th>
+                          <th className="py-2.5 px-4">{toTermina(isEn ? "Fitted Sheet" : "Drap Housse")}</th>
+                          <th className="py-2.5 pl-4">{toTermina(isEn ? "Pillowcases" : "Taies d'Oreiller")}</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-ink/5 font-sans">
@@ -125,7 +128,7 @@ export function PDPSizeGuideModal({ type, locale = "fr" }: PDPSizeGuideModalProp
 
                   <div className="bg-white/60 border border-ink/5 p-4 rounded-xs text-[11px] leading-relaxed">
                     <strong className="font-termina uppercase text-[9px] text-olive tracking-wider block mb-1">
-                      {isEn ? "Bespoke Hotel Mattresses?" : "Literie sur-mesure pour votre Riad ?"}
+                      {toTermina(isEn ? "Bespoke Hotel Mattresses?" : "Literie sur-mesure pour votre Riad ?")}
                     </strong>
                     {isEn
                       ? "Custom dimensions (oversized King, circular beds, custom mattress depths) are crafted upon request at our Marrakech workshop."
@@ -146,10 +149,10 @@ export function PDPSizeGuideModal({ type, locale = "fr" }: PDPSizeGuideModalProp
                     <table className="w-full text-left border-collapse text-xs">
                       <thead>
                         <tr className="border-b border-ink/20 font-termina text-[9px] uppercase tracking-wider text-ink">
-                          <th className="py-2.5 pr-4">{isEn ? "Piece" : "Pièce"}</th>
-                          <th className="py-2.5 px-4">{isEn ? "Dimensions" : "Dimensions"}</th>
-                          <th className="py-2.5 px-4">{isEn ? "Grammage" : "Densité / Poids"}</th>
-                          <th className="py-2.5 pl-4">{isEn ? "Usage" : "Usage préconisé"}</th>
+                          <th className="py-2.5 pr-4">{toTermina(isEn ? "Piece" : "Piece")}</th>
+                          <th className="py-2.5 px-4">{toTermina(isEn ? "Dimensions" : "Dimensions")}</th>
+                          <th className="py-2.5 px-4">{toTermina(isEn ? "Grammage" : "Densite / Poids")}</th>
+                          <th className="py-2.5 pl-4">{toTermina(isEn ? "Usage" : "Usage preconise")}</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-ink/5 font-sans">
@@ -205,7 +208,7 @@ export function PDPSizeGuideModal({ type, locale = "fr" }: PDPSizeGuideModalProp
                   onClick={() => setIsOpen(false)}
                   className="bg-ink text-cream text-[10px] font-termina uppercase tracking-widest px-6 py-2.5 hover:bg-ink/80 transition-colors cursor-pointer"
                 >
-                  {isEn ? "Close Guide" : "Fermer le Guide"}
+                  {toTermina(isEn ? "Close Guide" : "Fermer le Guide")}
                 </button>
               </div>
             </motion.div>

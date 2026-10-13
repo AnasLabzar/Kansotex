@@ -71,7 +71,7 @@ export function Header({ overlay = false }: HeaderProps) {
         {compact ? (
           isHome ? (
             /* --- HOME PAGE COMPACT HEADER --- */
-            <div className="flex items-center justify-between gap-4 px-5 py-2 md:px-8 overflow-hidden">
+            <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 flex items-center justify-between gap-4 py-2 w-full overflow-hidden">
               <Link href="/" aria-label="Kansotex" className="-ml-2 md:-ml-3 shrink-0">
                 <Image 
                   src="/KANSOTEX-marque-Black.png" 
@@ -105,7 +105,7 @@ export function Header({ overlay = false }: HeaderProps) {
             </div>
           ) : (
             /* --- OTHER PAGES MINIMAL HEADER --- */
-            <div className="flex items-center justify-between px-5 py-2 md:px-8 h-[70px]">
+            <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 flex items-center justify-between h-[70px] relative w-full">
               {/* Left: Burger Menu (Always visible) */}
               <div className="flex items-center justify-start z-10">
                 <MenuButton open={open} onClick={() => { setMenuOrigin("left"); setOpen((v) => !v); }} forceVisible={true} />

@@ -8,7 +8,7 @@
   --color-olive: #3f4636;
   --font-sans: var(--font-poppins);
   --font-serif: var(--font-cormorant);
-  --font-termina: var(--font-termina);
+  --font-termina: var(--font-termina), var(--font-poppins), system-ui, sans-serif;
   --font-sage: var(--font-sage);
   --font-commune: var(--font-commune);
   --font-tangerine: var(--font-tangerine);

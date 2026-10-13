@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { brand } from "@/lib/content";
+import { toTermina } from "@/lib/text";
 
 interface PDPSampleModalProps {
   productName: string;
@@ -33,12 +34,12 @@ export function PDPSampleModal({
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="w-full flex items-center justify-center gap-2 border border-ink/20 bg-transparent text-ink font-termina text-[10px] uppercase tracking-widest py-3 px-4 hover:border-ink hover:bg-ink/5 transition-colors cursor-pointer"
+        className="w-full flex items-center justify-center gap-2 border border-ink/20 bg-transparent text-ink font-termina text-[10px] uppercase tracking-widest py-3.5 px-4 hover:border-ink hover:bg-ink/5 transition-colors cursor-pointer"
       >
-        <svg className="w-4 h-4 text-olive" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="w-4 h-4 text-olive shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
         </svg>
-        {isEn ? "Order A4 Fabric Sample" : "Commander un Échantillon A4"}
+        {toTermina(isEn ? "Order A4 Fabric Sample" : "Commander un Echantillon A4")}
       </button>
 
       <AnimatePresence>
@@ -61,10 +62,10 @@ export function PDPSampleModal({
               <div className="flex items-start justify-between pb-3 border-b border-ink/10 mb-5">
                 <div>
                   <span className="text-[9px] font-termina tracking-[0.3em] uppercase text-olive font-bold">
-                    {isEn ? "Touch & Feel Service" : "Échantillonnage Matière"}
+                    {toTermina(isEn ? "Touch & Feel Service" : "Echantillonnage Matiere")}
                   </span>
                   <h3 className="font-termina text-lg uppercase font-bold text-ink mt-1">
-                    {isEn ? "A4 Swatch Sample" : "Échantillon A4 Kansotex"}
+                    {toTermina(isEn ? "A4 Swatch Sample" : "Echantillon A4 Kansotex")}
                   </h3>
                 </div>
                 <button
@@ -81,12 +82,14 @@ export function PDPSampleModal({
               <div className="space-y-4 text-xs font-sans text-ink/80 leading-relaxed">
                 <div className="bg-white/60 p-4 border border-ink/5 rounded-xs">
                   <span className="text-[9px] font-termina uppercase text-muted tracking-wider block mb-1">
-                    {isEn ? "Selected Material" : "Étoffe sélectionnée"}
+                    {toTermina(isEn ? "Selected Material" : "Etoffe selectionnee")}
                   </span>
                   <p className="font-medium text-ink text-sm">
                     {productName} {selectedColor ? `— ${selectedColor}` : ""}
                   </p>
-                  <span className="text-[10px] text-olive font-termina uppercase">Réf : {productSlug}</span>
+                  <span className="text-[10px] text-olive font-termina uppercase tracking-wider block mt-1">
+                    {toTermina(`Ref : ${productSlug}`)}
+                  </span>
                 </div>
 
                 <ul className="space-y-2 text-[11px]">
@@ -124,13 +127,13 @@ export function PDPSampleModal({
                   rel="noopener noreferrer"
                   className="flex-1 bg-olive text-cream text-[10px] font-termina font-bold uppercase tracking-widest py-3 px-4 text-center hover:bg-olive/90 transition-colors"
                 >
-                  {isEn ? "Request via WhatsApp" : "Commander via WhatsApp"}
+                  {toTermina(isEn ? "Request via WhatsApp" : "Commander via WhatsApp")}
                 </a>
                 <a
                   href={`mailto:${brand.email}?subject=Demande d'échantillon A4 - ${productSlug}&body=${decodeURIComponent(messageText)}`}
                   className="bg-transparent border border-ink/20 text-ink text-[10px] font-termina uppercase tracking-widest py-3 px-4 text-center hover:border-ink transition-colors"
                 >
-                  {isEn ? "Email" : "Par Email"}
+                  {toTermina(isEn ? "Email" : "Par Email")}
                 </a>
               </div>
             </motion.div>

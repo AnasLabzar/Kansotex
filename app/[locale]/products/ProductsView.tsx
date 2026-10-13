@@ -7,8 +7,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { SearchBar } from "@/components/SearchBar";
 import { useCurrency } from "@/lib/CurrencyContext";
 import { useTranslations, useLocale } from "next-intl";
+import { toTermina } from "@/lib/text";
 
-type Product = any; // We'll pass the fetched product data
+type Product = any;
 
 export function ProductsView({ products, isPro, discount }: { products: Product[], isPro: boolean, discount: number }) {
   const [activeCategory, setActiveCategory] = useState("TOUT");
@@ -32,7 +33,6 @@ export function ProductsView({ products, isPro, discount }: { products: Product[
     return 0; // Default order
   });
 
-  // For visual parity, we don't truncate arrays anymore for a specific category unless asked
   const finalProducts = filteredProducts;
 
   const getHeroContent = () => {
@@ -51,7 +51,7 @@ export function ProductsView({ products, isPro, discount }: { products: Product[
   return (
     <>
       {/* 1. Dynamic Hero Header Section */}
-      <div className="w-full h-[40vh] md:h-[55vh] relative overflow-hidden bg-[#2a3c24]">
+      <div className="w-full h-[36vh] sm:h-[45vh] md:h-[50vh] relative overflow-hidden bg-[#2a3c24]">
         <Image 
           key={heroContent.image}
           src={heroContent.image} 
@@ -61,22 +61,23 @@ export function ProductsView({ products, isPro, discount }: { products: Product[
           sizes="100vw"
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-black/30" />
+        <div className="absolute inset-0 bg-black/35" />
         <div className="absolute inset-0 flex items-center justify-center">
           <motion.h1 
             key={heroContent.title}
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="font-termina text-[8vw] sm:text-4xl md:text-6xl lg:text-7xl text-white tracking-[0.2em] uppercase text-center px-4 drop-shadow-xl z-10"
+            className="font-termina text-[7vw] sm:text-4xl md:text-5xl lg:text-6xl text-white tracking-[0.2em] uppercase text-center px-4 drop-shadow-xl z-10"
           >
-            {heroContent.title}
+            {toTermina(heroContent.title)}
           </motion.h1>
         </div>
       </div>
 
+      {/* 2. Category Tabs Bar (Wrapped in max-w-7xl container) */}
       <div className="border-b border-ink/10 relative z-10 bg-cream">
-        <div className="px-6 md:px-12 py-5 flex items-center gap-8 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-5 flex items-center gap-8 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {["TOUT", "TISSU", "LINGE DE LIT", "LINGE DE BAIN", "LINGE DE TABLE"].map((cat) => {
             let label = t("all");
             if (cat === "TISSU") label = t("fabric");
@@ -88,106 +89,111 @@ export function ProductsView({ products, isPro, discount }: { products: Product[
               <button 
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`text-[10px] font-termina tracking-[0.2em] uppercase whitespace-nowrap transition-colors relative ${
-                  activeCategory === cat ? "text-ink" : "text-muted hover:text-ink"
+                className={`text-[10px] font-termina tracking-[0.2em] uppercase whitespace-nowrap transition-colors relative cursor-pointer ${
+                  activeCategory === cat ? "text-ink font-bold" : "text-muted hover:text-ink"
                 }`}
               >
-                {label}
+                {toTermina(label)}
                 {activeCategory === cat && (
                   <motion.div 
                     layoutId="activeCategory"
-                  className="absolute bottom-[-22px] left-0 w-full h-[1px] bg-ink"
-                />
-              )}
-            </button>
+                    className="absolute bottom-[-22px] left-0 w-full h-[1.5px] bg-ink"
+                  />
+                )}
+              </button>
             );
           })}
         </div>
       </div>
 
-      {/* 3. Action / Filter Bar */}
-      <div className="px-6 md:px-12 py-4 sm:py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-cream sticky top-[70px] z-30 border-b border-ink/5">
-        {/* Left: Afficher Par */}
-        <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-[9px] sm:text-[10px] font-termina tracking-[0.2em] uppercase">
-          <span className="text-ink">{t("sortBy")}</span>
-          <button 
-            onClick={() => setActiveView("COLLECTION")}
-            className={activeView === "COLLECTION" ? "text-ink" : "text-[#c19a86] hover:text-ink transition-colors"}
-          >
-            {t("collection")}
-          </button>
-          <span className="text-ink/30">|</span>
-          <button 
-            onClick={() => setActiveView("DESSIN")}
-            className={activeView === "DESSIN" ? "text-ink" : "text-[#c19a86] hover:text-ink transition-colors"}
-          >
-            {t("design")}
-          </button>
-        </div>
+      {/* 3. Action / Filter Bar (Sticky, wrapped in max-w-7xl container) */}
+      <div className="bg-cream sticky top-[70px] z-30 border-b border-ink/5">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-4 sm:py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          
+          {/* Left: Afficher Par */}
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-[9px] sm:text-[10px] font-termina tracking-[0.2em] uppercase">
+            <span className="text-ink/60">{toTermina(t("sortBy"))}</span>
+            <button 
+              onClick={() => setActiveView("COLLECTION")}
+              className={`cursor-pointer ${activeView === "COLLECTION" ? "text-ink font-bold" : "text-muted hover:text-ink transition-colors"}`}
+            >
+              {toTermina(t("collection"))}
+            </button>
+            <span className="text-ink/30">|</span>
+            <button 
+              onClick={() => setActiveView("DESSIN")}
+              className={`cursor-pointer ${activeView === "DESSIN" ? "text-ink font-bold" : "text-muted hover:text-ink transition-colors"}`}
+            >
+              {toTermina(t("design"))}
+            </button>
+          </div>
 
-        {/* Right: View Toggles & Filter */}
-        <div className="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-ink/5">
-          <div className="hidden sm:flex items-center gap-4 border-r border-ink/10 pr-6 mr-2">
-            <div className="w-64">
-              <SearchBar placeholder={t("search")} />
+          {/* Right: View Toggles & Filter */}
+          <div className="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-ink/5">
+            <div className="hidden sm:flex items-center gap-4 border-r border-ink/10 pr-6 mr-2">
+              <div className="w-64">
+                <SearchBar placeholder={t("search")} />
+              </div>
             </div>
-          </div>
-          
-          <div className="hidden sm:flex items-center gap-3">
-            {/* 2x2 Grid Icon */}
-            <button 
-              onClick={() => setColumns(2)}
-              className={columns === 2 ? "text-[#c19a86]" : "text-ink/40 hover:text-ink transition-colors"}
-            >
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
-                <rect x="0" y="0" width="6" height="6" />
-                <rect x="8" y="0" width="6" height="6" />
-                <rect x="0" y="8" width="6" height="6" />
-                <rect x="8" y="8" width="6" height="6" />
-              </svg>
-            </button>
-            {/* 3x3 Grid Icon */}
-            <button 
-              onClick={() => setColumns(3)}
-              className={columns === 3 ? "text-[#c19a86]" : "text-ink/40 hover:text-ink transition-colors"}
-            >
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
-                <rect x="0" y="0" width="4" height="4" />
-                <rect x="5" y="0" width="4" height="4" />
-                <rect x="10" y="0" width="4" height="4" />
-                <rect x="0" y="5" width="4" height="4" />
-                <rect x="5" y="5" width="4" height="4" />
-                <rect x="10" y="5" width="4" height="4" />
-                <rect x="0" y="10" width="4" height="4" />
-                <rect x="5" y="10" width="4" height="4" />
-                <rect x="10" y="10" width="4" height="4" />
-              </svg>
-            </button>
-          </div>
-          
-          <span className="hidden sm:block text-ink/20">|</span>
+            
+            <div className="hidden sm:flex items-center gap-3">
+              {/* 2x2 Grid Icon */}
+              <button 
+                onClick={() => setColumns(2)}
+                className={`cursor-pointer ${columns === 2 ? "text-ink" : "text-ink/30 hover:text-ink transition-colors"}`}
+                title="2 Colonnes"
+              >
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
+                  <rect x="0" y="0" width="6" height="6" />
+                  <rect x="8" y="0" width="6" height="6" />
+                  <rect x="0" y="8" width="6" height="6" />
+                  <rect x="8" y="8" width="6" height="6" />
+                </svg>
+              </button>
+              {/* 3x3 Grid Icon */}
+              <button 
+                onClick={() => setColumns(3)}
+                className={`cursor-pointer ${columns === 3 ? "text-ink" : "text-ink/30 hover:text-ink transition-colors"}`}
+                title="3 Colonnes"
+              >
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
+                  <rect x="0" y="0" width="4" height="4" />
+                  <rect x="5" y="0" width="4" height="4" />
+                  <rect x="10" y="0" width="4" height="4" />
+                  <rect x="0" y="5" width="4" height="4" />
+                  <rect x="5" y="5" width="4" height="4" />
+                  <rect x="10" y="5" width="4" height="4" />
+                  <rect x="0" y="10" width="4" height="4" />
+                  <rect x="5" y="10" width="4" height="4" />
+                  <rect x="10" y="10" width="4" height="4" />
+                </svg>
+              </button>
+            </div>
+            
+            <span className="hidden sm:block text-ink/20">|</span>
 
-          <button 
-            onClick={() => setFilterOpen(true)}
-            className="flex items-center gap-2 text-[10px] font-termina tracking-[0.2em] uppercase text-[#47607c] hover:text-ink transition-colors"
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M4 21v-7m0-4V3m8 18v-9m0-4V3m8 18v-5m0-4V3M1 14h6m2-6h6m2 8h6" />
-            </svg>
-            {t("filter")}
-          </button>
+            <button 
+              onClick={() => setFilterOpen(true)}
+              className="flex items-center gap-2 text-[10px] font-termina tracking-[0.2em] uppercase text-ink hover:text-olive transition-colors cursor-pointer"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M4 21v-7m0-4V3m8 18v-9m0-4V3m8 18v-5m0-4V3M1 14h6m2-6h6m2 8h6" />
+              </svg>
+              {toTermina(t("filter"))}
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Mobile Search Bar (Only visible on small screens) */}
-      <div className="sm:hidden px-4 py-4 bg-[#f8f5f0] border-b border-ink/5">
+      {/* Mobile Search Bar */}
+      <div className="sm:hidden px-5 py-4 bg-[#f8f5f0] border-b border-ink/5">
         <SearchBar placeholder={t("searchProduct")} />
       </div>
 
-      {/* 4. Product Grid */}
-      <div className="px-4 sm:px-6 md:px-12 py-8 sm:py-10 pb-32">
+      {/* 4. Product Grid (Wrapped in max-w-7xl container) */}
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-8 sm:py-12 pb-32">
         <div 
-          className={`grid gap-x-4 sm:gap-x-6 gap-y-12 md:gap-x-8 md:gap-y-16 transition-all duration-500 grid-cols-1 sm:grid-cols-2 ${
+          className={`grid gap-x-5 sm:gap-x-6 gap-y-12 md:gap-x-8 md:gap-y-16 transition-all duration-500 grid-cols-1 sm:grid-cols-2 ${
             columns === 2 ? 'lg:grid-cols-2' : columns === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-4'
           }`}
         >
@@ -205,7 +211,7 @@ export function ProductsView({ products, isPro, discount }: { products: Product[
                   href={`/products/${product.slug}`}
                   className="group block"
                 >
-                  <div className="aspect-[4/5] sm:aspect-square relative overflow-hidden bg-[#e8e4db] mb-4">
+                  <div className="aspect-[4/5] sm:aspect-square relative overflow-hidden bg-[#e8e4db] mb-4 rounded-xs">
                     <Image 
                       src={product.image || "/gallery/Kansotex-indoor-riad-tissus-pinterest-1.webp"}
                       alt={product.nameFr}
@@ -217,7 +223,7 @@ export function ProductsView({ products, isPro, discount }: { products: Product[
                   
                   <div className="flex flex-col">
                     <div className="flex justify-between items-start mb-1">
-                      <h3 className="font-sans text-lg text-ink font-normal truncate pr-4">
+                      <h3 className="font-sans text-base sm:text-lg text-ink font-normal truncate pr-4">
                         {locale === 'en' ? (product.nameEn || product.nameFr) : product.nameFr}
                       </h3>
                       <span className="font-sans text-sm text-ink font-light flex items-baseline gap-1 shrink-0">
@@ -235,8 +241,8 @@ export function ProductsView({ products, isPro, discount }: { products: Product[
                         )}
                       </span>
                     </div>
-                    <p className="text-[11px] font-termina tracking-widest uppercase text-muted">
-                      REF. {product.slug}
+                    <p className="text-[10px] font-termina tracking-widest uppercase text-muted">
+                      {toTermina(`REF. ${product.slug}`)}
                     </p>
                   </div>
                 </Link>
@@ -247,7 +253,7 @@ export function ProductsView({ products, isPro, discount }: { products: Product[
 
         {finalProducts.length === 0 && (
           <div className="text-center py-32">
-            <h2 className="text-2xl font-light text-muted">{t("noProducts")}</h2>
+            <h2 className="text-xl font-light text-muted">{t("noProducts")}</h2>
           </div>
         )}
       </div>
@@ -262,7 +268,7 @@ export function ProductsView({ products, isPro, discount }: { products: Product[
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setFilterOpen(false)}
-              className="fixed inset-0 bg-ink/20 backdrop-blur-sm z-[70]"
+              className="fixed inset-0 bg-ink/30 backdrop-blur-xs z-[70]"
             />
             {/* Drawer */}
             <motion.div
@@ -273,8 +279,10 @@ export function ProductsView({ products, isPro, discount }: { products: Product[
               className="fixed right-0 top-0 bottom-0 w-full md:w-[400px] bg-cream shadow-2xl z-[80] flex flex-col"
             >
               <div className="flex items-center justify-between p-6 border-b border-ink/10">
-                <h3 className="font-termina text-[11px] uppercase tracking-widest text-ink font-bold">{t("filters")}</h3>
-                <button onClick={() => setFilterOpen(false)} className="text-ink/50 hover:text-ink">
+                <h3 className="font-termina text-[11px] uppercase tracking-widest text-ink font-bold">
+                  {toTermina(t("filters"))}
+                </h3>
+                <button onClick={() => setFilterOpen(false)} className="text-ink/50 hover:text-ink cursor-pointer">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -282,18 +290,23 @@ export function ProductsView({ products, isPro, discount }: { products: Product[
                 </button>
               </div>
               <div className="flex-1 overflow-y-auto p-6 space-y-8 font-sans text-sm font-light">
-                {/* Mock Filters to show professionalism */}
+                {/* Palette Couleurs */}
                 <div>
-                  <h4 className="font-termina text-[10px] uppercase tracking-widest text-ink mb-4">{t("colorFamily")}</h4>
+                  <h4 className="font-termina text-[10px] uppercase tracking-widest text-ink mb-4 font-bold">
+                    {toTermina(t("colorFamily"))}
+                  </h4>
                   <div className="flex gap-3 flex-wrap">
                     {["#e8e4db", "#1c1b19", "#8B4513", "#2a3c24", "#4A5D23"].map((color, i) => (
-                      <button key={i} className="w-8 h-8 rounded-full border border-ink/20 hover:scale-110 transition-transform" style={{ backgroundColor: color }} />
+                      <button key={i} className="w-8 h-8 rounded-full border border-ink/20 hover:scale-110 transition-transform cursor-pointer" style={{ backgroundColor: color }} />
                     ))}
                   </div>
                 </div>
+                {/* Usage */}
                 <div className="border-t border-ink/10 pt-8">
-                  <h4 className="font-termina text-[10px] uppercase tracking-widest text-ink mb-4">{t("use")}</h4>
-                  <div className="space-y-3 text-ink/70">
+                  <h4 className="font-termina text-[10px] uppercase tracking-widest text-ink mb-4 font-bold">
+                    {toTermina(t("use"))}
+                  </h4>
+                  <div className="space-y-3 text-ink/70 text-xs">
                     <label className="flex items-center gap-3 cursor-pointer hover:text-ink">
                       <input type="checkbox" className="accent-ink" /> {t("curtain")}
                     </label>
@@ -305,9 +318,12 @@ export function ProductsView({ products, isPro, discount }: { products: Product[
                     </label>
                   </div>
                 </div>
+                {/* Propriétés */}
                 <div className="border-t border-ink/10 pt-8">
-                  <h4 className="font-termina text-[10px] uppercase tracking-widest text-ink mb-4">{t("properties")}</h4>
-                  <div className="space-y-3 text-ink/70">
+                  <h4 className="font-termina text-[10px] uppercase tracking-widest text-ink mb-4 font-bold">
+                    {toTermina(t("properties"))}
+                  </h4>
+                  <div className="space-y-3 text-ink/70 text-xs">
                     <label className="flex items-center gap-3 cursor-pointer hover:text-ink">
                       <input type="checkbox" className="accent-ink" /> {t("fireRetardant")}
                     </label>
@@ -318,8 +334,11 @@ export function ProductsView({ products, isPro, discount }: { products: Product[
                 </div>
               </div>
               <div className="p-6 border-t border-ink/10">
-                <button onClick={() => setFilterOpen(false)} className="w-full bg-ink text-cream py-4 font-termina text-[10px] uppercase tracking-[0.2em] hover:bg-olive transition-colors">
-                  {t("applyFilters")}
+                <button 
+                  onClick={() => setFilterOpen(false)} 
+                  className="w-full bg-ink text-cream py-4 font-termina text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-black transition-colors cursor-pointer"
+                >
+                  {toTermina(t("applyFilters"))}
                 </button>
               </div>
             </motion.div>
@@ -329,3 +348,5 @@ export function ProductsView({ products, isPro, discount }: { products: Product[
     </>
   );
 }
+
+export default ProductsView;
