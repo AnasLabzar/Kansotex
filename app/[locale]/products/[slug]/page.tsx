@@ -7,6 +7,10 @@ import { getSession } from "@/lib/session";
 import ImageGallery from "./ImageGallery";
 import { ProductJsonLd } from "@/components/ProductJsonLd";
 import { getTranslations } from "next-intl/server";
+import { PDPTechnicalBadges } from "@/components/PDPTechnicalBadges";
+import { PDPB2BBanner } from "@/components/PDPB2BBanner";
+import { PDPAtelierBanner } from "@/components/PDPAtelierBanner";
+import { PDPCrossSelling } from "@/components/PDPCrossSelling";
 
 export async function generateMetadata(props: { params: Promise<{ locale: string, slug: string }> }): Promise<Metadata> {
   const params = await props.params;
@@ -96,6 +100,16 @@ export default async function ProductPage(props: { params: Promise<{ locale: str
 
   if (!product) {
     notFound();
+  }
+
+  let allProducts: any[] = [];
+  try {
+    allProducts = await db.orm.public.Product.where({ isActive: true })
+      .include("category")
+      .include("metadata")
+      .all();
+  } catch (err) {
+    console.warn("Could not query all products for cross-selling:", err);
   }
 
   const session = await getSession();
@@ -212,6 +226,9 @@ export default async function ProductPage(props: { params: Promise<{ locale: str
               </div>
             </div>
 
+            {/* Technical Performance Badges (In & Outdoor specs vs Mozaieq & ASD, or Luxury Hospitality Linen vs Easy Linge) */}
+            <PDPTechnicalBadges product={product as any} locale={params.locale} />
+
             {/* Add To Cart Form with Embedded Price */}
             <div className="w-full">
               <AddToCartForm 
@@ -268,10 +285,33 @@ export default async function ProductPage(props: { params: Promise<{ locale: str
 
               </div>
             </div>
+
+            {/* B2B Hospitality Hub (Riads, Hôtels & Architectes) */}
+            <PDPB2BBanner
+              productName={params.locale === 'en' ? (product.nameEn || product.nameFr) : product.nameFr}
+              productSlug={product.slug}
+              locale={params.locale}
+              isFabric={product.type === "FABRIC_BY_METER"}
+            />
+
+            {/* Marrakech Manufacture & Atelier Reassurance */}
+            <PDPAtelierBanner locale={params.locale} />
             
           </div>
         </div>
 
+      </div>
+
+      {/* --------------------------------------------------------------------- */}
+      {/* Smart Algorithmic Cross-Selling & Semantic SEO Internal Linking */}
+      {/* --------------------------------------------------------------------- */}
+      <div className="w-full max-w-7xl mx-auto px-6 lg:px-12 pb-24">
+        <PDPCrossSelling
+          currentProduct={product as any}
+          allProducts={allProducts as any}
+          locale={params.locale}
+          isPro={Boolean(isPro)}
+        />
       </div>
     </main>
   );

@@ -4,8 +4,10 @@ import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/lib/CartContext";
 import { useCurrency } from "@/lib/CurrencyContext";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import MetrageCalculator from "@/components/MetrageCalculator";
+import { PDPSizeGuideModal } from "@/components/PDPSizeGuideModal";
+import { PDPSampleModal } from "@/components/PDPSampleModal";
 
 type Product = any; 
 
@@ -23,9 +25,18 @@ export default function AddToCartForm({
   discountAmount?: number 
 }) {
   const t = useTranslations("Products");
+  const locale = useLocale();
   const isFabric = product.type === "FABRIC_BY_METER";
   const step = isFabric ? product.metadata?.cutIncrement || 0.1 : 1;
   const min = isFabric ? product.metadata?.minOrderLength || 1 : 1;
+
+  const catSlug = product.category?.slug?.toLowerCase() || "";
+  const catName = product.category?.nameFr?.toLowerCase() || "";
+  const prodName = product.nameFr?.toLowerCase() || "";
+  const isBedLinen = catSlug.includes("linge-de-lit") || catName.includes("lit") || prodName.includes("housse") || prodName.includes("drap") || prodName.includes("parure");
+  const isBathLinen = catSlug.includes("linge-de-bain") || catName.includes("bain") || prodName.includes("serviette") || prodName.includes("peignoir");
+  const isTableLinen = catSlug.includes("linge-de-table") || catName.includes("table") || prodName.includes("nappe");
+  const linenType: "bed" | "bath" | "table" | null = isBedLinen ? "bed" : isBathLinen ? "bath" : isTableLinen ? "table" : null;
 
   // Group variants by color
   const colors = useMemo(() => {
@@ -205,9 +216,14 @@ export default function AddToCartForm({
           {/* Size Selection (Only if sizes exist for this color) */}
           {hasSizes && (
             <div>
-              <h3 className="text-[10px] font-termina tracking-[0.25em] uppercase text-ink mb-4 flex items-center gap-2">
-                {t("size")} <span className="w-4 h-[1px] bg-ink/30"></span>
-              </h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-[10px] font-termina tracking-[0.25em] uppercase text-ink flex items-center gap-2">
+                  {t("size")} <span className="w-4 h-[1px] bg-ink/30"></span>
+                </h3>
+                {linenType && (
+                  <PDPSizeGuideModal type={linenType} locale={locale} />
+                )}
+              </div>
               <div className="flex flex-wrap gap-3">
                 {availableSizesForColor.map((variant: any) => {
                   const isSelected = variant.id === selectedVariantId;
@@ -229,6 +245,16 @@ export default function AddToCartForm({
                   );
                 })}
               </div>
+            </div>
+          )}
+
+          {/* Size Guide fallback if product is linen but has no separate sizes in variant table */}
+          {linenType && !hasSizes && (
+            <div className="flex items-center justify-between pt-2 border-t border-ink/5">
+              <span className="text-[10px] font-termina uppercase tracking-wider text-muted">
+                {locale === "en" ? "Standard Hospitality Dimensions" : "Confection Standard Hôtelière"}
+              </span>
+              <PDPSizeGuideModal type={linenType} locale={locale} />
             </div>
           )}
         </div>
@@ -330,6 +356,18 @@ export default function AddToCartForm({
           {totalStock > 0 ? t("addToCart") : t("outOfStock")}
         </button>
       </div>
+
+      {/* Fabric A4 Sample CTA */}
+      {isFabric && (
+        <div className="pt-2">
+          <PDPSampleModal
+            productName={product.nameFr}
+            productSlug={product.slug}
+            selectedColor={selectedColor}
+            locale={locale}
+          />
+        </div>
+      )}
     </div>
   );
 }
