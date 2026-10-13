@@ -5,6 +5,15 @@ const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
   output: 'standalone',
+  serverExternalPackages: [
+    'pg',
+    'pg-pool',
+    'pg-types',
+    '@prisma/client',
+    '@prisma/orm-postgres',
+    'nodemailer',
+    'sharp',
+  ],
   async redirects() {
     return [
       {
