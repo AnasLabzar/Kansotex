@@ -5,20 +5,85 @@ import AddToCartForm from "./AddToCartForm";
 import { Header } from "@/components/Header";
 import { getSession } from "@/lib/session";
 import ImageGallery from "./ImageGallery";
+import { ProductJsonLd } from "@/components/ProductJsonLd";
+import { getTranslations } from "next-intl/server";
 
 export async function generateMetadata(props: { params: Promise<{ locale: string, slug: string }> }): Promise<Metadata> {
   const params = await props.params;
-  const product = await db.orm.public.Product.where({ slug: params.slug }).first();
+  const product = await db.orm.public.Product.where({ slug: params.slug })
+    .include("category")
+    .include("metadata")
+    .first();
+
   if (!product) {
     return { title: "Produit Introuvable | Kansotex" };
   }
+
+  const isEn = params.locale === "en";
+  const productName = isEn ? (product.nameEn || product.nameFr) : product.nameFr;
+  const title = `${productName} — Kansotex In & Outdoor`;
+  const description =
+    (isEn ? (product.descriptionEn || product.descriptionFr) : product.descriptionFr) ||
+    `Découvrez ${product.nameFr} chez Kansotex Marrakech. Étoffes haut de gamme et confection sur mesure.`;
+  const categoryName = product.category
+    ? (isEn ? product.category.nameEn || product.category.nameFr : product.category.nameFr)
+    : "Tissus & Linge";
+
+  const baseUrl = "https://kansotex.com";
+  const canonicalUrl = `${baseUrl}/${params.locale}/products/${params.slug}`;
+
+  const primaryImage = product.image
+    ? product.image.startsWith("http")
+      ? product.image
+      : `${baseUrl}${product.image.startsWith("/") ? "" : "/"}${product.image}`
+    : `${baseUrl}/gallery/Kansotex-indoor-riad-tissus-pinterest-1.png`;
+
+  const keywords = [
+    product.nameFr,
+    categoryName,
+    product.metadata?.composition || "Textile d'exception",
+    "Kansotex Marrakech",
+    "textile in and outdoor maroc",
+    "ameublement hôtel riad",
+    "confection sur mesure marrakech",
+    "tissu au mètre",
+  ];
+
   return {
-    title: `${params.locale === 'en' ? (product.nameEn || product.nameFr) : product.nameFr} - Kansotex`,
-    description: (params.locale === 'en' ? (product.descriptionEn || product.descriptionFr) : product.descriptionFr) || `Découvrez ${product.nameFr} chez Kansotex.`,
+    title,
+    description,
+    keywords,
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        "fr-MA": `${baseUrl}/fr/products/${params.slug}`,
+        "en-US": `${baseUrl}/en/products/${params.slug}`,
+      },
+    },
+    openGraph: {
+      title,
+      description,
+      url: canonicalUrl,
+      siteName: "Kansotex — In & Outdoor",
+      locale: isEn ? "en_US" : "fr_FR",
+      type: "website",
+      images: [
+        {
+          url: primaryImage,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [primaryImage],
+    },
   };
 }
-
-import { getTranslations } from "next-intl/server";
 
 export default async function ProductPage(props: { params: Promise<{ locale: string, slug: string }> }) {
   const params = await props.params;
@@ -46,6 +111,9 @@ export default async function ProductPage(props: { params: Promise<{ locale: str
 
   return (
     <main className="min-h-screen bg-cream text-ink selection:bg-ink selection:text-cream">
+      {/* Schema.org Advanced Dynamic JSON-LD (Product & Offers & Specs & Breadcrumbs) */}
+      <ProductJsonLd product={product as any} finalPrice={finalPrice} locale={params.locale} />
+
       <Header overlay={false} />
       
       {/* pt-[70px] to clear the minimal header height */}
