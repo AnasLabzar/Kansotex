@@ -46,6 +46,7 @@ export function NavbarRightActions({
   }, [dynamicLabels.length, isAuthenticated]);
 
   // Search state
+  const [isHovered, setIsHovered] = useState(false);
   const [searchExpanded, setSearchExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -136,6 +137,17 @@ export function NavbarRightActions({
   // Is this an order search query? (e.g. starts with KTX, ORD, #, or digits)
   const isOrderQuery = /^(ktx|ord|#|\d{3,})/i.test(searchQuery.trim());
 
+  // Determine width:
+  // - Rest: 36px (circular icon)
+  // - Hover (not focused): ~92px (opens just a little bit "hir wahd chwi")
+  // - Clicked / Active typing: ~155px (compact, safe, never touches logo)
+  let searchWidthClass = "w-9";
+  if (searchExpanded) {
+    searchWidthClass = "w-[150px] sm:w-[165px]";
+  } else if (isHovered) {
+    searchWidthClass = "w-[88px] sm:w-[96px]";
+  }
+
   return (
     <div className="flex items-center gap-2 sm:gap-2.5 md:gap-3 z-10">
       
@@ -162,33 +174,37 @@ export function NavbarRightActions({
       )}
 
       {/* ============================================================ */}
-      {/* 1. ANIMATED EXPANDABLE SEARCH (ICON AT REST -> PRO ANIMATED) */}
+      {/* 1. ANIMATED SEARCH: ICON AT REST -> PEEK ON HOVER -> COMPACT */}
       {/* ============================================================ */}
       <div
         ref={searchWrapperRef}
-        className={`relative transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-          searchExpanded
-            ? "w-[200px] sm:w-[250px] md:w-[290px]"
-            : "w-9"
-        }`}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className={`relative transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${searchWidthClass}`}
       >
         <div
-          className={`relative flex items-center h-9 rounded-full bg-white/85 border transition-all duration-300 overflow-hidden shadow-2xs focus-within:shadow-xs ${
+          className={`relative flex items-center h-9 rounded-full bg-white/85 border transition-all duration-300 overflow-hidden shadow-2xs ${
             searchExpanded
-              ? "w-full border-[#cfc8bc] bg-white px-3 shadow-xs ring-1 ring-[#cfc8bc]/40"
-              : "w-9 border-[#e2ddd3] hover:border-[#cfc8bc] hover:bg-white justify-center cursor-pointer hover:shadow-xs hover:scale-105 active:scale-95"
+              ? "w-full border-[#cfc8bc] bg-white px-2.5 shadow-xs ring-1 ring-[#cfc8bc]/40"
+              : isHovered
+              ? "w-full border-[#cfc8bc] bg-white px-2.5 cursor-pointer shadow-xs"
+              : "w-9 border-[#e2ddd3] hover:border-[#cfc8bc] justify-center cursor-pointer"
           }`}
           onClick={() => {
             if (!searchExpanded) handleOpenSearch();
           }}
-          role={!searchExpanded ? "button" : undefined}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              if (!searchExpanded) handleOpenSearch();
+            }
+          }}
           aria-label="Rechercher"
         >
           {/* Search Icon */}
           <svg
-            className={`w-4 h-4 text-[#1c1b19]/70 shrink-0 transition-transform duration-200 ${
-              !searchExpanded ? "hover:scale-110" : ""
-            }`}
+            className="w-3.5 h-3.5 text-[#1c1b19]/70 shrink-0 transition-transform duration-200"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -201,14 +217,27 @@ export function NavbarRightActions({
             />
           </svg>
 
-          {/* Search Input (Expands smoothly with animation) */}
+          {/* Hover Peek Preview Label ("yt7el hir wahd chwi") */}
+          {!searchExpanded && isHovered && (
+            <motion.span
+              initial={{ opacity: 0, x: -4 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -4 }}
+              transition={{ duration: 0.15 }}
+              className="text-[11px] font-sans text-[#1c1b19]/50 font-light ml-1.5 whitespace-nowrap select-none truncate"
+            >
+              Chercher
+            </motion.span>
+          )}
+
+          {/* Active Search Input (Compact, safe, doesn't overlap logo) */}
           {searchExpanded && (
             <motion.div
-              initial={{ opacity: 0, x: -8 }}
+              initial={{ opacity: 0, x: -4 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -8 }}
-              transition={{ duration: 0.2 }}
-              className="flex items-center flex-1 min-w-0 ml-2"
+              exit={{ opacity: 0, x: -4 }}
+              transition={{ duration: 0.18 }}
+              className="flex items-center flex-1 min-w-0 ml-1.5"
             >
               <input
                 ref={inputRef}
@@ -219,7 +248,7 @@ export function NavbarRightActions({
                   setSearchDropdownOpen(true);
                 }}
                 onFocus={() => setSearchDropdownOpen(true)}
-                placeholder="Rechercher tissu, réf..."
+                placeholder="Rechercher..."
                 className="w-full bg-transparent text-xs text-[#1c1b19] placeholder:text-[#1c1b19]/40 outline-none font-sans font-light border-none ring-0 focus:ring-0 focus:outline-none"
                 aria-label="Rechercher produit ou commande"
               />
@@ -234,7 +263,7 @@ export function NavbarRightActions({
                     setSearchResults([]);
                     inputRef.current?.focus();
                   }}
-                  className="text-[#1c1b19]/40 hover:text-[#1c1b19] text-[10px] p-1 transition-colors rounded-full hover:bg-[#f2eee6]"
+                  className="text-[#1c1b19]/40 hover:text-[#1c1b19] text-[10px] p-0.5 transition-colors rounded-full"
                   aria-label="Effacer recherche"
                 >
                   ✕
@@ -248,7 +277,7 @@ export function NavbarRightActions({
                   e.stopPropagation();
                   handleCloseSearch();
                 }}
-                className="text-[#1c1b19]/40 hover:text-[#1c1b19] text-xs p-1 ml-0.5 transition-colors rounded-full hover:bg-[#f2eee6]"
+                className="text-[#1c1b19]/40 hover:text-[#1c1b19] text-xs p-0.5 ml-0.5 transition-colors rounded-full"
                 title="Fermer la recherche"
                 aria-label="Fermer la recherche"
               >
@@ -266,7 +295,7 @@ export function NavbarRightActions({
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 6, scale: 0.98 }}
               transition={{ duration: 0.18 }}
-              className="absolute right-0 top-full mt-2 w-[290px] sm:w-[350px] max-h-[75vh] overflow-y-auto bg-white rounded-2xl shadow-2xl border border-[#e8e4db] p-3 z-50 text-[#1c1b19]"
+              className="absolute right-0 top-full mt-2 w-[280px] sm:w-[320px] max-h-[75vh] overflow-y-auto bg-white rounded-2xl shadow-2xl border border-[#e8e4db] p-3 z-50 text-[#1c1b19]"
             >
               {/* If query looks like an order reference */}
               {isOrderQuery && (
@@ -280,7 +309,10 @@ export function NavbarRightActions({
                   </p>
                   <Link
                     href={`/contact?subject=suivi&ref=${encodeURIComponent(searchQuery)}`}
-                    onClick={() => setSearchDropdownOpen(false)}
+                    onClick={() => {
+                      setSearchDropdownOpen(false);
+                      setSearchExpanded(false);
+                    }}
                     className="mt-2 inline-flex items-center text-[10px] font-sans font-semibold text-[#1c1b19] underline hover:text-[#a49a8d] transition-colors"
                   >
                     Demander le statut à l&apos;atelier
