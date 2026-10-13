@@ -12,6 +12,7 @@ import { logout } from "@/lib/session";
 import { SearchBar } from "./SearchBar";
 import { CurrencySelector } from "./CurrencySelector";
 import { NavbarRightActions } from "./NavbarRightActions";
+import { LuxuryMenuOverlay } from "./LuxuryMenuOverlay";
 import { useTranslations } from "next-intl";
 import { removeAccents } from "@/lib/text";
 
@@ -205,54 +206,8 @@ export function Header({ overlay = false }: HeaderProps) {
         )}
       </AnimatePresence>
 
-      {/* Full Screen Menu Overlay (Universal) */}
-      <div 
-        className={`fixed inset-0 z-[60] flex flex-col bg-ink px-8 pb-10 pt-24 text-cream transition-all duration-500 ease-out ${
-          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        } ${transformClass}`}
-      >
-        <button
-          type="button"
-          className="absolute right-6 top-6 text-[11px] uppercase tracking-[0.28em] hover:opacity-70 font-termina"
-          onClick={() => setOpen(false)}
-        >
-          {removeAccents(t("close"))}
-        </button>
-        <ul className="mt-8 space-y-8 px-6 flex-1 max-w-2xl mx-auto w-full">
-          <li>
-            <Link href="/" className="font-termina text-2xl md:text-4xl font-bold uppercase tracking-widest text-cream hover:opacity-70 transition-opacity" onClick={() => setOpen(false)}>
-              {removeAccents(t("home"))}
-            </Link>
-          </li>
-          {nav.map((item) => {
-            let translationKey = "navUnivers";
-            if (item.href === "/savoir-faire") translationKey = "navSavoirFaire";
-            if (item.href === "/a-propos") translationKey = "navAbout";
-            if (item.href === "/contact") translationKey = "navContact";
-            return (
-              <li key={item.href}>
-                <Link href={item.href} className="font-termina text-2xl md:text-4xl font-bold uppercase tracking-widest text-cream hover:opacity-70 transition-opacity" onClick={() => setOpen(false)}>
-                  {removeAccents((t as any)(translationKey))}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-
-        {/* Menu Bottom Details */}
-        <div className="px-6 pb-6 pt-10 border-t border-cream/15 flex flex-col gap-3 max-w-2xl mx-auto w-full">
-          <a href="mailto:contact@kansotex.com" className="font-termina text-[9px] font-bold uppercase tracking-[0.25em] text-cream/70 hover:text-cream transition-colors">
-            CONTACT@KANSOTEX.COM
-          </a>
-          <p className="font-termina text-[9px] font-bold uppercase tracking-[0.25em] text-cream/70">
-            MARRAKECH, MAROC
-          </p>
-          <div className="mt-4 flex gap-6">
-            <a href="#" className="font-termina text-[9px] font-bold uppercase tracking-[0.25em] text-cream/70 hover:text-cream transition-colors">INSTAGRAM</a>
-            <a href="#" className="font-termina text-[9px] font-bold uppercase tracking-[0.25em] text-cream/70 hover:text-cream transition-colors">FACEBOOK</a>
-          </div>
-        </div>
-      </div>
+      {/* Luxury Full Screen Menu Overlay */}
+      <LuxuryMenuOverlay isOpen={open} onClose={() => setOpen(false)} />
     </>
   );
 }

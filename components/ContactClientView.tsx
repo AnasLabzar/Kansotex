@@ -5,8 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/lib/CartContext";
 import { useCurrency, CurrencyCode } from "@/lib/CurrencyContext";
-import { motion, AnimatePresence } from "framer-motion";
 import { NavbarRightActions } from "@/components/NavbarRightActions";
+import { LuxuryMenuOverlay } from "@/components/LuxuryMenuOverlay";
 
 export function ContactClientView() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -70,115 +70,7 @@ export function ContactClientView() {
       {/* ============================================================ */}
       {/* FULL SCREEN / SLIDE-IN LUXURY MENU OVERLAY */}
       {/* ============================================================ */}
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -40 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-[60] flex flex-col bg-[#1c1b19] px-6 sm:px-10 pb-10 pt-16 text-[#faf8f5]"
-          >
-            {/* Top Bar inside Overlay */}
-            <div className="max-w-2xl mx-auto w-full flex items-center justify-between pb-7 border-b border-white/15">
-              <Link href="/" onClick={() => setMenuOpen(false)} aria-label="Kansotex" className="shrink-0 flex items-center">
-                <Image
-                  src="/KANSOTEX-marque-1-white.png"
-                  alt="Kansotex"
-                  width={500}
-                  height={120}
-                  className="w-[140px] sm:w-[160px] h-auto object-contain"
-                  priority
-                />
-              </Link>
-              <button
-                type="button"
-                onClick={() => setMenuOpen(false)}
-                className="text-xs uppercase tracking-widest font-sans text-white/70 hover:text-white transition-colors flex items-center gap-2 py-1 px-2.5 rounded-full hover:bg-white/10"
-              >
-                <span>Fermer</span>
-                <span className="text-sm">✕</span>
-              </button>
-            </div>
-
-            {/* Navigation Links */}
-            <ul className="mt-8 sm:mt-10 space-y-6 sm:space-y-7 px-2 flex-1 max-w-2xl mx-auto w-full overflow-y-auto">
-              <li>
-                <Link
-                  href="/"
-                  onClick={() => setMenuOpen(false)}
-                  className="font-termina text-xl sm:text-3xl font-bold uppercase tracking-widest text-[#faf8f5] hover:text-white/60 transition-colors block py-1"
-                >
-                  ACCUEIL
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/univers"
-                  onClick={() => setMenuOpen(false)}
-                  className="font-termina text-xl sm:text-3xl font-bold uppercase tracking-widest text-[#faf8f5] hover:text-white/60 transition-colors block py-1"
-                >
-                  NOS UNIVERS
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/savoir-faire"
-                  onClick={() => setMenuOpen(false)}
-                  className="font-termina text-xl sm:text-3xl font-bold uppercase tracking-widest text-[#faf8f5] hover:text-white/60 transition-colors block py-1"
-                >
-                  NOTRE SAVOIR-FAIRE
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/a-propos"
-                  onClick={() => setMenuOpen(false)}
-                  className="font-termina text-xl sm:text-3xl font-bold uppercase tracking-widest text-[#faf8f5] hover:text-white/60 transition-colors block py-1"
-                >
-                  A PROPOS DE NOUS
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/pro"
-                  onClick={() => setMenuOpen(false)}
-                  className="font-termina text-xl sm:text-3xl font-bold uppercase tracking-widest text-[#faf8f5] hover:text-white/60 transition-colors block py-1"
-                >
-                  ESPACE ARCHITECTURE &amp; PRO
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  onClick={() => setMenuOpen(false)}
-                  className="font-termina text-xl sm:text-3xl font-bold uppercase tracking-widest text-[#d8cbb6] hover:text-white transition-colors block py-1"
-                >
-                  NOUS CONTACTER
-                </Link>
-              </li>
-            </ul>
-
-            {/* Footer Information inside Drawer */}
-            <div className="px-2 pt-6 border-t border-white/15 flex flex-col sm:flex-row sm:items-center justify-between gap-3 max-w-2xl mx-auto w-full text-xs text-white/60 font-sans">
-              <div>
-                <a href="mailto:contact@kansotex.com" className="hover:text-white transition-colors block">
-                  contact@kansotex.com
-                </a>
-                <p className="mt-0.5">983 Al Massar, Marrakech · +212 5 24 20 09 96</p>
-              </div>
-              <div className="flex gap-4 text-[11px] tracking-wider uppercase text-white/50 pt-2 sm:pt-0">
-                <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
-                  Instagram
-                </a>
-                <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
-                  Facebook
-                </a>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <LuxuryMenuOverlay isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
 
       {/* ============================================================ */}
       {/* 1. FLOATING NAVIGATION BAR */}
