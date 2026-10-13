@@ -90,8 +90,8 @@ export default function AddToCartForm({
     const startY = buttonRect.top + buttonRect.height / 2;
 
     const cartIcon = document.getElementById("cart-icon");
-    let targetX = window.innerWidth - 40; 
-    let targetY = 40; 
+    let targetX = window.innerWidth - 60; 
+    let targetY = 35; 
 
     if (cartIcon) {
       const iconRect = cartIcon.getBoundingClientRect();
@@ -102,8 +102,10 @@ export default function AddToCartForm({
     const dotId = Date.now();
     const productImage = product.image || "/gallery/Kansotex-indoor-riad-tissus-pinterest-1.png";
 
+    // 1. Launch flying thumbnail animation towards exact cart icon in navbar
     setFlyingDots((prev) => [...prev, { id: dotId, x: startX, y: startY, targetX, targetY, img: productImage }]);
 
+    // 2. Flying thumbnail arrives at cart icon at 600ms -> Add item -> Badge notification number pops up!
     setTimeout(() => {
       addItem({
         id: `${product.id}-${selectedVariant.id}`,
@@ -117,9 +119,13 @@ export default function AddToCartForm({
         isFabric,
         image: productImage,
       });
-      openCart();
       setFlyingDots((prev) => prev.filter((d) => d.id !== dotId));
-    }, 700); 
+    }, 600);
+
+    // 3. User sees notification number pop on the cart icon -> then smoothly open cart drawer as UX animation!
+    setTimeout(() => {
+      openCart();
+    }, 1150);
   };
 
   return (
@@ -160,16 +166,32 @@ export default function AddToCartForm({
         )}
       </div>
 
-      {/* Flying Image Animation */}
+      {/* Flying Image Animation Directly to Cart Icon */}
       <AnimatePresence>
         {flyingDots.map((dot) => (
           <motion.div
             key={dot.id}
-            initial={{ position: "fixed", left: dot.x, top: dot.y, opacity: 1, scale: 1, rotate: 0, zIndex: 9999 }}
-            animate={{ left: dot.targetX, top: dot.targetY, scale: 0.1, rotate: 15, opacity: 0.8 }}
+            initial={{ 
+              position: "fixed", 
+              left: dot.x, 
+              top: dot.y, 
+              opacity: 1, 
+              scale: 1, 
+              borderRadius: "6px",
+              rotate: 0, 
+              zIndex: 99999 
+            }}
+            animate={{ 
+              left: dot.targetX, 
+              top: dot.targetY, 
+              scale: 0.16, 
+              borderRadius: "50%",
+              rotate: 15, 
+              opacity: 0.9 
+            }}
             exit={{ opacity: 0, scale: 0 }}
-            transition={{ duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
-            className="w-24 h-32 shadow-2xl pointer-events-none overflow-hidden border border-cream"
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="w-20 h-24 shadow-2xl pointer-events-none overflow-hidden border-2 border-white bg-cream"
             style={{ transform: "translate(-50%, -50%)" }}
           >
             <img src={dot.img} alt="" className="w-full h-full object-cover" />

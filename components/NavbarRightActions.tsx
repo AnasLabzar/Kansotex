@@ -35,6 +35,19 @@ export function NavbarRightActions({
   // Authentication status
   const isAuthenticated = Boolean(session?.isPro);
 
+  // Cart bounce animation trigger when count increments
+  const [cartBumping, setCartBumping] = useState(false);
+  const prevCountRef = useRef(cartCount);
+
+  useEffect(() => {
+    if (cartCount > prevCountRef.current) {
+      setCartBumping(true);
+      const t = setTimeout(() => setCartBumping(false), 500);
+      return () => clearTimeout(t);
+    }
+    prevCountRef.current = cartCount;
+  }, [cartCount]);
+
   // Rotating dynamic CTA label
   const [ctaIndex, setCtaIndex] = useState(0);
   useEffect(() => {
@@ -407,8 +420,11 @@ export function NavbarRightActions({
       {/* 3. PANIER BUTTON */}
       {/* ============================================================ */}
       <motion.button
+        id="cart-icon"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
+        animate={cartBumping ? { scale: [1, 1.25, 0.95, 1.1, 1], rotate: [0, -6, 6, -3, 0] } : {}}
+        transition={{ duration: 0.45 }}
         type="button"
         onClick={openCart}
         className="relative flex items-center justify-center h-9 w-9 rounded-full bg-white/80 border border-[#e2ddd3] hover:border-[#cfc8bc] hover:bg-white transition-all text-[#1c1b19] shrink-0 cursor-pointer shadow-2xs hover:shadow-xs outline-none focus:outline-none"
@@ -428,11 +444,20 @@ export function NavbarRightActions({
             d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
           />
         </svg>
-        {cartCount > 0 && (
-          <span className="absolute -top-1 -right-1 bg-[#1c1b19] text-white text-[9px] font-semibold w-4 h-4 rounded-full flex items-center justify-center shadow-xs">
-            {cartCount}
-          </span>
-        )}
+        <AnimatePresence>
+          {cartCount > 0 && (
+            <motion.span
+              key={cartCount}
+              initial={{ scale: 0.3, opacity: 0 }}
+              animate={{ scale: [0.5, 1.35, 0.9, 1.15, 1], opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 450, damping: 15 }}
+              className="absolute -top-1 -right-1 bg-[#1c1b19] text-white text-[9px] font-semibold w-4 h-4 rounded-full flex items-center justify-center shadow-xs"
+            >
+              {cartCount}
+            </motion.span>
+          )}
+        </AnimatePresence>
       </motion.button>
 
       {/* ============================================================ */}
