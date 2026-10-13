@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { trackAddToCart } from "@/lib/gtag";
 
 export type CartItem = {
   id: string; // Unique ID for the cart line (could be variantId + dyeLotId)
@@ -56,6 +57,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [items, isInitialized]);
 
   const addItem = (newItem: CartItem) => {
+    trackAddToCart({
+      id: newItem.productId || newItem.id,
+      name: newItem.name,
+      price: newItem.price,
+      quantity: newItem.quantity,
+    });
+
     setItems((currentItems) => {
       // Check if item already exists (same variant)
       const existingItemIndex = currentItems.findIndex(i => i.id === newItem.id);

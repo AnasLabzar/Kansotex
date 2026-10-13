@@ -12,6 +12,7 @@ import { CurrencyProvider } from "@/lib/CurrencyContext";
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 
 export const dynamic = 'force-dynamic';
 
@@ -177,6 +178,7 @@ export default async function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col bg-cream text-ink">
+        <GoogleAnalytics />
         <NextIntlClientProvider messages={messages}>
           <SessionProvider session={session}>
           <CurrencyProvider>
