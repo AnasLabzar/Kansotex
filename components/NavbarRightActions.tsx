@@ -421,6 +421,7 @@ export function NavbarRightActions({
       {/* ============================================================ */}
       <motion.button
         id="cart-icon"
+        data-cart-icon="true"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         animate={cartBumping ? { scale: [1, 1.25, 0.95, 1.1, 1], rotate: [0, -6, 6, -3, 0] } : {}}
@@ -451,7 +452,7 @@ export function NavbarRightActions({
               initial={{ scale: 0.3, opacity: 0 }}
               animate={{ scale: [0.5, 1.35, 0.9, 1.15, 1], opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 450, damping: 15 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
               className="absolute -top-1 -right-1 bg-[#1c1b19] text-white text-[9px] font-semibold w-4 h-4 rounded-full flex items-center justify-center shadow-xs"
             >
               {cartCount}

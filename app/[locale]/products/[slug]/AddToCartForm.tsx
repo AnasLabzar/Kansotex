@@ -89,7 +89,7 @@ export default function AddToCartForm({
     const startX = buttonRect.left + buttonRect.width / 2;
     const startY = buttonRect.top + buttonRect.height / 2;
 
-    const cartIcon = document.getElementById("cart-icon");
+    const cartIcon = document.getElementById("cart-icon") || document.querySelector('[data-cart-icon="true"]');
     let targetX = window.innerWidth - 60; 
     let targetY = 35; 
 
@@ -100,7 +100,7 @@ export default function AddToCartForm({
     }
 
     const dotId = Date.now();
-    const productImage = product.image || "/gallery/Kansotex-indoor-riad-tissus-pinterest-1.png";
+    const productImage = selectedVariant?.image || product.image || "/gallery/Kansotex-indoor-riad-tissus-pinterest-1.png";
 
     // 1. Launch flying thumbnail animation towards exact cart icon in navbar
     setFlyingDots((prev) => [...prev, { id: dotId, x: startX, y: startY, targetX, targetY, img: productImage }]);
@@ -172,27 +172,22 @@ export default function AddToCartForm({
           <motion.div
             key={dot.id}
             initial={{ 
-              position: "fixed", 
-              left: dot.x, 
-              top: dot.y, 
-              opacity: 1, 
+              x: dot.x, 
+              y: dot.y, 
               scale: 1, 
-              borderRadius: "6px",
               rotate: 0, 
-              zIndex: 99999 
+              opacity: 1 
             }}
             animate={{ 
-              left: dot.targetX, 
-              top: dot.targetY, 
-              scale: 0.16, 
-              borderRadius: "50%",
+              x: dot.targetX, 
+              y: dot.targetY, 
+              scale: 0.18, 
               rotate: 15, 
               opacity: 0.9 
             }}
             exit={{ opacity: 0, scale: 0 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="w-20 h-24 shadow-2xl pointer-events-none overflow-hidden border-2 border-white bg-cream"
-            style={{ transform: "translate(-50%, -50%)" }}
+            className="fixed top-0 left-0 -ml-10 -mt-12 w-20 h-24 shadow-2xl pointer-events-none overflow-hidden rounded-md border-2 border-white bg-[#f8f5f0] z-[99999]"
           >
             <img src={dot.img} alt="" className="w-full h-full object-cover" />
           </motion.div>

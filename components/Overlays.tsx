@@ -59,7 +59,7 @@ export function Overlays() {
       >
         <div className="flex flex-col items-center gap-8">
           <div className="relative h-20 w-20">
-            <Image src="/icon-kansotex.png" alt="Loading" fill className="object-contain" />
+            <Image src="/icon-kansotex.png" alt="Loading" fill sizes="80px" className="object-contain" />
           </div>
           <div className="h-[1px] w-32 overflow-hidden bg-[#1c1b19]/10">
             <div 
@@ -116,7 +116,13 @@ export function Overlays() {
 
           {/* Image side */}
           <div className="relative hidden w-1/2 md:block">
-            <Image src="/gallery/Kansotex-indoor-riad-tissus-pinterest.png" alt="Promo" fill className="object-cover" />
+            <Image 
+              src="/gallery/Kansotex-indoor-riad-tissus-pinterest.png" 
+              alt="Promo" 
+              fill 
+              sizes="(max-width: 768px) 100vw, 384px" 
+              className="object-cover" 
+            />
           </div>
 
           {/* Content side */}

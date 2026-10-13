@@ -287,7 +287,7 @@ function MenuButton({ open, onClick, forceVisible = false }: { open: boolean; on
 
 function CartButton({ cartCount, openCart }: { cartCount: number, openCart: () => void }) {
   return (
-    <button id="cart-icon" aria-label="Panier" onClick={openCart} className="relative transition-opacity hover:opacity-70">
+    <button aria-label="Panier" onClick={openCart} className="relative transition-opacity hover:opacity-70">
       <CartIcon className="h-[18px] w-[18px]" />
       <AnimatePresence>
         {cartCount > 0 && (
