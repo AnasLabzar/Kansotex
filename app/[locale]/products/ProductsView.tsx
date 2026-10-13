@@ -8,6 +8,7 @@ import { SearchBar } from "@/components/SearchBar";
 import { useCurrency } from "@/lib/CurrencyContext";
 import { useTranslations, useLocale } from "next-intl";
 import { toTermina } from "@/lib/text";
+import { ProductCard } from "@/components/ProductCard";
 
 type Product = any;
 
@@ -207,45 +208,12 @@ export function ProductsView({ products, isPro, discount }: { products: Product[
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.4 }}
               >
-                <Link 
-                  href={`/products/${product.slug}`}
-                  className="group block"
-                >
-                  <div className="aspect-[4/5] sm:aspect-square relative overflow-hidden bg-[#e8e4db] mb-4 rounded-xs">
-                    <Image 
-                      src={product.image || "/gallery/Kansotex-indoor-riad-tissus-pinterest-1.webp"}
-                      alt={product.nameFr}
-                      fill
-                      sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
-                      className="object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
-                    />
-                  </div>
-                  
-                  <div className="flex flex-col">
-                    <div className="flex justify-between items-start mb-1">
-                      <h3 className="font-sans text-base sm:text-lg text-ink font-normal truncate pr-4">
-                        {locale === 'en' ? (product.nameEn || product.nameFr) : product.nameFr}
-                      </h3>
-                      <span className="font-sans text-sm text-ink font-light flex items-baseline gap-1 shrink-0">
-                        {isPro ? (
-                          <>
-                            {formatPrice(product.basePrice * (1 - discount)).value} 
-                            <span className="font-sans text-xs font-medium">{formatPrice(product.basePrice).symbol}</span>
-                            <span className="text-[10px] text-muted ml-1">HT</span>
-                          </>
-                        ) : (
-                          <>
-                            {formatPrice(product.basePrice).value}
-                            <span className="font-sans text-xs font-medium">{formatPrice(product.basePrice).symbol}</span>
-                          </>
-                        )}
-                      </span>
-                    </div>
-                    <p className="text-[10px] font-termina tracking-widest uppercase text-muted">
-                      {toTermina(`REF. ${product.slug}`)}
-                    </p>
-                  </div>
-                </Link>
+                <ProductCard 
+                  product={product} 
+                  locale={locale} 
+                  isPro={isPro} 
+                  discount={discount} 
+                />
               </motion.div>
             ))}
           </AnimatePresence>

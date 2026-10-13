@@ -7,6 +7,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { UnderlineLink } from "@/components/UnderlineLink";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef } from "react";
+import { ProductCard } from "@/components/ProductCard";
 
 export function PopularProductsCarousel({ products, isPro, discount }: { products: any[], isPro: boolean, discount: number }) {
   const { formatPrice } = useCurrency();
@@ -59,41 +60,12 @@ export function PopularProductsCarousel({ products, isPro, discount }: { product
           <div ref={scrollRef} className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-8 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             {products.map((product) => (
               <div key={product.id} className="min-w-[280px] md:min-w-[320px] w-[70vw] md:w-[320px] snap-start shrink-0">
-                <Link href={`/products/${product.slug}`} className="group block">
-                  <div className="aspect-[4/5] relative overflow-hidden bg-[#e8e4db] mb-4">
-                    <Image 
-                      src={product.image || "/gallery/Kansotex-indoor-riad-tissus-pinterest-1.webp"}
-                      alt={product.nameFr}
-                      fill
-                      sizes="(min-width: 768px) 320px, 70vw"
-                      className="object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <div className="flex justify-between items-start mb-1">
-                      <h3 className="font-sans text-lg text-ink font-normal truncate pr-4">
-                        {locale === 'en' ? (product.nameEn || product.nameFr) : product.nameFr}
-                      </h3>
-                      <span className="font-sans text-sm text-ink font-light flex items-baseline gap-1 shrink-0">
-                        {isPro ? (
-                          <>
-                            {formatPrice(product.basePrice * (1 - discount)).value} 
-                            <span className="font-sans text-xs font-medium">{formatPrice(product.basePrice).symbol}</span>
-                            <span className="text-[10px] text-muted ml-1">HT</span>
-                          </>
-                        ) : (
-                          <>
-                            {formatPrice(product.basePrice).value}
-                            <span className="font-sans text-xs font-medium">{formatPrice(product.basePrice).symbol}</span>
-                          </>
-                        )}
-                      </span>
-                    </div>
-                    <p className="text-[11px] font-termina tracking-widest uppercase text-muted">
-                      REF. {product.slug}
-                    </p>
-                  </div>
-                </Link>
+                <ProductCard
+                  product={product}
+                  locale={locale}
+                  isPro={isPro}
+                  discount={discount}
+                />
               </div>
             ))}
           </div>

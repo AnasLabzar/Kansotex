@@ -20,7 +20,10 @@ export async function PopularProducts() {
       image: p.image,
       nameFr: p.nameFr,
       nameEn: p.nameEn,
-      basePrice: p.basePrice
+      basePrice: p.basePrice,
+      type: p.type,
+      categoryId: p.categoryId,
+      metadata: (p as any).metadata,
     }));
     
     const session = await getSession();
