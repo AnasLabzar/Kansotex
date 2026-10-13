@@ -1,36 +1,62 @@
 "use server";
 
+import React from "react";
 import { db } from "@/prisma/db";
 import { loginAsPro } from "./session";
+import { sendEmail } from "./mailer";
+import { OtpEmail } from "@/emails/OtpEmail";
 
-// In a real app, you would use a mailer like Resend or SendGrid.
-// Here we'll just log it to the server console.
 export async function requestOtp(email: string) {
   try {
-    // Generate a 6-digit OTP
+    const cleanEmail = email.trim().toLowerCase();
+
+    // 1. Generate a secure 6-digit OTP code
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     
-    // Set expiration to 15 minutes from now using String
+    // 2. Set expiration to 15 minutes from now
     const expiresAt = new Date(Date.now() + 15 * 60000).toISOString();
     
-    // Insert the new token using ORM
+    // 3. Store the verification token in database
     await db.orm.public.VerificationToken.create({
-      email,
+      email: cleanEmail,
       code,
-      expiresAt, // Prisma ORM takes a Date object directly
+      expiresAt,
     });
 
     console.log(`\n\n========================================`);
-    console.log(`🔐 OTP CODE FOR ${email}: ${code}`);
+    console.log(`🔐 OTP CODE GENERATED FOR ${cleanEmail}: ${code}`);
     console.log(`========================================\n\n`);
 
-    // Check if user exists
-    const existingUser = await db.orm.public.User.where({ email }).first();
+    // 4. Format current date & time in Morocco / Casablanca time
+    const now = new Date();
+    const dateFormatted = new Intl.DateTimeFormat("fr-FR", {
+      dateStyle: "long",
+      timeStyle: "short",
+      timeZone: "Africa/Casablanca",
+    }).format(now);
+
+    // 5. Send real, professional email with OTP table & security details
+    const emailRes = await sendEmail({
+      to: cleanEmail,
+      subject: `Votre code de sécurité Kansotex : ${code}`,
+      react: React.createElement(OtpEmail, {
+        email: cleanEmail,
+        code,
+        requestedAt: `${dateFormatted} (Marrakech)`,
+        expiresInMinutes: 15,
+      }),
+    });
+
+    console.log(`📧 OTP Email dispatch status to ${cleanEmail}:`, emailRes);
+
+    // Check if user already exists
+    const existingUser = await db.orm.public.User.where({ email: cleanEmail }).first();
 
     return { 
       success: true, 
       userExists: !!existingUser,
-      demoCode: code 
+      demoCode: code,
+      emailSent: emailRes.success,
     };
   } catch (error: any) {
     console.error("OTP Error:", error);
@@ -42,26 +68,35 @@ export async function requestOtp(email: string) {
 }
 
 export async function verifyOtpAndLogin(email: string, code: string) {
-  const tokenRecord = await db.orm.public.VerificationToken.where({ email, code }).first();
+  const cleanEmail = email.trim().toLowerCase();
+  const cleanCode = code.trim();
+
+  const tokenRecord = await db.orm.public.VerificationToken.where({ email: cleanEmail, code: cleanCode }).first();
   
   if (!tokenRecord) {
-    return { success: false, error: "Code invalide." };
+    return { success: false, error: "Code invalide. Veuillez vérifier votre email." };
   }
   
   if (new Date(tokenRecord.expiresAt) < new Date()) {
-    return { success: false, error: "Ce code a expiré." };
+    return { success: false, error: "Ce code a expiré. Veuillez demander un nouveau code." };
+  }
+
+  // Delete used token to prevent replay
+  try {
+    await db.orm.public.VerificationToken.where({ id: tokenRecord.id }).delete();
+  } catch {
+    // Non-blocking
   }
 
   // Check if user exists
-  const user = await db.orm.public.User.where({ email }).first();
+  const user = await db.orm.public.User.where({ email: cleanEmail }).first();
   
   if (user) {
     // Log them in
     await loginAsPro(user.role, user.tradeDiscount);
     return { success: true, isNewUser: false };
   } else {
-    // We need to create a new user. But we need their details first!
-    // We return success, but indicate they need to complete signup
+    // Need to create new user profile
     return { success: true, isNewUser: true };
   }
 }
@@ -76,14 +111,15 @@ export async function completeSignupAndLogin(
     role: "ARCHITECT" | "DECORATOR" | "HOTEL";
   }
 ) {
-  // Create user
-  // We'll give them 20% discount as default for Pro accounts in this demo
+  const cleanEmail = email.trim().toLowerCase();
+
+  // Create user with standard 20% trade discount
   const user = await db.orm.public.User.create({
-    email,
-    firstName: data.firstName,
-    lastName: data.lastName,
-    companyName: data.companyName,
-    siret: data.siret,
+    email: cleanEmail,
+    firstName: data.firstName.trim(),
+    lastName: data.lastName.trim(),
+    companyName: data.companyName.trim(),
+    siret: data.siret.trim(),
     role: data.role,
     isVerifiedPro: true,
     tradeDiscount: 0.20,

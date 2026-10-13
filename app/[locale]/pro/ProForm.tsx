@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { loginAsPro, logout } from "@/lib/session";
 import { requestOtp, verifyOtpAndLogin, completeSignupAndLogin } from "@/lib/auth";
@@ -13,6 +13,8 @@ export default function ProForm() {
   const [step, setStep] = useState<"email" | "otp" | "signup">("email");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [successNotice, setSuccessNotice] = useState<string | null>(null);
+  const [resendCooldown, setResendCooldown] = useState(0);
 
   // Form data
   const [email, setEmail] = useState("");
@@ -25,6 +27,15 @@ export default function ProForm() {
     siret: "",
     role: "ARCHITECT" as "ARCHITECT" | "DECORATOR" | "HOTEL",
   });
+
+  // Countdown timer for OTP resend
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const timer = setInterval(() => {
+      setResendCooldown((prev) => (prev <= 1 ? 0 : prev - 1));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [resendCooldown]);
 
   // Pour la démo, on simule une connexion immédiate au clic sur un bouton spécial
   const handleDemoLogin = async (role: "ARCHITECT" | "DECORATOR", discount: number) => {
@@ -39,14 +50,39 @@ export default function ProForm() {
     
     setIsLoading(true);
     setError(null);
+    setSuccessNotice(null);
     try {
       const res = await requestOtp(email);
       if (res.success) {
         setIsNewUser(!res.userExists);
         setStep("otp");
+        setResendCooldown(45);
+        setSuccessNotice(`Code de sécurité envoyé à ${email}.`);
+      } else {
+        setError(res.error || "Erreur lors de l'envoi du code.");
       }
     } catch (err) {
       setError("Erreur lors de l'envoi du code.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleResendOtp = async () => {
+    if (resendCooldown > 0 || isLoading || !email) return;
+
+    setIsLoading(true);
+    setError(null);
+    try {
+      const res = await requestOtp(email);
+      if (res.success) {
+        setResendCooldown(45);
+        setSuccessNotice(`Nouveau code envoyé par email à ${email}.`);
+      } else {
+        setError(res.error || "Erreur lors du renvoi du code.");
+      }
+    } catch {
+      setError("Erreur de connexion.");
     } finally {
       setIsLoading(false);
     }
@@ -123,8 +159,15 @@ export default function ProForm() {
 
       <div className="space-y-6 font-poppins min-h-[300px]">
         
+        {successNotice && (
+          <div className="bg-emerald-900/30 text-emerald-300 border border-emerald-800/50 p-3.5 text-xs rounded flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+            <span>{successNotice}</span>
+          </div>
+        )}
+
         {error && (
-          <div className="bg-red-900/20 text-red-400 border border-red-900/50 p-4 text-xs">
+          <div className="bg-red-900/20 text-red-400 border border-red-900/50 p-4 text-xs rounded">
             {error}
           </div>
         )}
@@ -143,7 +186,7 @@ export default function ProForm() {
               <div>
                 <label className="block text-xs uppercase tracking-wider text-[#f3eee6]/60 mb-2">Email professionnel *</label>
                 <input 
-                  type="email"
+                  type="email" 
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full bg-transparent border-b border-[#f3eee6]/20 py-3 px-0 text-[#f3eee6] focus:border-[#f3eee6] focus:outline-none transition-colors"
@@ -157,7 +200,7 @@ export default function ProForm() {
                 disabled={isLoading}
                 className="w-full mt-8 py-4 bg-[#f3eee6] text-[#1c1b19] font-termina text-[11px] uppercase tracking-[0.2em] hover:bg-white transition-colors disabled:opacity-50"
               >
-                {isLoading ? "Envoi..." : "Continuer"}
+                {isLoading ? "Envoi du code sécurisé..." : "Continuer"}
               </button>
             </motion.form>
           )}
@@ -172,32 +215,52 @@ export default function ProForm() {
               className="space-y-6"
             >
               <div>
-                <label className="block text-xs uppercase tracking-wider text-[#f3eee6]/60 mb-2">Code de sécurité à 6 chiffres *</label>
+                <div className="flex justify-between items-center mb-2">
+                  <label className="block text-xs uppercase tracking-wider text-[#f3eee6]/60">Code de sécurité à 6 chiffres *</label>
+                  <span className="text-[10px] text-[#c5a880] uppercase tracking-wider font-mono">Valide 15 min</span>
+                </div>
                 <input 
                   type="text" 
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  autoComplete="one-time-code"
+                  autoFocus
                   maxLength={6}
                   value={otpCode}
-                  onChange={(e) => setOtpCode(e.target.value)}
-                  className="w-full bg-transparent border-b border-[#f3eee6]/20 py-3 px-0 text-[#f3eee6] text-2xl tracking-[0.5em] focus:border-[#f3eee6] focus:outline-none transition-colors"
+                  onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                  className="w-full bg-transparent border-b border-[#f3eee6]/20 py-3 px-0 text-[#f3eee6] text-2xl tracking-[0.5em] focus:border-[#f3eee6] focus:outline-none transition-colors font-mono"
                   placeholder="000000"
                   required
                 />
-                <p className="text-[10px] text-neutral-500 mt-3">
-                  (Regardez dans le terminal de développement pour voir le code OTP généré !)
-                </p>
+                <div className="flex justify-between items-center mt-3 text-xs text-[#f3eee6]/50">
+                  <span>Code non reçu ? (Vérifiez vos spams)</span>
+                  <button
+                    type="button"
+                    onClick={handleResendOtp}
+                    disabled={resendCooldown > 0 || isLoading}
+                    className="text-[#c5a880] hover:text-[#f3eee6] underline text-[11px] disabled:opacity-40 disabled:no-underline cursor-pointer disabled:cursor-not-allowed"
+                  >
+                    {resendCooldown > 0 ? `Renvoyer (${resendCooldown}s)` : "Renvoyer le code"}
+                  </button>
+                </div>
               </div>
 
               <div className="flex gap-4 mt-8">
                 <button 
                   type="button"
-                  onClick={() => setStep("email")}
+                  onClick={() => {
+                    setStep("email");
+                    setOtpCode("");
+                    setError(null);
+                    setSuccessNotice(null);
+                  }}
                   className="px-6 py-4 border border-[#f3eee6]/20 text-[#f3eee6] font-termina text-[11px] uppercase tracking-[0.2em] hover:bg-[#f3eee6]/5 transition-colors"
                 >
                   Modifier email
                 </button>
                 <button 
                   type="submit"
-                  disabled={isLoading}
+                  disabled={isLoading || otpCode.length < 6}
                   className="flex-1 py-4 bg-[#f3eee6] text-[#1c1b19] font-termina text-[11px] uppercase tracking-[0.2em] hover:bg-white transition-colors disabled:opacity-50"
                 >
                   {isLoading ? "Vérification..." : "Valider"}

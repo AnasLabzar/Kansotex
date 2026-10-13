@@ -60,6 +60,8 @@ export function ProClientView() {
   const [step, setStep] = useState<"email" | "otp" | "signup">("email");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [successNotice, setSuccessNotice] = useState<string | null>(null);
+  const [resendCooldown, setResendCooldown] = useState(0);
 
   // Form data
   const [email, setEmail] = useState("");
@@ -73,7 +75,14 @@ export function ProClientView() {
     role: "ARCHITECT" as "ARCHITECT" | "DECORATOR" | "HOTEL",
   });
 
-
+  // Countdown timer for OTP resend
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const timer = setInterval(() => {
+      setResendCooldown((prev) => (prev <= 1 ? 0 : prev - 1));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [resendCooldown]);
 
   // Lock body scroll when menu overlay is open
   useEffect(() => {
@@ -100,14 +109,39 @@ export function ProClientView() {
 
     setIsLoading(true);
     setError(null);
+    setSuccessNotice(null);
     try {
       const res = await requestOtp(email);
       if (res.success) {
         setIsNewUser(!res.userExists);
         setStep("otp");
+        setResendCooldown(45);
+        setSuccessNotice(`Un code de sécurité a été envoyé à ${email}.`);
+      } else {
+        setError(res.error || "Erreur lors de l'envoi du code.");
       }
     } catch {
       setError("Erreur lors de l'envoi du code.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleResendOtp = async () => {
+    if (resendCooldown > 0 || isLoading || !email) return;
+
+    setIsLoading(true);
+    setError(null);
+    try {
+      const res = await requestOtp(email);
+      if (res.success) {
+        setResendCooldown(45);
+        setSuccessNotice(`Nouveau code envoyé par email à ${email}.`);
+      } else {
+        setError(res.error || "Erreur lors du renvoi du code.");
+      }
+    } catch {
+      setError("Erreur de connexion.");
     } finally {
       setIsLoading(false);
     }
@@ -274,6 +308,14 @@ export function ProClientView() {
                   </p>
                 </div>
 
+                {/* Success Banner */}
+                {successNotice && (
+                  <div className="p-2.5 rounded-lg bg-emerald-950/60 border border-emerald-600/40 text-emerald-200 text-xs font-sans flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+                    <span>{successNotice}</span>
+                  </div>
+                )}
+
                 {/* Error Banner */}
                 {error && (
                   <div className="p-3 rounded-lg bg-red-950/60 border border-red-800/60 text-red-300 text-xs font-sans">
@@ -313,7 +355,7 @@ export function ProClientView() {
                           disabled={isLoading}
                           className="w-full py-3.5 rounded-full bg-white text-[#1c1b19] hover:bg-[#e8e2d5] font-sans font-semibold text-xs tracking-wider uppercase transition-all hover:scale-[1.01] disabled:opacity-50 mt-4 shadow-xs"
                         >
-                          {isLoading ? "Envoi du code..." : "Continuer"}
+                          {isLoading ? "Envoi du code sécurisé..." : "Continuer"}
                         </button>
                       </motion.form>
                     )}
@@ -326,34 +368,63 @@ export function ProClientView() {
                         initial={{ opacity: 0, y: 8 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -8 }}
-                        className="space-y-5"
+                        className="space-y-4"
                       >
                         <div className="space-y-1.5">
-                          <label className="block text-[10px] font-sans uppercase tracking-widest text-white/60">
-                            Code de Sécurité à 6 chiffres *
-                          </label>
+                          <div className="flex items-center justify-between">
+                            <label className="block text-[10px] font-sans uppercase tracking-widest text-white/60">
+                              Code de Sécurité à 6 chiffres *
+                            </label>
+                            <span className="text-[10px] text-[#c5a880] uppercase tracking-wider font-mono">
+                              Valide 15 min
+                            </span>
+                          </div>
                           <input
                             type="text"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
+                            autoComplete="one-time-code"
+                            autoFocus
                             maxLength={6}
                             value={otpCode}
-                            onChange={(e) => setOtpCode(e.target.value)}
+                            onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
                             placeholder="000000"
                             required
-                            className="w-full bg-transparent border-b border-white/25 py-2.5 text-2xl tracking-[0.4em] text-white placeholder:text-white/20 focus:border-white outline-none transition-colors font-mono"
+                            className="w-full bg-transparent border-b border-white/25 py-2 text-2xl tracking-[0.45em] text-white placeholder:text-white/20 focus:border-white outline-none transition-colors font-mono text-center sm:text-left"
                           />
+                        </div>
+
+                        {/* Resend OTP Link & Spam Guidance */}
+                        <div className="flex items-center justify-between text-xs font-sans pt-0.5">
+                          <span className="text-white/45 text-[11px]">
+                            Code non reçu ? (Vérifiez spams)
+                          </span>
+                          <button
+                            type="button"
+                            onClick={handleResendOtp}
+                            disabled={resendCooldown > 0 || isLoading}
+                            className="text-[#c5a880] hover:text-white underline font-medium text-[11px] disabled:opacity-40 disabled:no-underline transition-colors cursor-pointer disabled:cursor-not-allowed"
+                          >
+                            {resendCooldown > 0 ? `Renvoyer (${resendCooldown}s)` : "Renvoyer le code"}
+                          </button>
                         </div>
 
                         <div className="flex gap-3 pt-2">
                           <button
                             type="button"
-                            onClick={() => setStep("email")}
+                            onClick={() => {
+                              setStep("email");
+                              setOtpCode("");
+                              setError(null);
+                              setSuccessNotice(null);
+                            }}
                             className="px-4 py-3 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-sans font-medium transition-colors"
                           >
                             Modifier
                           </button>
                           <button
                             type="submit"
-                            disabled={isLoading}
+                            disabled={isLoading || otpCode.length < 6}
                             className="flex-1 py-3 rounded-full bg-white text-[#1c1b19] hover:bg-[#e8e2d5] text-xs font-sans font-semibold tracking-wider uppercase transition-all disabled:opacity-50"
                           >
                             {isLoading ? "Vérification..." : "Valider mon accès"}
