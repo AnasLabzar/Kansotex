@@ -43,6 +43,22 @@ export function MobileAppBottomNav() {
   }, [pathname]);
 
   const isHome = pathname === `/${locale}` || pathname === "/" || pathname === `/${locale}/`;
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Appear only after user starts scrolling down past hero top
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 60) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // If on checkout, hide bottom nav to avoid cart distraction
   if (pathname?.includes("/checkout")) {
@@ -54,14 +70,20 @@ export function MobileAppBottomNav() {
       {/* ============================================================ */}
       {/* 1. ULTRA-LUXURY GLASS FLOATING MOBILE APP BAR                */}
       {/* ============================================================ */}
-      <nav
-        aria-label="Mobile Navigation"
-        className="fixed bottom-0 inset-x-0 z-40 md:hidden bg-[#181614]/94 backdrop-blur-2xl border-t border-white/10 text-[#f3eee6] shadow-[0_-8px_32px_rgba(0,0,0,0.5)] transition-all"
-        style={{
-          paddingBottom: "max(0.6rem, env(safe-area-inset-bottom, 0px))",
-        }}
-      >
-        <div className="max-w-md mx-auto px-3 pt-2 pb-1 flex items-center justify-between gap-1">
+      <AnimatePresence>
+        {isVisible && (
+          <motion.nav
+            aria-label="Mobile Navigation"
+            initial={{ y: "100%", opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: "100%", opacity: 0 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed bottom-0 inset-x-0 z-40 md:hidden bg-[#181614]/94 backdrop-blur-2xl border-t border-white/10 text-[#f3eee6] shadow-[0_-8px_32px_rgba(0,0,0,0.5)]"
+            style={{
+              paddingBottom: "max(0.6rem, env(safe-area-inset-bottom, 0px))",
+            }}
+          >
+            <div className="max-w-md mx-auto px-3 pt-2 pb-1 flex items-center justify-between gap-1">
           
           {/* TAB 1: HOME */}
           <Link
@@ -166,7 +188,9 @@ export function MobileAppBottomNav() {
           </Link>
 
         </div>
-      </nav>
+      </motion.nav>
+    )}
+  </AnimatePresence>
 
       {/* ============================================================ */}
       {/* 2. QUICK SEARCH BOTTOM SHEET MODAL (SLIDE UP)                */}
