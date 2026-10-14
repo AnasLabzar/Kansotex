@@ -19,7 +19,7 @@ export const brand = {
   activity: "Import-export, tapisserie et vente au détail de tissus et d'étoffes d'ameublement au mètre",
   city: "Marrakech",
   country: "Maroc",
-  instagram: "https://www.instagram.com/kansotex.maroc/",
+  instagram: "https://www.instagram.com/kansotex/",
   pinterest: "https://www.pinterest.com/kansotex",
   facebook: "https://www.facebook.com/",
 };

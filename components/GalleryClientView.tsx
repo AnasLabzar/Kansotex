@@ -42,7 +42,7 @@ const REELS_DATA: ReelItem[] = [
     description: "Mise en lumière et confection de voilages aériens sur double hauteur.",
     poster: "/gallery/Kansotex-indoor-riad-tissus-pinterest-1.webp",
     videoSrc: "/video-rideau-villa_kansotex.mp4",
-    instagramUrl: "https://www.instagram.com/kansotex.maroc/",
+    instagramUrl: "https://www.instagram.com/kansotex/",
     category: "Rideaux Sur-Mesure",
     duration: "0:35",
     views: "18.2K",
@@ -52,7 +52,7 @@ const REELS_DATA: ReelItem[] = [
     title: "Confection & Savoir-faire Textile — Notre Atelier",
     description: "Chaque métrage est inspecté, découpé et assemblé avec minutie à Marrakech.",
     poster: "/gallery/accompagnement-equipe-kansotex.webp",
-    instagramUrl: "https://www.instagram.com/kansotex.maroc/",
+    instagramUrl: "https://www.instagram.com/kansotex/",
     category: "Atelier Marrakech",
     duration: "0:48",
     views: "14.5K",
@@ -62,7 +62,7 @@ const REELS_DATA: ReelItem[] = [
     title: "Tissus Outdoor Déperlants — Rooftop & Terrasses",
     description: "Résistance aux UV et intempéries sans compromis sur l'élégance du toucher.",
     poster: "/gallery/Kansotex-outdoor-terasse-rooftop.webp",
-    instagramUrl: "https://www.instagram.com/kansotex.maroc/",
+    instagramUrl: "https://www.instagram.com/kansotex/",
     category: "Outdoor Luxe",
     duration: "0:28",
     views: "22.9K",
@@ -72,7 +72,7 @@ const REELS_DATA: ReelItem[] = [
     title: "Salon Médina & Velours Ciselé — Riad Privé",
     description: "Association de velours soyeux et de passementerie traditionnelle marocaine.",
     poster: "/gallery/Kansotex-indoor-living-room-pinterest.webp",
-    instagramUrl: "https://www.instagram.com/kansotex.maroc/",
+    instagramUrl: "https://www.instagram.com/kansotex/",
     category: "Indoor Privé",
     duration: "0:42",
     views: "16.1K",
@@ -82,7 +82,7 @@ const REELS_DATA: ReelItem[] = [
     title: "Linge de lit en satin de coton & lin lavé",
     description: "Confort 5 étoiles et douceur pour résidences de prestige et suites hôtelières.",
     poster: "/gallery/linge-de-lite-villa-marrakech-kansotex.webp",
-    instagramUrl: "https://www.instagram.com/kansotex.maroc/",
+    instagramUrl: "https://www.instagram.com/kansotex/",
     category: "Linge de Lit",
     duration: "0:31",
     views: "11.7K",
@@ -92,7 +92,7 @@ const REELS_DATA: ReelItem[] = [
     title: "Matières Nobles & Textures Jacquard",
     description: "Détails de tissages précieux et tombés souples sous la lumière de Marrakech.",
     poster: "/gallery/linen_fabric_closeup_1791052926029.jpg",
-    instagramUrl: "https://www.instagram.com/kansotex.maroc/",
+    instagramUrl: "https://www.instagram.com/kansotex/",
     category: "Matières & Étoffes",
     duration: "0:25",
     views: "19.8K",
@@ -174,6 +174,12 @@ export function GalleryClientView() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"all" | "reels" | "pins">("all");
   
+  // Dynamic Social Feeds State
+  const [reels, setReels] = useState<ReelItem[]>(REELS_DATA);
+  const [pins, setPins] = useState<PinItem[]>(PINS_DATA);
+  const [isLiveReels, setIsLiveReels] = useState(false);
+  const [isLivePins, setIsLivePins] = useState(false);
+
   // State for "En savoir plus" pagination
   const INITIAL_REELS = 4;
   const INITIAL_PINS = 4;
@@ -187,6 +193,57 @@ export function GalleryClientView() {
   const modalVideoRef = useRef<HTMLVideoElement>(null);
 
   const t = useTranslations("Gallery");
+
+  // Fetch Live Feeds from Pinterest RSS API & Instagram API on mount
+  useEffect(() => {
+    let isMounted = true;
+
+    async function fetchLiveFeeds() {
+      // 1. Pinterest Live Feed
+      try {
+        const pRes = await fetch("/api/social/pinterest");
+        if (pRes.ok) {
+          const pData = await pRes.json();
+          if (pData?.success && Array.isArray(pData.pins) && pData.pins.length > 0 && isMounted) {
+            const mappedPins: PinItem[] = pData.pins.map((p: any) => ({
+              id: p.id,
+              title: p.title || "Inspiration Kansotex",
+              board: p.description || "Moodboard Marrakech",
+              image: p.image,
+              pinUrl: p.pinUrl || "https://www.pinterest.com/kansotex/",
+              category: "Pinterest",
+            }));
+            setPins(mappedPins);
+            setIsLivePins(true);
+          }
+        }
+      } catch (err) {
+        console.warn("[Gallery] Could not fetch live Pinterest pins:", err);
+      }
+
+      // 2. Instagram Live Feed
+      try {
+        const igRes = await fetch("/api/social/instagram");
+        if (igRes.ok) {
+          const igData = await igRes.json();
+          if (igData?.success && Array.isArray(igData.reels) && igData.reels.length > 0 && isMounted) {
+            setReels(igData.reels);
+            if (igData.isLive) {
+              setIsLiveReels(true);
+            }
+          }
+        }
+      } catch (err) {
+        console.warn("[Gallery] Could not fetch live Instagram reels:", err);
+      }
+    }
+
+    fetchLiveFeeds();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // Lock body scroll when menu or video modal is open
   useEffect(() => {
@@ -230,11 +287,11 @@ export function GalleryClientView() {
     }
   }, []);
 
-  const visibleReels = REELS_DATA.slice(0, visibleReelsCount);
-  const hasMoreReels = visibleReelsCount < REELS_DATA.length;
+  const visibleReels = reels.slice(0, visibleReelsCount);
+  const hasMoreReels = visibleReelsCount < reels.length;
 
-  const visiblePins = PINS_DATA.slice(0, visiblePinsCount);
-  const hasMorePins = visiblePinsCount < PINS_DATA.length;
+  const visiblePins = pins.slice(0, visiblePinsCount);
+  const hasMorePins = visiblePinsCount < pins.length;
 
   const handleOpenReel = (reel: ReelItem) => {
     if (reel.videoSrc) {
@@ -360,11 +417,19 @@ export function GalleryClientView() {
                   </svg>
                 </div>
                 <div>
-                  <h2 className="font-termina text-[13px] sm:text-[15px] font-bold uppercase tracking-[0.15em] text-[#1c1b19]">
-                    {removeAccents(t("reelsTitle"))}
-                  </h2>
+                  <div className="flex items-center gap-2.5">
+                    <h2 className="font-termina text-[13px] sm:text-[15px] font-bold uppercase tracking-[0.15em] text-[#1c1b19]">
+                      {removeAccents(t("reelsTitle"))}
+                    </h2>
+                    {isLiveReels && (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/80 text-[9px] font-termina font-bold tracking-wider">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                        Live Feed
+                      </span>
+                    )}
+                  </div>
                   <p className="font-sans text-[11px] sm:text-xs text-[#1c1b19]/55 mt-0.5">
-                    {t("reelsSubtitle")} · <span className="font-medium text-[#1c1b19]/80">@kansotex.maroc</span>
+                    {t("reelsSubtitle")} · <span className="font-medium text-[#1c1b19]/80">@kansotex</span>
                   </p>
                 </div>
               </div>
@@ -464,7 +529,7 @@ export function GalleryClientView() {
               {hasMoreReels ? (
                 <button
                   type="button"
-                  onClick={() => setVisibleReelsCount((prev) => Math.min(prev + 4, REELS_DATA.length))}
+                  onClick={() => setVisibleReelsCount((prev) => Math.min(prev + 4, reels.length))}
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full bg-[#1c1b19] text-white font-termina text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-[#34322e] transition-all shadow-sm cursor-pointer"
                 >
                   <span>{removeAccents(t("loadMoreReels"))}</span>
@@ -528,9 +593,17 @@ export function GalleryClientView() {
                   </svg>
                 </div>
                 <div>
-                  <h2 className="font-termina text-[13px] sm:text-[15px] font-bold uppercase tracking-[0.15em] text-[#1c1b19]">
-                    {removeAccents(t("pinsTitle"))}
-                  </h2>
+                  <div className="flex items-center gap-2.5">
+                    <h2 className="font-termina text-[13px] sm:text-[15px] font-bold uppercase tracking-[0.15em] text-[#1c1b19]">
+                      {removeAccents(t("pinsTitle"))}
+                    </h2>
+                    {isLivePins && (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/80 text-[9px] font-termina font-bold tracking-wider">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                        Synchronisé ({pins.length} épingles)
+                      </span>
+                    )}
+                  </div>
                   <p className="font-sans text-[11px] sm:text-xs text-[#1c1b19]/55 mt-0.5">
                     {t("pinsSubtitle")} · <span className="font-medium text-[#1c1b19]/80">@kansotex</span>
                   </p>
@@ -562,7 +635,8 @@ export function GalleryClientView() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.4, delay: index * 0.05 }}
-                    className="group relative rounded-2xl overflow-hidden bg-[#e8e4db] border border-[#ded8cb]/80 flex flex-col shadow-sm hover:shadow-md transition-all duration-300"
+                    onClick={() => window.open(pin.pinUrl, "_blank", "noopener,noreferrer")}
+                    className="group relative rounded-2xl overflow-hidden bg-[#e8e4db] border border-[#ded8cb]/80 flex flex-col shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer"
                   >
                     <div className="relative aspect-[4/5] overflow-hidden bg-[#ded8cb]">
                       <Image
@@ -617,7 +691,7 @@ export function GalleryClientView() {
               {hasMorePins ? (
                 <button
                   type="button"
-                  onClick={() => setVisiblePinsCount((prev) => Math.min(prev + 4, PINS_DATA.length))}
+                  onClick={() => setVisiblePinsCount((prev) => Math.min(prev + 4, pins.length))}
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full bg-[#1c1b19] text-white font-termina text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-[#34322e] transition-all shadow-sm cursor-pointer"
                 >
                   <span>{removeAccents(t("loadMorePins"))}</span>
@@ -727,7 +801,7 @@ export function GalleryClientView() {
                       <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
                     </svg>
                   </div>
-                  <span className="font-termina text-[10px] font-bold uppercase tracking-wider">@kansotex.maroc</span>
+                  <span className="font-termina text-[10px] font-bold uppercase tracking-wider">@kansotex</span>
                 </div>
 
                 <div className="flex items-center gap-2 mr-12">
