@@ -77,7 +77,12 @@ export function Footer() {
               })}
               <li>
                 <Link href="/gallery" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">
-                  {removeAccents((t as any)("navGallery"))}
+                  {removeAccents((t as any)("navGallery") || "Galerie & Réalisations")}
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">
+                  {removeAccents("Le Journal")}
                 </Link>
               </li>
             </ul>

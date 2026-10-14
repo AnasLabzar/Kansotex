@@ -133,6 +133,7 @@ export const pillars = [
 export const nav = [
   { href: "/univers", label: "Nos univers" },
   { href: "/savoir-faire", label: "Notre savoir-faire" },
+  { href: "/blog", label: "Le Journal" },
   { href: "/a-propos", label: "A propos de nous" },
   { href: "/contact", label: "Nous contacter" },
 ];

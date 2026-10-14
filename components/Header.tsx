@@ -87,6 +87,7 @@ export function Header({ overlay = false }: HeaderProps) {
                 {nav.map((item) => {
                   let translationKey = "navUnivers";
                   if (item.href === "/savoir-faire") translationKey = "navSavoirFaire";
+                  if (item.href === "/blog") translationKey = "navJournal";
                   if (item.href === "/a-propos") translationKey = "navAbout";
                   if (item.href === "/contact") translationKey = "navContact";
                   return (

@@ -90,6 +90,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       image: `${BASE_URL}/gallery/Kansotex-indoor-riad-tissus-pinterest-1.webp`,
     },
     {
+      path: "/blog",
+      priority: 0.90,
+      changeFrequency: "daily",
+      image: `${BASE_URL}/gallery/Kansotex-outdoor-terasse-rooftop.webp`,
+    },
+    {
       path: "/mentions-legales",
       priority: 0.30,
       changeFrequency: "yearly",
@@ -221,6 +227,39 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         },
       });
     }
+  }
+
+  // ---------------------------------------------------------------------------
+  // 4. Dynamic Blog & Editorial Articles
+  // ---------------------------------------------------------------------------
+  try {
+    const { getAutomatedPublishingSchedule } = await import("@/lib/blog-automation");
+    const blogPosts = getAutomatedPublishingSchedule();
+    for (const post of blogPosts) {
+      const path = `/blog/${post.slug}`;
+      const imgUrl = post.coverImage.startsWith("http")
+        ? post.coverImage
+        : `${BASE_URL}${post.coverImage.startsWith("/") ? "" : "/"}${post.coverImage}`;
+
+      for (const locale of LOCALES) {
+        entries.push({
+          url: `${BASE_URL}/${locale}${path}`,
+          lastModified: new Date(post.publishedAt),
+          changeFrequency: "weekly",
+          priority: 0.85,
+          images: [imgUrl],
+          alternates: {
+            languages: {
+              fr: `${BASE_URL}/fr${path}`,
+              en: `${BASE_URL}/en${path}`,
+              "x-default": `${BASE_URL}/fr${path}`,
+            },
+          },
+        });
+      }
+    }
+  } catch (err) {
+    console.warn("Sitemap: Could not load blog posts:", err);
   }
 
   return entries;
