@@ -72,51 +72,15 @@ export function Header({ overlay = false }: HeaderProps) {
     <>
       <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${bar} ${headerTransform}`}>
         {compact ? (
-          isHome ? (
-            /* --- HOME PAGE COMPACT HEADER --- */
-            <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 flex items-center justify-between gap-4 py-2 w-full overflow-hidden">
-              <Link href={`/${locale}`} aria-label="Kansotex" className="-ml-2 md:-ml-3 shrink-0">
-                <Image 
-                  src="/KANSOTEX-marque-Black.png" 
-                  alt="Kansotex" 
-                  width={500} 
-                  height={120} 
-                  className="w-[160px] sm:w-[200px] h-auto md:w-auto md:h-[70px] object-contain" 
-                  priority 
-                />
-              </Link>
-              <nav className="hidden items-center gap-8 md:flex">
-                {nav.map((item) => {
-                  let translationKey = "navUnivers";
-                  if (item.href === "/savoir-faire") translationKey = "navSavoirFaire";
-                  if (item.href === "/blog") translationKey = "navJournal";
-                  if (item.href === "/a-propos") translationKey = "navAbout";
-                  if (item.href === "/contact") translationKey = "navContact";
-                  const localizedHref = `/${locale}${item.href}`;
-                  return (
-                    <NavItem
-                      key={item.href}
-                      href={localizedHref}
-                      label={(t as any)(translationKey)}
-                      active={pathname.startsWith(localizedHref) || pathname.startsWith(item.href)}
-                    />
-                  );
-                })}
-              </nav>
-              <div className="flex items-center gap-3">
-                <NavbarRightActions />
-                <MenuButton open={open} onClick={() => { setMenuOrigin("right"); setOpen((v) => !v); }} />
-              </div>
-            </div>
-          ) : (
-            /* --- OTHER PAGES MINIMAL HEADER --- */
-            <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 flex items-center justify-between h-[70px] relative w-full">
-              {/* Left: Burger Menu (Always visible) */}
+          <>
+            {/* 1. MOBILE COMPACT HEADER (All pages including Home): Perfect symmetry: [☰] Left, [KANSOTEX] Center, [👤] Right */}
+            <div className="flex md:hidden max-w-7xl mx-auto px-5 items-center justify-between h-[70px] relative w-full">
+              {/* Left: Burger Menu */}
               <div className="flex items-center justify-start z-10">
                 <MenuButton open={open} onClick={() => { setMenuOrigin("left"); setOpen((v) => !v); }} forceVisible={true} />
               </div>
 
-              {/* Center: Logo */}
+              {/* Center: Logo (Perfect Absolute Centering) */}
               <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
                 <Link href={`/${locale}`} aria-label="Kansotex" className="pointer-events-auto shrink-0 flex items-center justify-center">
                   <Image 
@@ -130,12 +94,75 @@ export function Header({ overlay = false }: HeaderProps) {
                 </Link>
               </div>
 
-              {/* Right: Actions */}
+              {/* Right: Actions (Account Icon only on mobile) */}
               <div className="flex items-center justify-end z-10">
                 <NavbarRightActions />
               </div>
             </div>
-          )
+
+            {/* 2. DESKTOP HEADER */}
+            {isHome ? (
+              /* --- HOME PAGE DESKTOP HEADER --- */
+              <div className="hidden md:flex max-w-7xl mx-auto px-6 lg:px-12 items-center justify-between gap-4 py-2 w-full overflow-hidden">
+                <Link href={`/${locale}`} aria-label="Kansotex" className="shrink-0">
+                  <Image 
+                    src="/KANSOTEX-marque-Black.png" 
+                    alt="Kansotex" 
+                    width={500} 
+                    height={120} 
+                    className="w-auto h-[65px] lg:h-[70px] object-contain" 
+                    priority 
+                  />
+                </Link>
+                <nav className="flex items-center gap-8">
+                  {nav.map((item) => {
+                    let translationKey = "navUnivers";
+                    if (item.href === "/savoir-faire") translationKey = "navSavoirFaire";
+                    if (item.href === "/blog") translationKey = "navJournal";
+                    if (item.href === "/a-propos") translationKey = "navAbout";
+                    if (item.href === "/contact") translationKey = "navContact";
+                    const localizedHref = `/${locale}${item.href}`;
+                    return (
+                      <NavItem
+                        key={item.href}
+                        href={localizedHref}
+                        label={(t as any)(translationKey)}
+                        active={pathname.startsWith(localizedHref) || pathname.startsWith(item.href)}
+                      />
+                    );
+                  })}
+                </nav>
+                <div className="flex items-center gap-3">
+                  <NavbarRightActions />
+                  <MenuButton open={open} onClick={() => { setMenuOrigin("right"); setOpen((v) => !v); }} />
+                </div>
+              </div>
+            ) : (
+              /* --- OTHER PAGES DESKTOP HEADER --- */
+              <div className="hidden md:flex max-w-7xl mx-auto px-6 lg:px-12 items-center justify-between h-[70px] relative w-full">
+                <div className="flex items-center justify-start z-10">
+                  <MenuButton open={open} onClick={() => { setMenuOrigin("left"); setOpen((v) => !v); }} forceVisible={true} />
+                </div>
+
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+                  <Link href={`/${locale}`} aria-label="Kansotex" className="pointer-events-auto shrink-0 flex items-center justify-center">
+                    <Image 
+                      src="/KANSOTEX-marque-Black.png" 
+                      alt="Kansotex" 
+                      width={500} 
+                      height={120} 
+                      className="w-[160px] h-auto object-contain" 
+                      priority 
+                    />
+                  </Link>
+                </div>
+
+                <div className="flex items-center justify-end z-10">
+                  <NavbarRightActions />
+                </div>
+              </div>
+            )}
+          </>
         ) : (
           /* --- TRANSPARENT OVERLAY (Usually only on Home Top) --- */
           <>
