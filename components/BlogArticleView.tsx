@@ -151,8 +151,8 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
           </span>
 
           {/* Title */}
-          <h1 className="font-termina text-2xl sm:text-4xl md:text-5xl font-bold uppercase leading-[1.2] tracking-tight text-[#1c1b19]">
-            {removeAccents(isEn ? post.titleEn : post.title)}
+          <h1 className="font-sans text-2xl sm:text-4xl md:text-5xl font-extrabold uppercase leading-[1.2] tracking-[0.04em] text-[#1c1b19]">
+            {isEn ? post.titleEn : post.title}
           </h1>
 
           {/* Excerpt */}
@@ -421,8 +421,8 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
             {/* Structured Sections */}
             {post.sections.map((sec) => (
               <section key={sec.id} id={sec.id} className="scroll-mt-28 space-y-5">
-                <h2 className="font-termina text-xl sm:text-2xl font-bold uppercase tracking-tight text-[#1c1b19] border-b border-[#1c1b19]/10 pb-3">
-                  {removeAccents(sec.heading)}
+                <h2 className="font-sans text-xl sm:text-2xl font-extrabold uppercase tracking-tight text-[#1c1b19] border-b border-[#1c1b19]/10 pb-3">
+                  {sec.heading}
                 </h2>
 
                 <RichArticleContent content={sec.content} />
@@ -497,8 +497,8 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
                     DOSSIER TECHNIQUE
                   </span>
                 </div>
-                <h3 className="font-termina text-base sm:text-lg font-bold uppercase text-[#1c1b19] mb-6">
-                  {removeAccents(post.technicalTable.caption)}
+                <h3 className="font-sans text-base sm:text-lg font-bold uppercase text-[#1c1b19] mb-6">
+                  {post.technicalTable.caption}
                 </h3>
 
                 <div className="overflow-x-auto">
@@ -536,8 +536,8 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
                 <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-[#B8860B] block mb-2">
                   ÉTOFFES MENTIONNÉES DANS CE GUIDE
                 </span>
-                <h3 className="font-termina text-lg sm:text-xl font-bold uppercase mb-6">
-                  {removeAccents("Sélection de Matières Disponibles en Stock à Marrakech")}
+                <h3 className="font-sans text-lg sm:text-xl font-bold uppercase mb-6">
+                  {isEn ? "Sélection de Matières Disponibles en Stock à Marrakech" : "Sélection de Matières Disponibles en Stock à Marrakech"}
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -587,8 +587,8 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
                 <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#B8860B] block mb-2">
                   FOIRE AUX QUESTIONS
                 </span>
-                <h3 className="font-termina text-lg sm:text-xl font-bold uppercase mb-6">
-                  {removeAccents("Questions Fréquentes de Nos Clients")}
+                <h3 className="font-sans text-lg sm:text-xl font-bold uppercase mb-6">
+                  {isEn ? "Questions Fréquentes de Nos Clients" : "Questions Fréquentes de Nos Clients"}
                 </h3>
 
                 <div className="space-y-3">
@@ -676,8 +676,8 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
               <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-[#B8860B] block mb-2">
                 LECTURES COMPLÉMENTAIRES
               </span>
-              <h3 className="font-termina text-xl sm:text-3xl font-bold uppercase text-[#1c1b19]">
-                {removeAccents(isEn ? "Continue Your Discovery" : "Poursuivre la Découverte")}
+              <h3 className="font-sans text-xl sm:text-3xl font-extrabold uppercase text-[#1c1b19]">
+                {isEn ? "Continue Your Discovery" : "Poursuivre la Découverte"}
               </h3>
             </div>
 
@@ -701,8 +701,8 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
                       <span className="text-[10px] uppercase tracking-wider text-[#B8860B] font-semibold block mb-2">
                         {rel.category}
                       </span>
-                      <h4 className="font-termina text-sm font-bold uppercase leading-snug line-clamp-2 group-hover:text-[#B8860B] transition-colors">
-                        {removeAccents(isEn ? rel.titleEn : rel.title)}
+                      <h4 className="font-sans text-sm font-bold uppercase leading-snug line-clamp-2 group-hover:text-[#B8860B] transition-colors">
+                        {isEn ? rel.titleEn : rel.title}
                       </h4>
                       <p className="mt-2 text-xs font-light text-[#1c1b19]/70 line-clamp-2">
                         {isEn ? rel.excerptEn : rel.excerpt}

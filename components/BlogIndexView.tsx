@@ -123,8 +123,8 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
                   {isEn ? "EDITORIAL GAZETTE & ARCHITECTURE" : "LE JOURNAL KANSOTEX · HAUTE FACTURE"}
                 </span>
               </div>
-              <h1 className="font-termina text-2xl sm:text-4xl md:text-5xl font-bold uppercase tracking-tight text-[#1c1b19] leading-tight">
-                {removeAccents(isEn ? "The Textile Gazette" : "Carnet d'Étoffes & Savoir-Faire")}
+              <h1 className="font-sans text-2xl sm:text-4xl md:text-5xl font-extrabold uppercase tracking-[0.06em] sm:tracking-[0.1em] text-[#1c1b19] leading-tight">
+                {isEn ? "The Textile Gazette" : "Carnet d'Étoffes & Savoir-Faire"}
               </h1>
               <p className="mt-2 text-xs sm:text-sm font-light text-[#1c1b19]/70 max-w-2xl leading-relaxed">
                 {isEn
@@ -146,10 +146,13 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
           </div>
 
           {/* SECONDARY CONTROLS BAR: CATEGORIES + SEARCH + PRO TOOLS BUTTON */}
-          <div className="mt-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div className="mt-8 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#1c1b19]/10 pb-6">
             
             {/* Category Filter Pills */}
-            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+            <div 
+              className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 flex-1 min-w-0 md:flex-wrap md:overflow-visible"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
               {BLOG_CATEGORIES.map((cat) => {
                 const isActive = selectedCategory === cat.slug;
                 return (
@@ -236,8 +239,8 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
                           COCKPIT ÉDITORIAL ACTIF · 3 BOTS COORDONNÉS
                         </span>
                       </div>
-                      <h3 className="font-termina text-base sm:text-xl font-bold uppercase text-white">
-                        {removeAccents("Console de Stratégie & Intelligence Éditoriale")}
+                      <h3 className="font-sans text-base sm:text-xl font-bold uppercase tracking-wide text-white">
+                        Console de Stratégie & Intelligence Éditoriale
                       </h3>
                       <p className="text-xs text-white/60 font-light mt-0.5">
                         Supervision du pipeline : Radar concurrentiel, plume artisanale 100% humaine et curation visuelle 8K.
@@ -486,7 +489,7 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
                 <div>
                   {/* Section Title */}
                   <div className="flex items-center justify-between mb-5 px-1">
-                    <h2 className="font-termina text-xl sm:text-2xl font-bold text-[#1c1b19] tracking-tight">
+                    <h2 className="font-sans text-xl sm:text-2xl font-extrabold text-[#1c1b19] tracking-tight">
                       {isEn ? "Latest post" : "Derniers articles"}
                     </h2>
                     <span className="text-[11px] font-semibold uppercase tracking-wider text-[#B8860B]">
@@ -543,7 +546,7 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
             {/* Header with Title on Left, Navigation Arrows on Right */}
             <div className="flex items-center justify-between mb-8 sm:mb-10 px-1">
               <div>
-                <h2 className="font-termina text-xl sm:text-2xl font-bold text-[#1c1b19] tracking-tight">
+                <h2 className="font-sans text-xl sm:text-2xl font-extrabold text-[#1c1b19] tracking-tight">
                   {isEn ? "Founders corner" : "Carnet d'Atelier & Savoir-Faire"}
                 </h2>
                 <p className="text-xs sm:text-sm text-[#1c1b19]/60 font-light mt-1">
@@ -700,12 +703,10 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
             <span className="text-[10px] font-semibold tracking-[0.25em] uppercase text-[#B8860B] block mb-2.5">
               {isEn ? "THE KANSOTEX DISPATCH & B2B" : "LE CARNET D'ÉTOFFES · PRESCRIPTION"}
             </span>
-            <h3 className="font-termina text-xl sm:text-2xl md:text-3xl font-bold uppercase tracking-tight leading-snug">
-              {removeAccents(
-                isEn
-                  ? "Bespoke Fabric Trends & Architecture Dossiers"
-                  : "Dossiers de Matière, Normes Textiles & Inspirations"
-              )}
+            <h3 className="font-sans text-xl sm:text-2xl md:text-3xl font-extrabold uppercase tracking-tight leading-snug">
+              {isEn
+                ? "Bespoke Fabric Trends & Architecture Dossiers"
+                : "Dossiers de Matière, Normes Textiles & Inspirations"}
             </h3>
             <p className="mt-3 text-xs sm:text-sm font-light text-[#faf8f5]/70 leading-relaxed">
               {isEn

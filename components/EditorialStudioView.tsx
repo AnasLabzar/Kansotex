@@ -60,12 +60,10 @@ export function EditorialStudioView({ locale }: EditorialStudioViewProps) {
             </Link>
           </div>
 
-          <h1 className="font-termina text-3xl sm:text-5xl font-bold uppercase tracking-tight text-white max-w-4xl leading-[1.15]">
-            {removeAccents(
-              isEn
-                ? "Autonomous Editorial Studio & Market Radar"
-                : "Studio Éditorial Autonome & Radar Concurrentiel"
-            )}
+          <h1 className="font-sans text-3xl sm:text-5xl font-extrabold uppercase tracking-tight text-white max-w-4xl leading-[1.15]">
+            {isEn
+              ? "Autonomous Editorial Studio & Market Radar"
+              : "Studio Éditorial Autonome & Radar Concurrentiel"}
           </h1>
 
           <p className="mt-4 text-sm sm:text-base font-light text-white/70 max-w-3xl leading-relaxed">
@@ -261,8 +259,8 @@ export function EditorialStudioView({ locale }: EditorialStudioViewProps) {
                 <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-[#B8860B] block mb-1">
                   CENTRE DE COMMANDE ÉDITORIAL
                 </span>
-                <h3 className="font-termina text-xl sm:text-2xl font-bold uppercase text-white">
-                  {removeAccents("Déclencher le Pipeline des 3 Bots")}
+                <h3 className="font-sans text-xl sm:text-2xl font-extrabold uppercase text-white">
+                  {isEn ? "Trigger 3-Bot Pipeline" : "Déclencher le Pipeline des 3 Bots"}
                 </h3>
                 <p className="text-xs font-light text-white/60 mt-1">
                   Sélectionnez une opportunité stratégique identifiée par le Marketing Director pour activer la plume de l'atelier.
@@ -461,8 +459,8 @@ export function EditorialStudioView({ locale }: EditorialStudioViewProps) {
       {activeTab === "competitors" && (
         <section className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 py-12 sm:py-16">
           <div className="rounded-3xl bg-white/[0.02] border border-white/10 p-6 sm:p-10 overflow-hidden">
-            <h3 className="font-termina text-xl font-bold uppercase text-white mb-6">
-              {removeAccents("Matrice d'Attaque Concurrentielle (D'après le Rapport SEO)")}
+            <h3 className="font-sans text-xl font-bold uppercase text-white mb-6">
+              Matrice d'Attaque Concurrentielle (D'après le Rapport SEO)
             </h3>
 
             <div className="overflow-x-auto">
@@ -532,8 +530,8 @@ export function EditorialStudioView({ locale }: EditorialStudioViewProps) {
                 <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-[#B8860B] block mb-1">
                   CADENCE D'AUTOMATION CALIBRÉE
                 </span>
-                <h3 className="font-termina text-xl font-bold uppercase text-white">
-                  {removeAccents("Calendrier de Publication (Tous les 2 à 4 Jours)")}
+                <h3 className="font-sans text-xl font-bold uppercase text-white">
+                  Calendrier de Publication (Tous les 2 à 4 Jours)
                 </h3>
               </div>
 
