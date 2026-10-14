@@ -14,7 +14,7 @@ export function PageHero({
 }) {
   return (
     <section
-      className="relative flex min-h-[58vh] flex-col justify-end overflow-hidden pt-28 pb-16 md:min-h-[68vh]"
+      className="relative flex min-h-[68vh] md:min-h-[72vh] flex-col justify-end overflow-hidden pt-28 pb-16"
       style={{
         backgroundColor: tone,
         backgroundImage: image

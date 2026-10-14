@@ -442,7 +442,7 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
                 <div className="lg:col-span-7 flex flex-col">
                   <Link
                     href={`/${locale}/blog/${leadPost.slug}`}
-                    className="group relative flex-1 min-h-[400px] sm:min-h-[480px] lg:min-h-[520px] rounded-[32px] overflow-hidden border border-[#1c1b19]/10 shadow-[0_8px_30px_rgba(28,27,25,0.06)] hover:shadow-[0_20px_48px_rgba(28,27,25,0.14)] transition-all duration-700 flex flex-col justify-end"
+                    className="group relative flex-1 min-h-[480px] sm:min-h-[520px] lg:min-h-[560px] rounded-[32px] overflow-hidden border border-[#1c1b19]/10 shadow-[0_8px_30px_rgba(28,27,25,0.06)] hover:shadow-[0_20px_48px_rgba(28,27,25,0.14)] transition-all duration-700 flex flex-col justify-end"
                   >
                     {/* Background Master Architectural Image */}
                     <Image

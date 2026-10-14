@@ -116,7 +116,7 @@ export function ContactClientView() {
         {/* ============================================================ */}
         {/* 2. THE SIGNATURE HERO CARD WITH GOOGLE MAPS (Adapted Colors) */}
         {/* ============================================================ */}
-        <section className="relative w-full aspect-[16/10] sm:aspect-[21/10] mb-8 sm:mb-12 group">
+        <section className="relative w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-[21/10] min-h-[380px] sm:min-h-[460px] mb-8 sm:mb-12 group">
           {/* Rounded Hero Map Wrapper */}
           <div className="absolute inset-0 rounded-[26px] sm:rounded-[36px] overflow-hidden bg-[#e8e2d5] border-t border-x border-[#e8e4db] shadow-xs">
             {/* Google Maps iframe with adaptable cream/sepia luxury filter */}

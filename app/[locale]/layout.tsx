@@ -13,6 +13,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
+import { MobileAppBottomNav } from "@/components/MobileAppBottomNav";
 
 export const dynamic = 'force-dynamic';
 
@@ -180,7 +181,7 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-cream text-ink">
+      <body className="min-h-full flex flex-col bg-cream text-ink pb-20 md:pb-0">
         <GoogleAnalytics />
         <NextIntlClientProvider messages={messages}>
           <SessionProvider session={session}>
@@ -190,6 +191,7 @@ export default async function RootLayout({
               {children}
               <Footer />
               <CartDrawer />
+              <MobileAppBottomNav />
             </CartProvider>
           </CurrencyProvider>
           </SessionProvider>

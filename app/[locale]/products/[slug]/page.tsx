@@ -161,7 +161,7 @@ export default async function ProductPage(props: { params: Promise<{ locale: str
       <div className="flex flex-col lg:flex-row min-h-screen pt-[70px]">
         
         {/* Left Side: Product Image (Edge-to-Edge full bleed) */}
-        <div className="w-full lg:w-[50%] xl:w-[52%] relative h-[60vh] lg:h-[calc(100vh-70px)] lg:sticky lg:top-[70px]">
+        <div className="w-full lg:w-[50%] xl:w-[52%] relative h-[72vh] sm:h-[78vh] min-h-[480px] lg:h-[calc(100vh-70px)] lg:sticky lg:top-[70px]">
           <ImageGallery 
             mainImage={product.image || "/gallery/Kansotex-indoor-riad-tissus-pinterest-1.png"}
             gallery={[...(product.gallery || [])]}

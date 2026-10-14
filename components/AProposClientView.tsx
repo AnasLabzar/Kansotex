@@ -109,7 +109,7 @@ export function AProposClientView() {
         {/* ============================================================ */}
         {/* 2. THE ARCHITECTURAL HERO CARD (Exact Reference Design) */}
         {/* ============================================================ */}
-        <section className="relative w-full aspect-[16/11] sm:aspect-[21/10] mb-8 sm:mb-12 rounded-[28px] sm:rounded-[38px] overflow-hidden bg-[#24211d] border border-[#e8e4db] group">
+        <section className="relative w-full aspect-[4/3] sm:aspect-[16/11] lg:aspect-[21/10] min-h-[380px] sm:min-h-[460px] mb-8 sm:mb-12 rounded-[28px] sm:rounded-[38px] overflow-hidden bg-[#24211d] border border-[#e8e4db] group">
           {/* Full Background Image */}
           <Image
             src="/gallery/linge-de-maison-indoor-villa-kansotex.jpg"

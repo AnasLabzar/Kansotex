@@ -334,7 +334,7 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
 
       {/* Cover Image */}
       <div className="max-w-5xl mx-auto px-6 sm:px-8 -mt-2 sm:-mt-4">
-        <div className="relative aspect-[16/9] sm:aspect-[21/9] rounded-2xl overflow-hidden shadow-lg border border-[#1c1b19]/10 group">
+        <div className="relative aspect-[4/3] sm:aspect-[16/9] lg:aspect-[21/9] min-h-[340px] sm:min-h-[420px] rounded-2xl overflow-hidden shadow-lg border border-[#1c1b19]/10 group">
           <Image
             src={post.coverImage}
             alt={post.coverAlt}

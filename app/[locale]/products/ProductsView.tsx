@@ -52,7 +52,7 @@ export function ProductsView({ products, isPro, discount }: { products: Product[
   return (
     <>
       {/* 1. Dynamic Hero Header Section */}
-      <div className="w-full h-[36vh] sm:h-[45vh] md:h-[50vh] relative overflow-hidden bg-[#2a3c24]">
+      <div className="w-full h-[46vh] sm:h-[50vh] md:h-[54vh] min-h-[350px] relative overflow-hidden bg-[#2a3c24]">
         <Image 
           key={heroContent.image}
           src={heroContent.image} 

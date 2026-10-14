@@ -227,7 +227,7 @@ export function SavoirFaireClientView() {
         {/* ============================================================ */}
         {/* 2. THE HERO CARD WITH BOTTOM NOTCH CUTOUT BUTTON (Signature Kansotex) */}
         {/* ============================================================ */}
-        <section className="relative w-full aspect-[16/10] sm:aspect-[21/10] mb-8 sm:mb-10 group">
+        <section className="relative w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-[21/10] min-h-[380px] sm:min-h-[460px] mb-8 sm:mb-10 group">
           <div className="absolute inset-0 rounded-[26px] sm:rounded-[36px] overflow-hidden bg-[#24211d] border-t border-x border-[#e8e4db]">
             <Image
               src="/gallery/Kansotex-outdoor-terasse-rooftop.jpg"

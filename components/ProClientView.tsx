@@ -243,7 +243,7 @@ export function ProClientView() {
         {/* ============================================================ */}
         {/* 2. THE GRAND ARCHITECTURAL HERO WITH BOTTOM CUTOUT LOGIN CARD */}
         {/* ============================================================ */}
-        <section className="relative w-full aspect-[16/11] sm:aspect-[21/10] min-h-[500px] sm:min-h-[540px] mb-48 sm:mb-56 lg:mb-64 group">
+        <section className="relative w-full aspect-[4/3] sm:aspect-[16/11] lg:aspect-[21/10] min-h-[540px] sm:min-h-[560px] mb-48 sm:mb-56 lg:mb-64 group">
           {/* Rounded Hero Image Wrapper */}
           <div className="absolute inset-0 rounded-[26px] sm:rounded-[36px] overflow-hidden bg-[#24211d] border-t border-x border-[#e8e4db] shadow-xs">
             <Image

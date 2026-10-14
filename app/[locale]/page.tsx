@@ -157,7 +157,7 @@ export default async function Home() {
               <StaggerItem key={item.slug}>
                 <Link
                   href={`/univers/${item.slug}`}
-                  className="group relative flex min-h-[52vh] overflow-hidden"
+                  className="group relative flex min-h-[60vh] sm:min-h-[52vh] overflow-hidden"
                 >
                   <Image
                     src={item.image}
@@ -167,7 +167,7 @@ export default async function Home() {
                     sizes="50vw"
                   />
                   <div className="absolute inset-0 bg-[#1c1b19]/35 transition-colors duration-700 group-hover:bg-[#1c1b19]/25" />
-                  <div className="relative z-10 flex h-full w-full min-h-[52vh] flex-col items-center justify-center px-6 text-center text-[#f3eee6]">
+                  <div className="relative z-10 flex h-full w-full min-h-[60vh] sm:min-h-[52vh] flex-col items-center justify-center px-6 text-center text-[#f3eee6]">
                     <p className="font-termina text-[10px] font-bold uppercase tracking-[0.4em]">{removeAccents(kicker)}</p>
                     <h3 className="font-termina mt-4 text-3xl font-bold uppercase tracking-widest md:text-4xl">{removeAccents(t(("universe_" + item.slug) as any))}</h3>
                   </div>

@@ -225,7 +225,7 @@ export function NavbarRightActions({
         ref={searchWrapperRef}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        className={`relative transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${searchWidthClass}`}
+        className={`hidden md:block relative transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${searchWidthClass}`}
       >
         <div
           className={`relative flex items-center h-9 rounded-full bg-white/85 border transition-all duration-300 overflow-hidden shadow-2xs ${
@@ -449,7 +449,7 @@ export function NavbarRightActions({
       )}
 
       {/* ============================================================ */}
-      {/* 3. PANIER BUTTON */}
+      {/* 3. PANIER BUTTON (Hidden on mobile, lives in bottom app dock) */}
       {/* ============================================================ */}
       <motion.button
         id="cart-icon"
@@ -460,7 +460,7 @@ export function NavbarRightActions({
         transition={{ duration: 0.45 }}
         type="button"
         onClick={openCart}
-        className="relative flex items-center justify-center h-9 w-9 rounded-full bg-white/80 border border-[#e2ddd3] hover:border-[#cfc8bc] hover:bg-white transition-all text-[#1c1b19] shrink-0 cursor-pointer shadow-2xs hover:shadow-xs outline-none focus:outline-none"
+        className="hidden md:flex relative items-center justify-center h-9 w-9 rounded-full bg-white/80 border border-[#e2ddd3] hover:border-[#cfc8bc] hover:bg-white transition-all text-[#1c1b19] shrink-0 cursor-pointer shadow-2xs hover:shadow-xs outline-none focus:outline-none"
         aria-label={isEn ? "Open Cart" : "Ouvrir le Panier"}
         title={isEn ? "Shopping Cart" : "Panier"}
       >
@@ -498,14 +498,41 @@ export function NavbarRightActions({
       {/* STRICTLY FIXED WIDTH SO IT NEVER WIDENS / SHRINKS ON TEXT ROTATION */}
       {/* ============================================================ */}
       {isAuthenticated ? (
-        /* Authenticated: Dynamic button becomes Profile pill button */
+        /* Authenticated: Dynamic button becomes Profile pill button on desktop & circular icon on mobile */
         <div ref={profileWrapperRef} className="relative">
+          {/* Mobile Account Icon for authenticated user */}
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            type="button"
+            onClick={() => setProfileMenuOpen((prev) => !prev)}
+            className="flex md:hidden relative items-center justify-center h-9 w-9 rounded-full bg-white/80 border border-[#e2ddd3] hover:border-[#cfc8bc] hover:bg-white transition-all text-[#1c1b19] shrink-0 shadow-2xs outline-none focus:outline-none cursor-pointer"
+            aria-label={isEn ? "Pro Profile" : "Profil Pro"}
+            title={isEn ? "My Pro Profile" : "Mon Profil Pro"}
+          >
+            <svg
+              className="w-4 h-4 text-[#1c1b19]/80"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.5"
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              />
+            </svg>
+            <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-emerald-500 border border-white animate-pulse" />
+          </motion.button>
+
+          {/* Desktop Pro Space Pill Button */}
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             type="button"
             onClick={() => setProfileMenuOpen((prev) => !prev)}
-            className="relative overflow-hidden inline-flex items-center justify-center h-9 w-[130px] sm:w-[145px] rounded-full text-xs font-sans font-medium bg-[#1c1b19] text-[#faf8f5] hover:bg-[#2b2925] transition-all shadow-xs hover:shadow-md gap-2 shrink-0 cursor-pointer outline-none focus:outline-none"
+            className="hidden md:inline-flex relative overflow-hidden items-center justify-center h-9 w-[130px] sm:w-[145px] rounded-full text-xs font-sans font-medium bg-[#1c1b19] text-[#faf8f5] hover:bg-[#2b2925] transition-all shadow-xs hover:shadow-md gap-2 shrink-0 cursor-pointer outline-none focus:outline-none"
             title={isEn ? "My Pro Profile" : "Mon Profil Pro"}
           >
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 animate-pulse" />
@@ -569,9 +596,9 @@ export function NavbarRightActions({
           </AnimatePresence>
         </div>
       ) : (
-        /* Not Authenticated: Kept as the Dynamic Rotating CTA Button */
+        /* Not Authenticated: Kept as the Dynamic Rotating CTA Button (hidden on mobile, present in bottom dock) */
         /* FIXED WIDTH (w-[150px] sm:w-[165px]) so rotating text never changes button width! */
-        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+        <motion.div className="hidden md:block" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
           <Link
             href={effectiveContactHref}
             className="relative overflow-hidden inline-flex items-center justify-center h-9 w-[150px] sm:w-[165px] px-2 rounded-full text-xs font-sans font-medium bg-[#1c1b19] text-[#faf8f5] hover:bg-[#2b2925] transition-all shadow-xs hover:shadow-md shrink-0 outline-none focus:outline-none"
