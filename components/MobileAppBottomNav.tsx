@@ -43,8 +43,6 @@ export function MobileAppBottomNav() {
   }, [pathname]);
 
   const isHome = pathname === `/${locale}` || pathname === "/" || pathname === `/${locale}/`;
-  const isProducts = pathname?.includes("/products") || pathname?.includes("/univers");
-  const isBlog = pathname?.includes("/blog");
 
   // If on checkout, hide bottom nav to avoid cart distraction
   if (pathname?.includes("/checkout")) {
@@ -72,87 +70,50 @@ export function MobileAppBottomNav() {
               isHome ? "text-[#B8860B]" : "text-white/65 hover:text-white"
             }`}
           >
-            <div className="relative">
-              <svg
-                className="w-5 h-5 transition-transform"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={isHome ? "2" : "1.6"}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                />
-              </svg>
-              {isHome && (
-                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#B8860B]" />
-              )}
-            </div>
-            <span className="text-[9.5px] font-sans font-medium tracking-wide mt-1">
+            <svg
+              className="w-5 h-5 transition-transform"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={isHome ? "2" : "1.6"}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+              />
+            </svg>
+            <span className="text-[10px] font-sans font-medium tracking-wide mt-1">
               {isEn ? "Home" : "Accueil"}
             </span>
           </Link>
 
-          {/* TAB 2: FABRICS / CATALOG */}
-          <Link
-            href={`/${locale}/products`}
-            className={`flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-xl transition-all cursor-pointer ${
-              isProducts ? "text-[#B8860B]" : "text-white/65 hover:text-white"
-            }`}
-          >
-            <div className="relative">
-              <svg
-                className="w-5 h-5 transition-transform"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={isProducts ? "2" : "1.6"}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                />
-              </svg>
-              {isProducts && (
-                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#B8860B]" />
-              )}
-            </div>
-            <span className="text-[9.5px] font-sans font-medium tracking-wide mt-1">
-              {isEn ? "Fabrics" : "Tissus"}
-            </span>
-          </Link>
-
-          {/* TAB 3: SEARCH (Triggers Bottom Sheet Modal) */}
+          {/* TAB 2: SEARCH (Triggers Bottom Sheet Modal) */}
           <button
             type="button"
             onClick={() => setSearchModalOpen(true)}
             className="flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-xl text-white/65 hover:text-white transition-all cursor-pointer outline-none"
             aria-label={isEn ? "Search catalog" : "Rechercher un tissu"}
           >
-            <div className="relative">
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="1.6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
-            </div>
-            <span className="text-[9.5px] font-sans font-medium tracking-wide mt-1">
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="1.6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+            <span className="text-[10px] font-sans font-medium tracking-wide mt-1">
               {isEn ? "Search" : "Recherche"}
             </span>
           </button>
 
-          {/* TAB 4: CART (With Reactive Counter Badge) */}
+          {/* TAB 3: CART (With Reactive Counter Badge) */}
           <button
             type="button"
             onClick={openCart}
@@ -179,18 +140,17 @@ export function MobileAppBottomNav() {
                 </span>
               )}
             </div>
-            <span className="text-[9.5px] font-sans font-medium tracking-wide mt-1">
+            <span className="text-[10px] font-sans font-medium tracking-wide mt-1">
               {isEn ? "Cart" : "Panier"}
             </span>
           </button>
 
-          {/* TAB 5: DYNAMIC ROTATING ACTION CTA (CONCIERGERIE / DEVIS) */}
+          {/* TAB 4: DYNAMIC ROTATING ACTION CTA (CONCIERGERIE / DEVIS / CONTACT) */}
           <Link
             href={`/${locale}/contact`}
-            className="flex-1 max-w-[85px] py-1.5 px-2 rounded-full bg-gradient-to-r from-[#B8860B] to-[#cf9e2e] text-[#141413] flex flex-col items-center justify-center shadow-md active:scale-95 transition-all text-center"
+            className="flex-1 max-w-[100px] h-9 px-3 rounded-full bg-gradient-to-r from-[#B8860B] to-[#cf9e2e] text-[#141413] flex items-center justify-center shadow-md active:scale-95 transition-all text-center"
             title={isEn ? "Request a bespoke quote or concierge" : "Demander un devis ou conciergerie"}
           >
-            <span className="w-1 h-1 rounded-full bg-[#141413] mb-0.5 animate-pulse" />
             <AnimatePresence mode="wait" initial={false}>
               <motion.span
                 key={rotatingLabels[ctaIndex]}
@@ -198,7 +158,7 @@ export function MobileAppBottomNav() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -3 }}
                 transition={{ duration: 0.2 }}
-                className="text-[9px] font-sans font-bold uppercase tracking-wider truncate w-full"
+                className="text-[10px] font-sans font-bold uppercase tracking-wider truncate w-full"
               >
                 {rotatingLabels[ctaIndex]}
               </motion.span>
