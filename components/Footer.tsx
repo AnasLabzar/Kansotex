@@ -33,16 +33,15 @@ export function Footer() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl">
-        {/* Massive Centered Logo */}
-        <div className="mb-20 flex justify-center border-b border-[#f3eee6]/15 pb-16">
+        {/* Centered Logo (Refined Luxury Size) */}
+        <div className="mb-14 sm:mb-16 flex justify-center border-b border-[#f3eee6]/15 pb-10 sm:pb-12">
           <Link href={`/${locale}`} aria-label="Kansotex" className="transition-opacity hover:opacity-80">
             <Image 
               src="/KANSOTEX-marque-1-white.png" 
               alt="Kansotex" 
-              width={450} 
-              height={150} 
-              className="w-[18rem] sm:w-[26rem] md:w-[450px]" 
-              style={{ width: "auto", height: "auto" }}
+              width={400} 
+              height={100} 
+              className="w-[11.5rem] sm:w-[14.5rem] md:w-[260px] h-auto object-contain" 
             />
           </Link>
         </div>
