@@ -28,7 +28,7 @@ export function LanguageSelector() {
     
     if (currentPath === '') currentPath = '/';
     
-    const newPath = newLocale === 'fr' ? currentPath : `/${newLocale}${currentPath === '/' ? '' : currentPath}`;
+    const newPath = `/${newLocale}${currentPath === '/' ? '' : currentPath}`;
     
     // Hard navigate to ensure cookies and middleware catch it and reload page data correctly
     window.location.href = newPath;

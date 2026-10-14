@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
 import { BlogPost, getBlogCategoryLabel } from "@/lib/blog-data";
 import { removeAccents } from "@/lib/text";
 import { RichArticleContent } from "@/components/RichArticleContent";
@@ -375,7 +374,7 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
                       href={`#${item.id}`}
                       className="hover:text-[#B8860B] transition-colors block line-clamp-1 py-0.5"
                     >
-                      {item.title}
+                      {isEn ? (item.titleEn || item.title) : item.title}
                     </a>
                   </li>
                 ))}
@@ -410,7 +409,7 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
                   {post.tableOfContents.map((item) => (
                     <li key={item.id}>
                       <a href={`#${item.id}`} className="hover:text-[#B8860B] block">
-                        {item.title}
+                        {isEn ? (item.titleEn || item.title) : item.title}
                       </a>
                     </li>
                   ))}
@@ -422,10 +421,10 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
             {post.sections.map((sec) => (
               <section key={sec.id} id={sec.id} className="scroll-mt-28 space-y-5">
                 <h2 className="font-sans text-xl sm:text-2xl font-extrabold uppercase tracking-tight text-[#1c1b19] border-b border-[#1c1b19]/10 pb-3">
-                  {sec.heading}
+                  {isEn ? (sec.headingEn || sec.heading) : sec.heading}
                 </h2>
 
-                <RichArticleContent content={sec.content} />
+                <RichArticleContent content={isEn ? (sec.contentEn || sec.content) : sec.content} />
 
                 {/* Callout Box */}
                 {sec.callout && (
@@ -440,11 +439,11 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
                   >
                     <div className="flex items-center gap-2 mb-2">
                       <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#B8860B]">
-                        {sec.callout.title}
+                        {isEn ? (sec.callout.titleEn || sec.callout.title) : sec.callout.title}
                       </span>
                     </div>
                     <RichArticleContent
-                      content={sec.callout.text}
+                      content={isEn ? (sec.callout.textEn || sec.callout.text) : sec.callout.text}
                       className="text-xs sm:text-sm"
                     />
                   </div>
@@ -454,11 +453,13 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
                 {sec.quote && (
                   <blockquote className="my-8 rounded-2xl bg-white border-l-4 border-[#B8860B] p-6 sm:p-8 shadow-sm">
                     <p className="text-base sm:text-lg font-serif italic text-[#1c1b19]/90 leading-relaxed">
-                      “{sec.quote.text}”
+                      “{isEn ? (sec.quote.textEn || sec.quote.text) : sec.quote.text}”
                     </p>
                     <footer className="mt-4 text-xs font-medium text-[#1c1b19]/70">
                       — {sec.quote.author},{" "}
-                      <span className="font-light italic text-[#1c1b19]/50">{sec.quote.role}</span>
+                      <span className="font-light italic text-[#1c1b19]/50">
+                        {isEn ? (sec.quote.roleEn || sec.quote.role) : sec.quote.role}
+                      </span>
                     </footer>
                   </blockquote>
                 )}
@@ -469,19 +470,19 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
                     <div className="relative aspect-[16/10] rounded-xl overflow-hidden border border-[#1c1b19]/10 shadow-sm group">
                       <Image
                         src={sec.image.url}
-                        alt={sec.image.alt}
+                        alt={isEn ? (sec.image.altEn || sec.image.alt) : sec.image.alt}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                         sizes="(max-width: 1024px) 100vw, 800px"
                       />
                       <div className="absolute top-3 left-3 bg-[#1c1b19]/85 backdrop-blur-md text-[#FBF9F5] text-[9px] uppercase tracking-wider font-semibold px-2.5 py-1 rounded-full border border-white/10 flex items-center gap-1.5 shadow-xs">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#B8860B]" />
-                        Direction Artistique Kansotex
+                        {isEn ? "Kansotex Art Direction" : "Direction Artistique Kansotex"}
                       </div>
                     </div>
-                    {sec.image.caption && (
+                    {(sec.image.caption || sec.image.captionEn) && (
                       <p className="mt-2.5 text-center text-xs text-[#1c1b19]/70 font-light italic leading-relaxed">
-                        {sec.image.caption}
+                        {isEn ? (sec.image.captionEn || sec.image.caption) : sec.image.caption}
                       </p>
                     )}
                   </div>
@@ -498,7 +499,7 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
                   </span>
                 </div>
                 <h3 className="font-sans text-base sm:text-lg font-bold uppercase text-[#1c1b19] mb-6">
-                  {post.technicalTable.caption}
+                  {isEn ? (post.technicalTable.captionEn || post.technicalTable.caption) : post.technicalTable.caption}
                 </h3>
 
                 <div className="overflow-x-auto">
@@ -514,13 +515,17 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
                     <tbody className="divide-y divide-[#1c1b19]/10 font-light">
                       {post.technicalTable.rows.map((row, i) => (
                         <tr key={i} className="hover:bg-[#1c1b19]/[0.02] transition-colors">
-                          <td className="py-4 pr-4 font-medium text-[#1c1b19]">{row.metric}</td>
-                          <td className="py-4 px-4 font-medium text-[#B8860B] bg-[#B8860B]/[0.03]">
-                            {row.kansotexSpec}
+                          <td className="py-4 pr-4 font-medium text-[#1c1b19]">
+                            {isEn ? (row.metricEn || row.metric) : row.metric}
                           </td>
-                          <td className="py-4 px-4 text-[#1c1b19]/60">{row.standardMarket}</td>
+                          <td className="py-4 px-4 font-medium text-[#B8860B] bg-[#B8860B]/[0.03]">
+                            {isEn ? (row.kansotexSpecEn || row.kansotexSpec) : row.kansotexSpec}
+                          </td>
+                          <td className="py-4 px-4 text-[#1c1b19]/60">
+                            {isEn ? (row.standardMarketEn || row.standardMarket) : row.standardMarket}
+                          </td>
                           <td className="py-4 pl-4 text-[#1c1b19]/80 text-xs leading-relaxed">
-                            {row.practicalImpact}
+                            {isEn ? (row.practicalImpactEn || row.practicalImpact) : row.practicalImpact}
                           </td>
                         </tr>
                       ))}
@@ -550,20 +555,20 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
                       <div className="relative h-16 w-16 rounded-lg overflow-hidden shrink-0 border border-white/15">
                         <Image
                           src={prod.image}
-                          alt={prod.name}
+                          alt={isEn ? (prod.nameEn || prod.name) : prod.name}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform"
                         />
                       </div>
                       <div className="min-w-0">
                         <span className="text-[9px] uppercase tracking-wider text-white/50 block">
-                          {prod.category}
+                          {isEn ? (prod.categoryEn || prod.category) : prod.category}
                         </span>
                         <p className="text-xs font-semibold text-white truncate group-hover:text-[#B8860B] transition-colors">
-                          {prod.name}
+                          {isEn ? (prod.nameEn || prod.name) : prod.name}
                         </p>
                         <p className="text-[10px] text-white/70 font-light truncate">
-                          {prod.highlight}
+                          {isEn ? (prod.highlightEn || prod.highlight) : prod.highlight}
                         </p>
                       </div>
                     </Link>
@@ -603,14 +608,14 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
                           onClick={() => setOpenFaq(isOpen ? null : idx)}
                           className="w-full text-left p-4 sm:p-5 flex items-center justify-between gap-4 font-medium text-xs sm:text-sm text-[#1c1b19] hover:bg-[#1c1b19]/[0.02]"
                         >
-                          <span>{faq.question}</span>
+                          <span>{isEn ? (faq.questionEn || faq.question) : faq.question}</span>
                           <span className="text-base text-[#B8860B] font-serif shrink-0">
                             {isOpen ? "−" : "+"}
                           </span>
                         </button>
                         {isOpen && (
                           <div className="px-4 pb-5 sm:px-5 sm:pb-6 text-xs sm:text-sm font-light text-[#1c1b19]/80 leading-relaxed border-t border-[#1c1b19]/5 pt-3">
-                            <RichArticleContent content={faq.answer} />
+                            <RichArticleContent content={isEn ? (faq.answerEn || faq.answer) : faq.answer} />
                           </div>
                         )}
                       </div>
@@ -632,14 +637,16 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
               </div>
               <div className="text-center sm:text-left">
                 <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#B8860B] block mb-1">
-                  À PROPOS DE L'AUTEUR
+                  {isEn ? "ABOUT THE AUTHOR" : "À PROPOS DE L'AUTEUR"}
                 </span>
                 <h4 className="font-termina text-base font-bold text-[#1c1b19]">
                   {post.author.name}
                 </h4>
-                <p className="text-xs text-[#1c1b19]/60 font-light mb-3">{post.author.role}</p>
+                <p className="text-xs text-[#1c1b19]/60 font-light mb-3">
+                  {isEn ? (post.author.roleEn || post.author.role) : post.author.role}
+                </p>
                 <p className="text-xs font-light text-[#1c1b19]/80 leading-relaxed">
-                  {post.author.bio}
+                  {isEn ? (post.author.bioEn || post.author.bio) : post.author.bio}
                 </p>
               </div>
             </div>
@@ -718,8 +725,6 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
           </div>
         </section>
       )}
-
-      <Footer />
     </div>
   );
 }

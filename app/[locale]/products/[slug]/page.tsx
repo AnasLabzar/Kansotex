@@ -1,5 +1,6 @@
 import { db } from "@/prisma/db";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { Metadata } from "next";
 import AddToCartForm from "./AddToCartForm";
 import { Header } from "@/components/Header";
@@ -144,8 +145,9 @@ export default async function ProductPage(props: { params: Promise<{ locale: str
   const discountAmount = isPro ? discount : promoDiscount;
   const finalPrice = product.basePrice * (1 - discountAmount);
 
-  const productName = params.locale === 'en' ? (product.nameEn || product.nameFr) : product.nameFr;
-  const categoryName = (params.locale === 'en' ? (product.category?.nameEn || product.category?.nameFr) : product.category?.nameFr) || "Produit";
+  const isEn = params.locale === "en";
+  const productName = isEn ? (product.nameEn || product.nameFr) : product.nameFr;
+  const categoryName = (isEn ? (product.category?.nameEn || product.category?.nameFr) : product.category?.nameFr) || "Produit";
 
   return (
     <main className="min-h-screen bg-cream text-ink selection:bg-ink selection:text-cream">
@@ -173,7 +175,7 @@ export default async function ProductPage(props: { params: Promise<{ locale: str
             
             {/* Breadcrumb */}
             <nav className="text-[9px] uppercase tracking-[0.25em] text-muted font-termina mb-5 flex items-center space-x-2.5">
-              <a href="/products" className="hover:text-ink transition-colors">{toTermina(t("collection"))}</a>
+              <Link href={`/${params.locale}/products`} className="hover:text-ink transition-colors">{toTermina(t("collection"))}</Link>
               <span className="w-3.5 h-[1px] bg-muted/30"></span>
               <span className="text-ink">{toTermina(categoryName)}</span>
             </nav>
@@ -207,7 +209,7 @@ export default async function ProductPage(props: { params: Promise<{ locale: str
             {/* Compact Specs Grid (Positioned cleanly below AddToCartForm so it doesn't push the price down!) */}
             <div className="mt-8 bg-white/40 p-5 border border-ink/10 rounded-xs shadow-xs">
               <h4 className="text-[9px] font-termina uppercase tracking-[0.25em] text-ink mb-3.5 font-bold">
-                {toTermina("Caracteristiques & Matiere")}
+                {toTermina(isEn ? "Specifications & Materials" : "Caractéristiques & Matière")}
               </h4>
               <div className="grid grid-cols-2 gap-x-6 gap-y-3 text-xs font-sans">
                 {/* Catégorie */}
@@ -238,7 +240,7 @@ export default async function ProductPage(props: { params: Promise<{ locale: str
                 {product.metadata?.martindale && (
                   <div className="flex flex-col gap-0.5">
                     <span className="text-[9px] font-termina text-muted tracking-wider uppercase">{toTermina("Martindale")}</span>
-                    <span className="text-ink font-light">{product.metadata.martindale.toLocaleString()} Tours</span>
+                    <span className="text-ink font-light">{product.metadata.martindale.toLocaleString()} {isEn ? "Cycles" : "Tours"}</span>
                   </div>
                 )}
                 {/* Composition */}

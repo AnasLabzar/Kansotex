@@ -4,12 +4,16 @@ import { brand, nav } from "@/lib/content";
 import { Wordmark } from "./Logo";
 import { CurrencySelector } from "./CurrencySelector";
 import { LanguageSelector } from "./LanguageSelector";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { removeAccents } from "@/lib/text";
 import { NewsletterForm } from "./NewsletterForm";
 
 export function Footer() {
   const t = useTranslations("Footer");
+  const rawLocale = useLocale();
+  const isEn = rawLocale === "en";
+  const locale = isEn ? "en" : "fr";
+
   return (
     <footer className="relative overflow-hidden bg-[#1c1b19] px-6 pb-10 pt-20 text-[#f3eee6] md:px-12 md:pt-32">
       {/* Background Logistics & Shipping Truck Visual (Bottom Left) */}
@@ -31,7 +35,7 @@ export function Footer() {
       <div className="relative z-10 mx-auto max-w-7xl">
         {/* Massive Centered Logo */}
         <div className="mb-20 flex justify-center border-b border-[#f3eee6]/15 pb-16">
-          <Link href="/" aria-label="Kansotex" className="transition-opacity hover:opacity-80">
+          <Link href={`/${locale}`} aria-label="Kansotex" className="transition-opacity hover:opacity-80">
             <Image 
               src="/KANSOTEX-marque-1-white.png" 
               alt="Kansotex" 
@@ -70,20 +74,20 @@ export function Footer() {
                 if (item.href === "/contact") translationKey = "navContact";
                 return (
                   <li key={item.href}>
-                    <Link href={item.href} className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">
+                    <Link href={`/${locale}${item.href}`} className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">
                       {removeAccents((t as any)(translationKey))}
                     </Link>
                   </li>
                 );
               })}
               <li>
-                <Link href="/gallery" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">
-                  {removeAccents((t as any)("navGallery") || "Galerie & Réalisations")}
+                <Link href={`/${locale}/gallery`} className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">
+                  {removeAccents((t as any)("navGallery") || (isEn ? "Gallery & Projects" : "Galerie & Réalisations"))}
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">
-                  {removeAccents("Le Journal")}
+                <Link href={`/${locale}/blog`} className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">
+                  {removeAccents(isEn ? "The Journal" : "Le Journal")}
                 </Link>
               </li>
             </ul>
@@ -93,10 +97,10 @@ export function Footer() {
           <div>
             <h4 className="font-termina mb-8 text-[11px] font-bold uppercase tracking-[0.2em] text-[#a49a8d]">{removeAccents(t("customerService"))}</h4>
             <ul className="flex flex-col gap-5">
-              <li><Link href="/faq" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">{removeAccents(t("faq"))}</Link></li>
-              <li><Link href="/livraison" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">{removeAccents(t("shippingReturns"))}</Link></li>
-              <li><Link href="/echantillons" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">{removeAccents(t("samples"))}</Link></li>
-              <li><Link href="/guide" className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">{removeAccents(t("careGuide"))}</Link></li>
+              <li><Link href={`/${locale}/faq`} className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">{removeAccents(t("faq"))}</Link></li>
+              <li><Link href={`/${locale}/livraison`} className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">{removeAccents(t("shippingReturns"))}</Link></li>
+              <li><Link href={`/${locale}/echantillons`} className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">{removeAccents(t("samples"))}</Link></li>
+              <li><Link href={`/${locale}/guide`} className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">{removeAccents(t("careGuide"))}</Link></li>
             </ul>
           </div>
 
@@ -110,19 +114,19 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <span className="text-[10px] uppercase tracking-wider text-[#a49a8d] block">Général</span>
+                <span className="text-[10px] uppercase tracking-wider text-[#a49a8d] block">{isEn ? "General" : "Général"}</span>
                 <a href={`tel:${brand.phone.replace(/\s/g, "")}`} className="text-white/80 hover:text-white transition-colors">
                   {brand.phone}
                 </a>
               </li>
               <li>
-                <span className="text-[10px] uppercase tracking-wider text-[#a49a8d] block">Bureau Pros &amp; WhatsApp</span>
+                <span className="text-[10px] uppercase tracking-wider text-[#a49a8d] block">{isEn ? "Trade Office & WhatsApp" : "Bureau Pros & WhatsApp"}</span>
                 <a href={brand.whatsappUrl} target="_blank" rel="noopener noreferrer" className="text-white/80 hover:text-white transition-colors">
                   {brand.phonePro}
                 </a>
               </li>
               <li>
-                <span className="text-[10px] uppercase tracking-wider text-[#a49a8d] block">Manufacture</span>
+                <span className="text-[10px] uppercase tracking-wider text-[#a49a8d] block">{isEn ? "Manufacture Atelier" : "Manufacture"}</span>
                 <a href={`tel:${brand.phoneManufacture.replace(/\s/g, "")}`} className="text-white/80 hover:text-white transition-colors">
                   {brand.phoneManufacture}
                 </a>
@@ -166,9 +170,9 @@ export function Footer() {
             <LanguageSelector />
           </div>
           <ul className="flex flex-wrap justify-center gap-6 md:gap-10">
-            <li><Link href="/mentions-legales" className="font-termina text-[9px] font-bold uppercase tracking-[0.2em] hover:text-[#f3eee6]">{removeAccents(t("legalNotices"))}</Link></li>
-            <li><Link href="/confidentialite" className="font-termina text-[9px] font-bold uppercase tracking-[0.2em] hover:text-[#f3eee6]">{removeAccents(t("privacy"))}</Link></li>
-            <li><Link href="/cgv" className="font-termina text-[9px] font-bold uppercase tracking-[0.2em] hover:text-[#f3eee6]">{removeAccents(t("cgv"))}</Link></li>
+            <li><Link href={`/${locale}/mentions-legales`} className="font-termina text-[9px] font-bold uppercase tracking-[0.2em] hover:text-[#f3eee6]">{removeAccents(t("legalNotices"))}</Link></li>
+            <li><Link href={`/${locale}/confidentialite`} className="font-termina text-[9px] font-bold uppercase tracking-[0.2em] hover:text-[#f3eee6]">{removeAccents(t("privacy"))}</Link></li>
+            <li><Link href={`/${locale}/cgv`} className="font-termina text-[9px] font-bold uppercase tracking-[0.2em] hover:text-[#f3eee6]">{removeAccents(t("cgv"))}</Link></li>
           </ul>
         </div>
       </div>

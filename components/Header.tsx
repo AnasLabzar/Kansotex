@@ -22,7 +22,9 @@ type HeaderProps = {
 
 export function Header({ overlay = false }: HeaderProps) {
   const pathname = usePathname();
-  const isHome = pathname === "/";
+  const isEn = pathname?.startsWith("/en");
+  const locale = isEn ? "en" : "fr";
+  const isHome = pathname === "/" || pathname === "/fr" || pathname === "/en" || pathname === "/en/";
   const { openCart, cartCount } = useCart();
   const { session } = useSession();
   const t = useTranslations("Header");
@@ -73,7 +75,7 @@ export function Header({ overlay = false }: HeaderProps) {
           isHome ? (
             /* --- HOME PAGE COMPACT HEADER --- */
             <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 flex items-center justify-between gap-4 py-2 w-full overflow-hidden">
-              <Link href="/" aria-label="Kansotex" className="-ml-2 md:-ml-3 shrink-0">
+              <Link href={`/${locale}`} aria-label="Kansotex" className="-ml-2 md:-ml-3 shrink-0">
                 <Image 
                   src="/KANSOTEX-marque-Black.png" 
                   alt="Kansotex" 
@@ -90,12 +92,13 @@ export function Header({ overlay = false }: HeaderProps) {
                   if (item.href === "/blog") translationKey = "navJournal";
                   if (item.href === "/a-propos") translationKey = "navAbout";
                   if (item.href === "/contact") translationKey = "navContact";
+                  const localizedHref = `/${locale}${item.href}`;
                   return (
                     <NavItem
                       key={item.href}
-                      href={item.href}
+                      href={localizedHref}
                       label={(t as any)(translationKey)}
-                      active={pathname.startsWith(item.href)}
+                      active={pathname.startsWith(localizedHref) || pathname.startsWith(item.href)}
                     />
                   );
                 })}
@@ -115,7 +118,7 @@ export function Header({ overlay = false }: HeaderProps) {
 
               {/* Center: Logo */}
               <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-                <Link href="/" aria-label="Kansotex" className="pointer-events-auto shrink-0 flex items-center justify-center">
+                <Link href={`/${locale}`} aria-label="Kansotex" className="pointer-events-auto shrink-0 flex items-center justify-center">
                   <Image 
                     src="/KANSOTEX-marque-Black.png" 
                     alt="Kansotex" 
@@ -144,7 +147,7 @@ export function Header({ overlay = false }: HeaderProps) {
                 {removeAccents(t("menu"))}
               </button>
               <Link
-                href="/contact"
+                href={`/${locale}/contact`}
                 className="font-termina text-[11px] font-bold uppercase tracking-widest hover:opacity-70"
               >
                 {removeAccents(t("contact"))}
@@ -160,7 +163,7 @@ export function Header({ overlay = false }: HeaderProps) {
                 return (
                   <Link
                     key={item.href}
-                    href={item.href}
+                    href={`/${locale}${item.href}`}
                     className="font-termina text-center text-[10px] font-bold uppercase tracking-[0.32em] hover:opacity-70"
                   >
                     {removeAccents((t as any)(translationKey))}

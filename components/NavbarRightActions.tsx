@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useLocale } from "next-intl";
 import { useCart } from "@/lib/CartContext";
 import { useSession } from "@/lib/SessionContext";
 import { useCurrency, CurrencyCode } from "@/lib/CurrencyContext";
@@ -10,11 +11,19 @@ import { logout } from "@/lib/session";
 import { motion, AnimatePresence } from "framer-motion";
 import { toTermina } from "@/lib/text";
 
-const DEFAULT_ROTATING_LABELS = [
+const DEFAULT_ROTATING_LABELS_FR = [
   "Demander un devis",
   "Contactez-nous",
   "Conciergerie",
 ];
+
+const DEFAULT_ROTATING_LABELS_EN = [
+  "Request a Quote",
+  "Contact Us",
+  "Concierge",
+];
+
+const DEFAULT_ROTATING_LABELS = DEFAULT_ROTATING_LABELS_FR;
 
 interface NavbarRightActionsProps {
   dynamicLabels?: string[];
@@ -26,6 +35,29 @@ export function NavbarRightActions({
   contactHref = "/contact",
 }: NavbarRightActionsProps) {
   const pathname = usePathname();
+  let rawLocale = "fr";
+  try {
+    rawLocale = useLocale();
+  } catch {
+    rawLocale = pathname?.startsWith("/en") ? "en" : "fr";
+  }
+  const isEn = rawLocale === "en" || pathname?.startsWith("/en");
+  const locale = isEn ? "en" : "fr";
+
+  const effectiveLabels =
+    dynamicLabels !== DEFAULT_ROTATING_LABELS
+      ? dynamicLabels
+      : isEn
+      ? DEFAULT_ROTATING_LABELS_EN
+      : DEFAULT_ROTATING_LABELS_FR;
+
+  const effectiveContactHref =
+    contactHref === "/contact"
+      ? `/${locale}/contact`
+      : contactHref.startsWith("/") && !contactHref.startsWith(`/${locale}`)
+      ? `/${locale}${contactHref}`
+      : contactHref;
+
   const isCheckout = pathname?.includes("/checkout");
 
   const { cartCount, openCart } = useCart();
@@ -53,10 +85,10 @@ export function NavbarRightActions({
   useEffect(() => {
     if (isAuthenticated) return;
     const interval = setInterval(() => {
-      setCtaIndex((prev) => (prev + 1) % dynamicLabels.length);
+      setCtaIndex((prev) => (prev + 1) % effectiveLabels.length);
     }, 3500);
     return () => clearInterval(interval);
-  }, [dynamicLabels.length, isAuthenticated]);
+  }, [effectiveLabels.length, isAuthenticated]);
 
   // Search state
   const [isHovered, setIsHovered] = useState(false);
@@ -213,7 +245,7 @@ export function NavbarRightActions({
               if (!searchExpanded) handleOpenSearch();
             }
           }}
-          aria-label="Rechercher"
+          aria-label={isEn ? "Search" : "Rechercher"}
         >
           {/* Search Icon */}
           <svg
@@ -239,7 +271,7 @@ export function NavbarRightActions({
               transition={{ duration: 0.15 }}
               className="text-[11px] font-sans text-[#1c1b19]/50 font-light ml-1.5 whitespace-nowrap select-none truncate"
             >
-              Chercher
+              {isEn ? "Search" : "Chercher"}
             </motion.span>
           )}
 
@@ -261,9 +293,9 @@ export function NavbarRightActions({
                   setSearchDropdownOpen(true);
                 }}
                 onFocus={() => setSearchDropdownOpen(true)}
-                placeholder="Rechercher..."
+                placeholder={isEn ? "Search fabrics..." : "Rechercher..."}
                 className="w-full bg-transparent text-xs text-[#1c1b19] placeholder:text-[#1c1b19]/40 outline-none font-sans font-light border-none ring-0 focus:ring-0 focus:outline-none"
-                aria-label="Rechercher produit ou commande"
+                aria-label={isEn ? "Search product or order" : "Rechercher produit ou commande"}
               />
 
               {/* Single Unified Close / Clear Button (Never duplicated!) */}
@@ -280,8 +312,8 @@ export function NavbarRightActions({
                   }
                 }}
                 className="text-[#1c1b19]/40 hover:text-[#1c1b19] text-xs w-5 h-5 flex items-center justify-center rounded-full hover:bg-[#f2eee6] transition-colors shrink-0 ml-1"
-                title={searchQuery ? "Effacer recherche" : "Fermer la recherche"}
-                aria-label={searchQuery ? "Effacer recherche" : "Fermer la recherche"}
+                title={searchQuery ? (isEn ? "Clear search" : "Effacer recherche") : (isEn ? "Close search" : "Fermer la recherche")}
+                aria-label={searchQuery ? (isEn ? "Clear search" : "Effacer recherche") : (isEn ? "Close search" : "Fermer la recherche")}
               >
                 ✕
               </button>
@@ -303,21 +335,21 @@ export function NavbarRightActions({
               {isOrderQuery && (
                 <div className="mb-3 p-3 rounded-xl bg-[#faf7f2] border border-[#ece7de]">
                   <span className="text-[9px] font-termina font-bold uppercase tracking-wider text-[#a49a8d] block mb-1">
-                    SUIVI DE COMMANDE
+                    {isEn ? "ORDER TRACKING" : "SUIVI DE COMMANDE"}
                   </span>
                   <p className="text-xs text-[#1c1b19]">
-                    Recherche de la référence :{" "}
+                    {isEn ? "Searching for reference:" : "Recherche de la référence :"}{" "}
                     <strong className="font-semibold">{searchQuery.toUpperCase()}</strong>
                   </p>
                   <Link
-                    href={`/contact?subject=suivi&ref=${encodeURIComponent(searchQuery)}`}
+                    href={`/${locale}/contact?subject=suivi&ref=${encodeURIComponent(searchQuery)}`}
                     onClick={() => {
                       setSearchDropdownOpen(false);
                       setSearchExpanded(false);
                     }}
                     className="mt-2 inline-flex items-center text-[10px] font-sans font-semibold text-[#1c1b19] underline hover:text-[#a49a8d] transition-colors"
                   >
-                    Demander le statut à l&apos;atelier
+                    {isEn ? "Inquire order status with atelier" : "Demander le statut à l'atelier"}
                   </Link>
                 </div>
               )}
@@ -325,18 +357,18 @@ export function NavbarRightActions({
               {/* Products Section */}
               <div className="px-1 py-1">
                 <span className="text-[9px] font-termina font-bold uppercase tracking-wider text-[#a49a8d] block mb-2">
-                  CATALOGUE TEXTILE
+                  {isEn ? "TEXTILE CATALOG" : "CATALOGUE TEXTILE"}
                 </span>
                 {isSearching ? (
                   <div className="py-6 text-center text-xs text-[#1c1b19]/50">
-                    Recherche en cours...
+                    {isEn ? "Searching in catalog..." : "Recherche en cours..."}
                   </div>
                 ) : searchResults.length > 0 ? (
                   <div className="space-y-1.5">
                     {searchResults.map((product) => (
                       <Link
                         key={product.id}
-                        href={`/products/${product.slug}`}
+                        href={`/${locale}/products/${product.slug}`}
                         onClick={() => {
                           setSearchDropdownOpen(false);
                           setSearchExpanded(false);
@@ -346,13 +378,13 @@ export function NavbarRightActions({
                         <div className="w-10 h-10 rounded-lg overflow-hidden relative bg-[#eee9e0] shrink-0 border border-ink/5">
                           <img
                             src={product.image || "/gallery/Kansotex-indoor-riad-tissus-pinterest-1.png"}
-                            alt={product.nameFr}
+                            alt={isEn ? (product.nameEn || product.nameFr) : product.nameFr}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                           />
                         </div>
                         <div className="flex-1 min-w-0">
                           <h4 className="text-xs font-medium text-[#1c1b19] truncate group-hover:text-olive transition-colors">
-                            {product.nameFr}
+                            {isEn ? (product.nameEn || product.nameFr) : product.nameFr}
                           </h4>
                           <p className="text-[9px] font-mono text-[#1c1b19]/50 uppercase">
                             {product.slug}
@@ -367,19 +399,19 @@ export function NavbarRightActions({
                       </Link>
                     ))}
                     <Link
-                      href="/products"
+                      href={`/${locale}/products`}
                       onClick={() => {
                         setSearchDropdownOpen(false);
                         setSearchExpanded(false);
                       }}
                       className="block pt-2 text-center text-[10px] font-termina font-bold uppercase tracking-wider text-[#1c1b19]/60 hover:text-[#1c1b19] transition-colors"
                     >
-                      VOIR TOUTES LES ÉTOFFES →
+                      {isEn ? "VIEW ALL FABRICS →" : "VOIR TOUTES LES ÉTOFFES →"}
                     </Link>
                   </div>
                 ) : (
                   <div className="py-4 text-center text-xs text-[#1c1b19]/50">
-                    Aucun tissu trouvé pour &ldquo;{searchQuery}&rdquo;
+                    {isEn ? `No fabrics found for "${searchQuery}"` : `Aucun tissu trouvé pour "${searchQuery}"`}
                   </div>
                 )}
               </div>
@@ -394,10 +426,10 @@ export function NavbarRightActions({
       {!isAuthenticated && (
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Link
-            href="/pro"
+            href={`/${locale}/pro`}
             className="relative flex items-center justify-center h-9 w-9 rounded-full bg-white/80 border border-[#e2ddd3] hover:border-[#cfc8bc] hover:bg-white transition-all text-[#1c1b19] shrink-0 shadow-2xs hover:shadow-xs outline-none focus:outline-none"
-            aria-label="Mon Compte & Espace Pro"
-            title="Connexion / Espace Pro"
+            aria-label={isEn ? "My Account & Pro Space" : "Mon Compte & Espace Pro"}
+            title={isEn ? "Sign In / Pro Portal" : "Connexion / Espace Pro"}
           >
             <svg
               className="w-4 h-4 text-[#1c1b19]/80"
@@ -429,8 +461,8 @@ export function NavbarRightActions({
         type="button"
         onClick={openCart}
         className="relative flex items-center justify-center h-9 w-9 rounded-full bg-white/80 border border-[#e2ddd3] hover:border-[#cfc8bc] hover:bg-white transition-all text-[#1c1b19] shrink-0 cursor-pointer shadow-2xs hover:shadow-xs outline-none focus:outline-none"
-        aria-label="Ouvrir le Panier"
-        title="Panier"
+        aria-label={isEn ? "Open Cart" : "Ouvrir le Panier"}
+        title={isEn ? "Shopping Cart" : "Panier"}
       >
         <svg
           className="w-4 h-4 text-[#1c1b19]/80"
@@ -474,11 +506,11 @@ export function NavbarRightActions({
             type="button"
             onClick={() => setProfileMenuOpen((prev) => !prev)}
             className="relative overflow-hidden inline-flex items-center justify-center h-9 w-[130px] sm:w-[145px] rounded-full text-xs font-sans font-medium bg-[#1c1b19] text-[#faf8f5] hover:bg-[#2b2925] transition-all shadow-xs hover:shadow-md gap-2 shrink-0 cursor-pointer outline-none focus:outline-none"
-            title="Mon Profil Pro"
+            title={isEn ? "My Pro Profile" : "Mon Profil Pro"}
           >
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 animate-pulse" />
             <span className="text-[10px] font-sans uppercase tracking-widest whitespace-nowrap truncate px-1">
-              {session?.role ? `PRO ${session.role}` : "ESPACE PRO"}
+              {session?.role ? `PRO ${session.role}` : (isEn ? "PRO SPACE" : "ESPACE PRO")}
             </span>
           </motion.button>
 
@@ -494,29 +526,31 @@ export function NavbarRightActions({
               >
                 <div className="px-3 py-2 border-b border-[#f2eee6]">
                   <span className="text-[9px] font-termina font-bold uppercase tracking-wider text-[#a49a8d] block">
-                    SESSION ACTIVE
+                    {isEn ? "ACTIVE SESSION" : "SESSION ACTIVE"}
                   </span>
                   <p className="text-xs font-semibold mt-0.5">
-                    {session?.role ? `Compte ${session.role}` : "Espace Professionnel"}
+                    {session?.role ? (isEn ? `Account ${session.role}` : `Compte ${session.role}`) : (isEn ? "Professional Account" : "Espace Professionnel")}
                   </p>
                   <p className="text-[11px] text-emerald-600 font-medium">
-                    Remise Pro active ({Math.round((session?.tradeDiscount || 0.2) * 100)}%)
+                    {isEn
+                      ? `Pro Discount active (${Math.round((session?.tradeDiscount || 0.2) * 100)}%)`
+                      : `Remise Pro active (${Math.round((session?.tradeDiscount || 0.2) * 100)}%)`}
                   </p>
                 </div>
                 <div className="mt-2 space-y-1">
                   <Link
-                    href="/pro"
+                    href={`/${locale}/pro`}
                     onClick={() => setProfileMenuOpen(false)}
                     className="block px-3 py-2 text-xs rounded-xl hover:bg-[#faf7f2] font-medium transition-colors"
                   >
-                    Tableau de bord Pro
+                    {isEn ? "Pro Dashboard" : "Tableau de bord Pro"}
                   </Link>
                   <Link
-                    href="/products"
+                    href={`/${locale}/products`}
                     onClick={() => setProfileMenuOpen(false)}
                     className="block px-3 py-2 text-xs rounded-xl hover:bg-[#faf7f2] transition-colors"
                   >
-                    Catalogue Éditeur
+                    {isEn ? "Editor Catalog" : "Catalogue Éditeur"}
                   </Link>
                   <button
                     type="button"
@@ -527,7 +561,7 @@ export function NavbarRightActions({
                     }}
                     className="w-full text-left px-3 py-2 text-xs text-red-700 rounded-xl hover:bg-red-50 transition-colors font-medium"
                   >
-                    Déconnexion
+                    {isEn ? "Sign Out" : "Déconnexion"}
                   </button>
                 </div>
               </motion.div>
@@ -539,20 +573,20 @@ export function NavbarRightActions({
         /* FIXED WIDTH (w-[150px] sm:w-[165px]) so rotating text never changes button width! */
         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
           <Link
-            href={contactHref}
+            href={effectiveContactHref}
             className="relative overflow-hidden inline-flex items-center justify-center h-9 w-[150px] sm:w-[165px] px-2 rounded-full text-xs font-sans font-medium bg-[#1c1b19] text-[#faf8f5] hover:bg-[#2b2925] transition-all shadow-xs hover:shadow-md shrink-0 outline-none focus:outline-none"
-            title="Demander un devis ou Contacter Kansotex"
+            title={isEn ? "Request a quote or Contact Kansotex" : "Demander un devis ou Contacter Kansotex"}
           >
             <AnimatePresence mode="wait" initial={false}>
               <motion.span
-                key={dynamicLabels[ctaIndex]}
+                key={effectiveLabels[ctaIndex]}
                 initial={{ opacity: 0, y: 5 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -5 }}
                 transition={{ duration: 0.25, ease: "easeInOut" }}
                 className="inline-flex items-center justify-center w-full whitespace-nowrap text-[10px] sm:text-[10.5px] font-sans uppercase tracking-wider text-center truncate px-1"
               >
-                <span>{toTermina(dynamicLabels[ctaIndex])}</span>
+                <span>{toTermina(effectiveLabels[ctaIndex])}</span>
               </motion.span>
             </AnimatePresence>
           </Link>

@@ -72,7 +72,7 @@ export function PopularProductsCarousel({ products, isPro, discount }: { product
         </div>
 
         <div className="mt-12 flex justify-center">
-          <UnderlineLink href="/products" className="font-termina text-[11px] font-bold uppercase tracking-widest text-[#1c1b19]">
+          <UnderlineLink href={`/${locale}/products`} className="font-termina text-[11px] font-bold uppercase tracking-widest text-[#1c1b19]">
             {t("allProductsBtn") || "ALL PRODUCTS · DISCOVER"}
           </UnderlineLink>
         </div>

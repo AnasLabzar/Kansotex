@@ -3,9 +3,23 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useLocale } from "next-intl";
 import { useCurrency } from "@/lib/CurrencyContext";
 
-export function SearchBar({ placeholder = "Rechercher un produit...", autoFocus = false, absoluteResults = true }: { placeholder?: string, autoFocus?: boolean, absoluteResults?: boolean }) {
+export function SearchBar({ placeholder, autoFocus = false, absoluteResults = true }: { placeholder?: string, autoFocus?: boolean, absoluteResults?: boolean }) {
+  const pathname = usePathname();
+  let rawLocale = "fr";
+  try {
+    rawLocale = useLocale();
+  } catch {
+    rawLocale = pathname?.startsWith("/en") ? "en" : "fr";
+  }
+  const isEn = rawLocale === "en" || pathname?.startsWith("/en");
+  const locale = isEn ? "en" : "fr";
+
+  const effectivePlaceholder = placeholder || (isEn ? "Search a fabric, product..." : "Rechercher un produit...");
+
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -66,7 +80,7 @@ export function SearchBar({ placeholder = "Rechercher un produit...", autoFocus 
             setIsOpen(true);
           }}
           onFocus={() => setIsOpen(true)}
-          placeholder={placeholder}
+          placeholder={effectivePlaceholder}
           className="w-full h-full pl-10 pr-4 bg-transparent outline-none text-sm font-sans font-light placeholder:text-ink/30 text-ink"
         />
         {query && (
@@ -74,7 +88,7 @@ export function SearchBar({ placeholder = "Rechercher un produit...", autoFocus 
             onClick={() => { setQuery(""); setResults([]); }}
             className="absolute right-3 text-[9px] font-termina uppercase tracking-widest text-ink/40 hover:text-ink"
           >
-            Effacer
+            {isEn ? "Clear" : "Effacer"}
           </button>
         )}
       </div>
@@ -94,26 +108,26 @@ export function SearchBar({ placeholder = "Rechercher un produit...", autoFocus 
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                <span className="text-[10px] font-termina uppercase tracking-widest">Recherche en cours...</span>
+                <span className="text-[10px] font-termina uppercase tracking-widest">{isEn ? "Searching..." : "Recherche en cours..."}</span>
               </div>
             ) : results.length > 0 ? (
               <div className="flex flex-col p-2 gap-1">
                 {results.map((product) => (
                   <Link 
                     key={product.id} 
-                    href={`/products/${product.slug}`}
+                    href={`/${locale}/products/${product.slug}`}
                     onClick={() => setIsOpen(false)}
                     className="flex items-center gap-4 p-3 rounded-sm hover:bg-ink/5 transition-colors group"
                   >
                     <div className="w-14 h-16 shrink-0 bg-[#e8e4db] overflow-hidden relative rounded-[1px]">
                       <img 
                         src={product.image || "/gallery/Kansotex-indoor-riad-tissus-pinterest-1.png"} 
-                        alt={product.nameFr} 
+                        alt={isEn ? (product.nameEn || product.nameFr) : product.nameFr} 
                         className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     </div>
                     <div className="flex flex-col justify-center">
-                      <h4 className="font-sans text-sm text-ink group-hover:text-[#c19a86] transition-colors">{product.nameFr}</h4>
+                      <h4 className="font-sans text-sm text-ink group-hover:text-[#c19a86] transition-colors">{isEn ? (product.nameEn || product.nameFr) : product.nameFr}</h4>
                       <p className="text-[9px] font-termina uppercase tracking-[0.2em] text-ink/40 mt-1">
                         REF: {product.slug}
                       </p>
@@ -127,11 +141,11 @@ export function SearchBar({ placeholder = "Rechercher un produit...", autoFocus 
                   </Link>
                 ))}
                 <Link 
-                  href="/products" 
+                  href={`/${locale}/products`} 
                   onClick={() => setIsOpen(false)}
                   className="mt-2 p-3 text-center text-[10px] font-termina uppercase tracking-widest text-ink/60 hover:text-ink hover:bg-ink/5 transition-colors rounded-sm"
                 >
-                  Voir tout le catalogue
+                  {isEn ? "View Entire Catalog" : "Voir tout le catalogue"}
                 </Link>
               </div>
             ) : (
@@ -140,7 +154,7 @@ export function SearchBar({ placeholder = "Rechercher un produit...", autoFocus 
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
                 <div className="text-[10px] font-termina uppercase tracking-widest text-ink/60 text-center">
-                  Aucun résultat pour <br/><span className="text-ink font-bold">"{query}"</span>
+                  {isEn ? "No results found for" : "Aucun résultat pour"} <br/><span className="text-ink font-bold">"{query}"</span>
                 </div>
               </div>
             )}

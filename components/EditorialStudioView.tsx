@@ -4,7 +4,6 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
 import { BLOG_POSTS } from "@/lib/blog-data";
 import { UPCOMING_TOPIC_PIPELINE } from "@/lib/blog-automation";
 import { MarketingDirectorBot, ContentWriterBot, ProjectManagerBot, MarketIntelligenceBrief } from "@/lib/editorial-agents";
@@ -692,8 +691,6 @@ export function EditorialStudioView({ locale }: EditorialStudioViewProps) {
           </div>
         </section>
       )}
-
-      <Footer />
     </div>
   );
 }

@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
 import { BlogPost, BLOG_CATEGORIES, getBlogCategoryLabel } from "@/lib/blog-data";
 import { removeAccents } from "@/lib/text";
 
@@ -168,7 +167,7 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
                         : "bg-white text-[#1c1b19]/70 border border-[#1c1b19]/10 hover:border-[#1c1b19]/30 hover:text-[#1c1b19]"
                     }`}
                   >
-                    {isEn ? (cat.nameEn || cat.name) : cat.name}
+                    {isEn ? ((cat as any).nameEn || (cat as any).name) : (cat as any).name}
                   </button>
                 );
               })}
@@ -730,8 +729,6 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
         </section>
 
       </div>
-
-      <Footer />
     </div>
   );
 }

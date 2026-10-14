@@ -100,7 +100,7 @@ export function LuxuryMenuOverlay({ isOpen, onClose }: LuxuryMenuOverlayProps) {
       current = current.replace(/^\/fr/, "");
     }
     if (current === "") current = "/";
-    const target = newLocale === "fr" ? current : `/${newLocale}${current === "/" ? "" : current}`;
+    const target = `/${newLocale}${current === "/" ? "" : current}`;
     window.location.href = target;
   };
 

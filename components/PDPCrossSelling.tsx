@@ -100,7 +100,7 @@ export function PDPCrossSelling({
   const collections = [
     {
       href: `/${locale}/univers/outdoor`,
-      title: isEn ? "Tissus Outdoor & Terrasses" : "Tissus Outdoor & Terrasses",
+      title: isEn ? "Outdoor & Terrace Fabrics" : "Tissus Outdoor & Terrasses",
       subtitle: isEn ? "Water-repellent fabrics & sunny riad banquettes" : "Toiles déperlantes, banquettes & salons d'été",
       tag: isEn ? "TERRACES & POOL" : "TERRASSES & RIADS",
       isProHighlight: false,
@@ -113,7 +113,7 @@ export function PDPCrossSelling({
     },
     {
       href: `/${locale}/univers/indoor`,
-      title: isEn ? "Tissus d'Intérieur, Lin & Velours" : "Tissus d'Intérieur, Lin & Velours",
+      title: isEn ? "Indoor Fabrics, Linen & Velvet" : "Tissus d'Intérieur, Lin & Velours",
       subtitle: isEn ? "Heavy drapery, corduroy & Atlas upholstery" : "Draperies lourdes, velours côtelé & sièges",
       tag: isEn ? "LIVING & CURTAINS" : "AMEUBLEMENT & RIDEAUX",
       isProHighlight: false,
@@ -125,7 +125,7 @@ export function PDPCrossSelling({
     },
     {
       href: `/${locale}/univers/linge-de-lit`,
-      title: isEn ? "Linge de Lit Hôtelier Grand Luxe" : "Linge de Lit Hôtelier Grand Luxe",
+      title: isEn ? "Grand Luxury Hotel Bed Linen" : "Linge de Lit Hôtelier Grand Luxe",
       subtitle: isEn ? "Egyptian cotton percale & washed pure linen" : "Percale d'Égypte 400 fils & pur lin lavé",
       tag: isEn ? "SUITES & BEDROOMS" : "SUITES & GRAND HÔTEL",
       isProHighlight: false,
@@ -137,7 +137,7 @@ export function PDPCrossSelling({
     },
     {
       href: `/${locale}/univers/linge-de-bain`,
-      title: isEn ? "Linge de Bain Spa & Wellness" : "Linge de Bain Spa & Wellness",
+      title: isEn ? "Spa & Wellness Bath Linen" : "Linge de Bain Spa & Wellness",
       subtitle: isEn ? "Combed cotton 600g/m² & luxury waffle bathrobes" : "Éponge peignée 600g/m² & peignoirs de riad",
       tag: isEn ? "BATH & WELLNESS" : "SPA & NID D'ABEILLE",
       isProHighlight: false,
@@ -149,7 +149,7 @@ export function PDPCrossSelling({
     },
     {
       href: `/${locale}/savoir-faire`,
-      title: isEn ? "Manufacture & Ateliers Marrakech" : "Manufacture & Ateliers Marrakech",
+      title: isEn ? "Marrakech Manufacture & Workshops" : "Manufacture & Ateliers Marrakech",
       subtitle: isEn ? "Straight-grain cutting, weighted hems & bespoke craft" : "Coupe au fil droit & confection sur-mesure",
       tag: isEn ? "ATELIER CRAFT" : "ATELIER SUR-MESURE",
       isProHighlight: false,
@@ -163,7 +163,7 @@ export function PDPCrossSelling({
     },
     {
       href: `/${locale}/pro`,
-      title: isEn ? "Portail Hôtellerie & Prescripteurs" : "Portail Hôtellerie & Prescripteurs",
+      title: isEn ? "Hospitality & Trade Portal" : "Portail Hôtellerie & Prescripteurs",
       subtitle: isEn ? "Trade discounts, 48h swatch box & express quotes" : "Remises éditeur directes & échantillons 48h",
       tag: isEn ? "PRO ACCESS" : "ESPACE ARCHITECTES B2B",
       isProHighlight: true,
