@@ -115,7 +115,7 @@ export function CartDrawer() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.97, y: 14 }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="relative z-10 w-full md:w-[96vw] max-w-[1260px] h-full md:h-[92vh] max-h-[840px] md:rounded-[28px] overflow-hidden shadow-[0_30px_90px_rgba(0,0,0,0.65)] bg-[#fdfbf7] flex flex-col lg:flex-row"
+            className="relative z-10 w-full md:w-[96vw] max-w-[1260px] h-[100dvh] md:h-[92vh] max-h-[840px] md:rounded-[28px] overflow-y-auto lg:overflow-hidden shadow-[0_30px_90px_rgba(0,0,0,0.65)] bg-[#fdfbf7] flex flex-col lg:flex-row"
           >
             {/* ============================================================ */}
             {/* COLUMN 1: LEFT DARK SIDEBAR (Byredo Style Navigation) */}
@@ -287,7 +287,7 @@ export function CartDrawer() {
             {/* ============================================================ */}
             {/* COLUMN 2: CENTER SHOPPING CART (Table / Items Area) */}
             {/* ============================================================ */}
-            <div className="flex-1 flex flex-col bg-white min-w-0 overflow-hidden">
+            <div className="flex-1 flex flex-col bg-white min-w-0 lg:overflow-hidden shrink-0 lg:shrink">
               {/* Top Navigation Bar: Back to store */}
               <div className="px-6 lg:px-9 pt-6 pb-3 flex items-center justify-between border-b border-ink/5">
                 <button
@@ -346,9 +346,9 @@ export function CartDrawer() {
               )}
 
               {/* Items List (Scrollable, Generous Layout) */}
-              <div className="flex-1 overflow-y-auto px-6 lg:px-9 py-2 divide-y divide-ink/5">
+              <div className="lg:flex-1 lg:overflow-y-auto px-5 sm:px-6 lg:px-9 py-2 divide-y divide-ink/5">
                 {items.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center h-full py-20 text-center space-y-6">
+                  <div className="flex flex-col items-center justify-center h-full min-h-[300px] py-12 sm:py-16 md:py-20 text-center space-y-6">
                     <div className="w-16 h-16 rounded-full border border-ink/10 flex items-center justify-center bg-cream/30">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -513,7 +513,7 @@ export function CartDrawer() {
             {/* ============================================================ */}
             {/* COLUMN 3: RIGHT SUMMARY & CHECKOUT PANEL */}
             {/* ============================================================ */}
-            <div className="w-full lg:w-[320px] xl:w-[350px] bg-[#f8f6f2] border-t lg:border-t-0 lg:border-l border-ink/10 flex flex-col p-6 lg:p-8 shrink-0 justify-between">
+            <div className={`w-full lg:w-[320px] xl:w-[350px] bg-[#f8f6f2] border-t lg:border-t-0 lg:border-l border-ink/10 flex-col p-6 lg:p-8 shrink-0 justify-between pb-12 lg:pb-8 ${items.length === 0 ? "hidden lg:flex" : "flex"}`}>
               <div>
                 {/* Header with Close Icon */}
                 <div className="flex items-center justify-between mb-8">
@@ -522,7 +522,7 @@ export function CartDrawer() {
                   </h2>
                   <button
                     onClick={closeCart}
-                    className="p-1.5 -mr-1 text-ink/50 hover:text-ink transition-transform hover:rotate-90 duration-300"
+                    className="hidden lg:block p-1.5 -mr-1 text-ink/50 hover:text-ink transition-transform hover:rotate-90 duration-300"
                     aria-label="Fermer"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
