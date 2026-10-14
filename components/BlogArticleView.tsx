@@ -7,6 +7,8 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { BlogPost } from "@/lib/blog-data";
 import { removeAccents } from "@/lib/text";
+import { RichArticleContent } from "@/components/RichArticleContent";
+import { getArticleAudit } from "@/lib/editorial-agents";
 
 interface BlogArticleViewProps {
   post: BlogPost;
@@ -18,8 +20,10 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
   const [scrollProgress, setScrollProgress] = useState(0);
   const [copied, setCopied] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [showAgentAudit, setShowAgentAudit] = useState(false);
 
   const isEn = locale === "en";
+  const agentAudit = getArticleAudit(post.slug);
 
   // Track reading scroll progress
   useEffect(() => {
@@ -52,6 +56,7 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
         day: "numeric",
         month: "long",
         year: "numeric",
+        timeZone: "UTC",
       }).format(date);
     } catch {
       return isoString;
@@ -205,6 +210,97 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
               </a>
             </div>
           </div>
+
+          {/* Multi-Agent Audit Capsule */}
+          <div className="mt-8 rounded-2xl border border-[#B8860B]/30 bg-[#B8860B]/[0.04] p-4 sm:p-5 transition-all">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5">
+                <span className="flex h-2 w-2 rounded-full bg-[#B8860B] animate-pulse" />
+                <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#B8860B]">
+                  DOSSIER MULTI-AGENTS KANSOTEX (3 BOTS IA ACTIFS)
+                </span>
+              </div>
+              <button
+                onClick={() => setShowAgentAudit(!showAgentAudit)}
+                className="inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-1 text-[11px] font-medium text-[#1c1b19] border border-[#1c1b19]/15 hover:bg-[#1c1b19] hover:text-white transition-all shadow-2xs cursor-pointer"
+              >
+                <span>{showAgentAudit ? "Masquer l'Audit des Bots" : "Voir l'Ingénierie des 3 Bots →"}</span>
+                <span className="text-xs">{showAgentAudit ? "▲" : "▼"}</span>
+              </button>
+            </div>
+
+            {showAgentAudit && (
+              <div className="mt-5 pt-4 border-t border-[#B8860B]/20 grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
+                {/* Bot 1 */}
+                <div className="rounded-xl bg-white p-4 border border-[#1c1b19]/10 shadow-xs">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-base">🎯</span>
+                    <span className="text-[10px] font-bold tracking-wider uppercase text-[#1c1b19]">
+                      BOT 1: DIRECTEUR MARKETING
+                    </span>
+                  </div>
+                  <div className="space-y-1.5 text-[11px] text-[#1c1b19]/80 font-light">
+                    <p>
+                      <strong className="font-semibold text-[#1c1b19]">Faille Ciblée :</strong>{" "}
+                      <span className="text-red-700 font-medium">{agentAudit.competitorTargeted}</span>
+                    </p>
+                    <p className="line-clamp-2 text-[#1c1b19]/70 italic">
+                      "{agentAudit.competitorFlaw}"
+                    </p>
+                    <p className="pt-1 text-[#B8860B] font-medium">
+                      Stratégie Kansotex : {agentAudit.kansotexWinningStrategy}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Bot 2 */}
+                <div className="rounded-xl bg-white p-4 border border-[#1c1b19]/10 shadow-xs">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-base">🧵</span>
+                    <span className="text-[10px] font-bold tracking-wider uppercase text-[#1c1b19]">
+                      BOT 2: MAÎTRE HASSAN
+                    </span>
+                  </div>
+                  <div className="space-y-1.5 text-[11px] text-[#1c1b19]/80 font-light">
+                    <p>
+                      <strong className="font-semibold text-[#1c1b19]">Ton d'Écriture :</strong>{" "}
+                      {agentAudit.writerVoice}
+                    </p>
+                    <p>
+                      <strong className="font-semibold text-[#1c1b19]">Normes Validées :</strong>{" "}
+                      {agentAudit.technicalStandards.join(" · ")}
+                    </p>
+                    <p className="pt-1 text-emerald-700 font-medium flex items-center gap-1">
+                      <span>✓</span> Style 100% humain certifié (0 cliché IA)
+                    </p>
+                  </div>
+                </div>
+
+                {/* Bot 3 */}
+                <div className="rounded-xl bg-white p-4 border border-[#1c1b19]/10 shadow-xs">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-base">⚙️</span>
+                    <span className="text-[10px] font-bold tracking-wider uppercase text-[#1c1b19]">
+                      BOT 3: CHEF DE PROJET
+                    </span>
+                  </div>
+                  <div className="space-y-1.5 text-[11px] text-[#1c1b19]/80 font-light">
+                    <p>
+                      <strong className="font-semibold text-[#1c1b19]">Données Structurées :</strong>{" "}
+                      {agentAudit.schemas.join(", ")}
+                    </p>
+                    <p>
+                      <strong className="font-semibold text-[#1c1b19]">Maillage Catalogue :</strong>{" "}
+                      {agentAudit.internalLinks.join(", ")}
+                    </p>
+                    <p className="pt-1 text-[#1c1b19]/70 font-medium">
+                      {agentAudit.publishCycle}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </header>
 
@@ -291,9 +387,7 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
                   {removeAccents(sec.heading)}
                 </h2>
 
-                <div className="prose prose-stone max-w-none text-sm sm:text-base font-light leading-[1.85] text-[#1c1b19]/85 whitespace-pre-line">
-                  {sec.content}
-                </div>
+                <RichArticleContent content={sec.content} />
 
                 {/* Callout Box */}
                 {sec.callout && (
@@ -311,9 +405,10 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
                         {sec.callout.title}
                       </span>
                     </div>
-                    <p className="text-xs sm:text-sm font-light leading-relaxed">
-                      {sec.callout.text}
-                    </p>
+                    <RichArticleContent
+                      content={sec.callout.text}
+                      className="text-xs sm:text-sm"
+                    />
                   </div>
                 )}
 
@@ -473,7 +568,7 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
                         </button>
                         {isOpen && (
                           <div className="px-4 pb-5 sm:px-5 sm:pb-6 text-xs sm:text-sm font-light text-[#1c1b19]/80 leading-relaxed border-t border-[#1c1b19]/5 pt-3">
-                            {faq.answer}
+                            <RichArticleContent content={faq.answer} />
                           </div>
                         )}
                       </div>

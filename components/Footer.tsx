@@ -37,7 +37,8 @@ export function Footer() {
               alt="Kansotex" 
               width={450} 
               height={150} 
-              className="w-[18rem] h-auto sm:w-[26rem] md:w-[450px]" 
+              className="w-[18rem] sm:w-[26rem] md:w-[450px]" 
+              style={{ width: "auto", height: "auto" }}
             />
           </Link>
         </div>

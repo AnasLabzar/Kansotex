@@ -17,22 +17,20 @@ interface EditorialStudioViewProps {
 export function EditorialStudioView({ locale }: EditorialStudioViewProps) {
   const [activeTab, setActiveTab] = useState<"bots" | "competitors" | "schedule" | "backlinks">("bots");
   const [simulating, setSimulating] = useState(false);
-  const [simulatedArticle, setSimulatedArticle] = useState<string | null>(null);
 
   const marketingBot = new MarketingDirectorBot();
   const writerBot = new ContentWriterBot();
   const pmBot = new ProjectManagerBot();
 
   const briefs = marketingBot.getStrategicOpportunities();
+  const [simulatedBrief, setSimulatedBrief] = useState<MarketIntelligenceBrief | null>(briefs[0] || null);
 
   const handleSimulatePipeline = (brief: MarketIntelligenceBrief) => {
     setSimulating(true);
-    setSimulatedArticle(null);
-
     setTimeout(() => {
       setSimulating(false);
-      setSimulatedArticle(brief.topicTitle);
-    }, 1800);
+      setSimulatedBrief(brief);
+    }, 1200);
   };
 
   const isEn = locale === "en";
@@ -308,17 +306,133 @@ export function EditorialStudioView({ locale }: EditorialStudioViewProps) {
               ))}
             </div>
 
-            {simulatedArticle && (
-              <div className="mt-8 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 p-5 text-emerald-300 text-xs flex items-center justify-between">
-                <span>
-                  ✓ <strong>Succès :</strong> L'article <em>« {simulatedArticle} »</em> a été compilé par le Project Manager, vérifié pour Schema.org et intégré dans le flux dynamique !
-                </span>
-                <Link
-                  href={`/${locale}/blog`}
-                  className="rounded-full bg-emerald-500 text-black px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider hover:bg-emerald-400"
-                >
-                  Voir dans le Journal
-                </Link>
+            {simulatedBrief && (
+              <div className="mt-10 rounded-3xl bg-white/[0.04] border border-white/15 p-6 sm:p-8">
+                <div className="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-white/10">
+                  <div>
+                    <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/20 text-emerald-300 px-3 py-1 text-[10px] font-bold tracking-widest uppercase mb-2">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      PIPELINE VALIDÉE PAR LES 3 BOTS IA
+                    </div>
+                    <h4 className="font-termina text-base sm:text-xl font-bold text-white">
+                      {simulatedBrief.topicTitle}
+                    </h4>
+                    <p className="text-xs text-white/60 font-light mt-1">
+                      Catégorie : <span className="text-[#B8860B] font-medium">{simulatedBrief.category}</span> · Cible : {simulatedBrief.targetAudience}
+                    </p>
+                  </div>
+
+                  <Link
+                    href={`/${locale}/blog`}
+                    className="rounded-full bg-[#B8860B] text-[#141413] px-5 py-2 text-xs font-bold uppercase tracking-wider hover:bg-white transition-all shadow-md shrink-0 cursor-pointer"
+                  >
+                    Voir dans le Journal →
+                  </Link>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                  {/* Bot 1 Output */}
+                  <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="text-lg">🎯</span>
+                      <span className="text-xs font-bold text-white uppercase tracking-wider">
+                        BOT 1 : DIRECTEUR MARKETING
+                      </span>
+                    </div>
+                    <div className="space-y-2.5 text-xs text-white/80 font-light">
+                      <p>
+                        <strong className="text-white">Concurrent Attaqué :</strong>{" "}
+                        <span className="text-rose-400 font-semibold">{simulatedBrief.competitorGapTargeted.competitor}</span>
+                      </p>
+                      <p className="text-white/60 italic text-[11px]">
+                        "{simulatedBrief.competitorGapTargeted.competitorWeakness}"
+                      </p>
+                      <p>
+                        <strong className="text-white">Angle Stratégique Kansotex :</strong>{" "}
+                        <span className="text-amber-300">{simulatedBrief.competitorGapTargeted.kansotexWinningAngle}</span>
+                      </p>
+                      <div className="pt-2 border-t border-white/10">
+                        <span className="text-[10px] uppercase text-white/50 block font-medium mb-1">Mots-clés ciblés :</span>
+                        <div className="flex flex-wrap gap-1">
+                          {simulatedBrief.primaryKeywords.slice(0, 4).map((kw, i) => (
+                            <span key={i} className="text-[10px] bg-white/10 rounded px-2 py-0.5 text-white/90">
+                              {kw}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="pt-1">
+                        <span className="text-[10px] uppercase text-white/50 block font-medium">Cibles RP / Backlinks :</span>
+                        <p className="text-[11px] text-emerald-400 font-light">
+                          {simulatedBrief.backlinkOutreachAngles.join(" · ")}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bot 2 Output */}
+                  <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="text-lg">🧵</span>
+                      <span className="text-xs font-bold text-white uppercase tracking-wider">
+                        BOT 2 : MAÎTRE HASSAN
+                      </span>
+                    </div>
+                    <div className="space-y-2.5 text-xs text-white/80 font-light">
+                      <p>
+                        <strong className="text-white">Voix d'Artisan :</strong> Maître Hassan (Direction d'Atelier, 25 ans d'expérience tapisserie Marrakech).
+                      </p>
+                      <div className="p-2.5 rounded-lg bg-amber-500/[0.08] border border-amber-500/20 text-amber-200 text-[11px] italic leading-relaxed">
+                        « Travailler la matière à Marrakech, c'est apprendre à dialoguer avec le soleil sans jamais tenter de tricher avec lui. »
+                      </div>
+                      <div className="pt-2 border-t border-white/10">
+                        <span className="text-[10px] uppercase text-white/50 block font-medium mb-1">Normes Techniques Validées :</span>
+                        <ul className="space-y-1 text-[11px] text-white/90">
+                          {simulatedBrief.technicalSpecsRequired.map((spec, i) => (
+                            <li key={i} className="flex items-center gap-1.5">
+                              <span className="text-[#B8860B]">✓</span>
+                              <span>{spec}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <p className="text-[11px] text-emerald-400 font-medium pt-1">
+                        ✓ Filtre anti-cliché IA : 100% de langage de métier réel
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Bot 3 Output */}
+                  <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="text-lg">⚙️</span>
+                      <span className="text-xs font-bold text-white uppercase tracking-wider">
+                        BOT 3 : CHEF DE PROJET
+                      </span>
+                    </div>
+                    <div className="space-y-2.5 text-xs text-white/80 font-light">
+                      <p>
+                        <strong className="text-white">Structure :</strong> Sommaire dynamique, encadrés d'atelier, tableau comparatif et FAQ.
+                      </p>
+                      <p>
+                        <strong className="text-white">Schemas Validés :</strong>{" "}
+                        <span className="text-blue-300 font-mono text-[10px]">BlogPosting · FAQPage · BreadcrumbList</span>
+                      </p>
+                      <p>
+                        <strong className="text-white">Maillage Interne :</strong> Recommandations automatiques vers les tissus d'ameublement du catalogue.
+                      </p>
+                      <div className="pt-2 border-t border-white/10">
+                        <span className="text-[10px] uppercase text-white/50 block font-medium mb-1">Automatisation & Cadence :</span>
+                        <p className="text-[11px] text-[#B8860B] font-medium">
+                          Programmé dans le calendrier continu (intervalle 2 à 4 jours)
+                        </p>
+                      </div>
+                      <p className="text-[11px] text-emerald-400 font-medium pt-1">
+                        ✓ Synchronisé avec Google Search Console & Sitemap
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>

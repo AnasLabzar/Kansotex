@@ -166,9 +166,168 @@ export class MarketingDirectorBot {
           "Certification OEKO-TEX Standard 100",
         ],
       },
+      {
+        id: "brief-tissus-outdoor-riads",
+        topicTitle: "Le Guide Ultime des Tissus Outdoor pour Riads & Rooftops à Marrakech",
+        topicTitleEn: "The Ultimate Guide to Outdoor Fabrics for Riads & Rooftops in Marrakech",
+        category: "Outdoor & Terrasses",
+        categorySlug: "outdoor",
+        targetAudience: "B2B Luxury Hospitality (Riads, Hotels)",
+        primaryKeywords: ["tissu outdoor marrakech", "toile deperlante riad", "tissu impermeable terrasse atlas", "toile acrylique teinté masse maroc", "tissu salon de jardin marrakech"],
+        secondaryKeywords: ["tissu anti uv marrakech", "coussin banquette riad outdoor", "fournisseur textile hotel maroc"],
+        competitorGapTargeted: {
+          competitor: "Mozaieq.com & ASD Textiles",
+          competitorWeakness: "Descriptions décoratives génériques sans normes de test laboratoire ni garanties UV chiffrées.",
+          kansotexWinningAngle: "Démonstration scientifique par fiches certifiées : Solidité lumière ISO 105-B02 Grade 8/8 et test d'abrasion Martindale 60 000 tours.",
+        },
+        backlinkOutreachAngles: [
+          "Shoelifer (Dossier 'Design extérieur d'exception')",
+          "A+E Magazine (Architecture & Environnement)",
+        ],
+        recommendedImagery: ["/gallery/Kansotex-outdoor-terasse-rooftop.webp"],
+        technicalSpecsRequired: ["ISO 105-B02 Grade 7-8/8", "Martindale 45k-60k tours", "Enduction Téflon EcoElite"],
+      },
+      {
+        id: "brief-lin-atlas-velours-gueliz",
+        topicTitle: "Lin Lavé de l'Atlas vs Velours Peigné de Guéliz : Le Guide Comparatif des Étoffes Nobles pour Riads & Salons",
+        topicTitleEn: "Atlas Stonewashed Linen vs Guéliz Combed Velvet: The Comparative Noble Fabric Guide",
+        category: "Matières Nobles",
+        categorySlug: "matieres",
+        targetAudience: "Architects & Interior Designers",
+        primaryKeywords: ["lin lave marrakech", "velours d ameublement maroc", "rideaux sur mesure riad marrakech", "tissu rideau isolant thermique maroc", "tissu acoustique hotel marrakech"],
+        secondaryKeywords: ["tissu velours cotele ameublement", "housse de couette lin lave", "tapissier haut de gamme marrakech"],
+        competitorGapTargeted: {
+          competitor: "Biyadi Collection & Marchands traditionnels",
+          competitorWeakness: "Axés uniquement sur les motifs folkloriques beldi sans isolation thermique ni absorption acoustique.",
+          kansotexWinningAngle: "Performance architecturale : absorption acoustique certifiée NRC 0.65 et tombé plombé 10 cm pour rideaux de salons.",
+        },
+        backlinkOutreachAngles: [
+          "Maisons du Maroc (Sélection matières nobles)",
+          "Top10Marrakech Guide Sidi Ghanem",
+        ],
+        recommendedImagery: ["/gallery/tissus-haut-de-gamme.webp"],
+        technicalSpecsRequired: ["Grammage 420-540 g/m²", "Absorption acoustique NRC 0.65", "Plombage d'ourlet 10 cm"],
+      },
+      {
+        id: "brief-calcul-metrage-rideaux",
+        topicTitle: "Comment Mesurer et Calculer le Métrage de Vos Rideaux Sur-Mesure : Le Guide Technique de Notre Atelier",
+        topicTitleEn: "How to Measure and Calculate Yardage for Custom Curtains: The Marrakech Atelier Guide",
+        category: "Guides & Mesures",
+        categorySlug: "guides",
+        targetAudience: "Architects & Interior Designers",
+        primaryKeywords: ["calcul metrage rideau sur mesure", "comment mesurer ses rideaux", "largeur tissu rideau marrakech", "confection rideaux grande hauteur", "coefficient d ampleur rideau"],
+        secondaryKeywords: ["rideau sur mesure marrakech", "atelier confection rideau riad", "tissu grande largeur 280 cm"],
+        competitorGapTargeted: {
+          competitor: "Guides de bricolage génériques en ligne",
+          competitorWeakness: "Formules basiques inadaptées aux plafonds hauts de 4 à 5 mètres des riads marocains.",
+          kansotexWinningAngle: "Formules professionnelles d'atelier de Marrakech : coefficient d'ampleur 1.8x à 2.2x, prise en compte des lés et tombé cassant de 2 à 3 cm.",
+        },
+        backlinkOutreachAngles: ["MarocBTP", "Ordre des Architectes Marrakech"],
+        recommendedImagery: ["/gallery/Kansotex-indoor-riad-tissus-pinterest-1.png"],
+        technicalSpecsRequired: ["Grande laize 280 à 300 cm", "Raccord de motif vertical", "Ampleur 1.8x à 2.2x"],
+      },
     ];
   }
 }
+
+export function getArticleAudit(slug: string) {
+  const auditMap: Record<
+    string,
+    {
+      competitorTargeted: string;
+      competitorFlaw: string;
+      kansotexWinningStrategy: string;
+      writerVoice: string;
+      technicalStandards: string[];
+      targetAudience: string;
+      schemas: string[];
+      internalLinks: string[];
+      publishCycle: string;
+    }
+  > = {
+    "guide-tissus-outdoor-marrakech-riads-rooftops": {
+      competitorTargeted: "Mozaieq.com & ASD Textiles",
+      competitorFlaw: "Copywriting purement décoratif sans données de laboratoire chiffrées sur la réverbération UV marocaine.",
+      kansotexWinningStrategy: "Publication de normes certifiées : Solidité UV ISO 105-B02 Grade 8/8 et test d'abrasion Martindale 60 000 tours.",
+      writerVoice: "Maître Hassan (Direction Technique Kansotex) — Ton sobre, transmission de métier, zéro jargon IA.",
+      technicalStandards: ["ISO 105-B02 Grade 7-8", "Martindale 60 000 tours", "Déperlance fluor-free Teflon EcoElite"],
+      targetAudience: "Gérants de Riads, Propriétaires de Villas à la Palmeraie & Hôtels de Luxe",
+      schemas: ["Schema.org/BlogPosting", "Schema.org/FAQPage", "Schema.org/BreadcrumbList"],
+      internalLinks: ["/products/toile-outdoor-atlas-sable", "/products/velours-coton-gueliz", "/pro"],
+      publishCycle: "Cadence automatique : cycle régulier 2 à 4 jours",
+    },
+    "toiles-remplacement-chiliennes-transats-marrakech": {
+      competitorTargeted: "Transat.ma",
+      competitorFlaw: "Vend des chiliennes bon marché avec toiles polyester d'entrée de gamme qui se décolorent après un seul été.",
+      kansotexWinningStrategy: "Monopoliser la requête 'toile de remplacement pour chilienne haut de gamme' avec acrylique teinté masse 320g/m² garanti 8 ans.",
+      writerVoice: "Maître Hassan — Guide étape par étape d'atelier pour mesurer 43 cm standard et changer sans agrafe.",
+      technicalStandards: ["Acrylique teinté dans la masse", "Grammage lourd 320 g/m²", "Résistant au chlore de piscine"],
+      targetAudience: "Particuliers Premium & Hôtels avec espaces piscine",
+      schemas: ["Schema.org/BlogPosting", "Schema.org/FAQPage", "Schema.org/BreadcrumbList"],
+      internalLinks: ["/products/toile-outdoor-atlas-sable", "/pro"],
+      publishCycle: "Cadence automatique : cycle régulier 2 à 4 jours",
+    },
+    "mousse-dryfeel-tissus-outdoor-piscine-marrakech": {
+      competitorTargeted: "AMA Group (Amagroup.ma) & Mobilier rigide",
+      competitorFlaw: "AMA domine le mobilier en bois/alu mais délaisse l'expertise textile et la gestion de l'humidité des coussins.",
+      kansotexWinningStrategy: "Création du carrefour sémantique 'Mousse Dryfeel réticulée' + sous-face drainante en Batyline micro-perforée séchage 25 min.",
+      writerVoice: "Maître Hassan & Bureau d'études Kansotex — Explication chirurgicale de la cellule ouverte vs cellule fermée.",
+      technicalStandards: ["Mousse alvéolaire réticulée 100% ouverte", "Densité 30-35 kg/m³", "Biocide Sanitized anti-moisissure"],
+      targetAudience: "Architectes de paysagisme, Décorateurs de piscines & Daybeds de prestige",
+      schemas: ["Schema.org/BlogPosting", "Schema.org/FAQPage", "Schema.org/BreadcrumbList"],
+      internalLinks: ["/products/toile-outdoor-atlas-sable", "/pro"],
+      publishCycle: "Cadence automatique : cycle régulier 2 à 4 jours",
+    },
+    "lin-atlas-vs-velours-gueliz-rideaux-salons-suites": {
+      competitorTargeted: "Biyadi Collection & Marchands beldi traditionnels",
+      competitorFlaw: "Limité au folklore décoratif sans réponse aux exigences d'insonorisation et d'isolation thermique.",
+      kansotexWinningStrategy: "Positionnement noble : Lin prélavé à l'eau de source d'Atlas & Velours peigné 540g/m² avec coefficient d'absorption acoustique NRC 0.65.",
+      writerVoice: "Studio Design Kansotex & Maître Hassan — Dialogue sensoriel entre légèreté minérale et opulence feutrée.",
+      technicalStandards: ["Lin 420 g/m² stabilisé", "Velours peigné 540 g/m²", "Affaiblissement acoustique NRC 0.65"],
+      targetAudience: "Suites de Riads, Boutiques Hôtels Médina & Appartements de Maître Guéliz",
+      schemas: ["Schema.org/BlogPosting", "Schema.org/FAQPage", "Schema.org/BreadcrumbList"],
+      internalLinks: ["/products/velours-coton-gueliz", "/pro"],
+      publishCycle: "Cadence automatique : cycle régulier 2 à 4 jours",
+    },
+    "comment-mesurer-calculer-metrage-rideaux-sur-mesure": {
+      competitorTargeted: "Tutoriels génériques de bricolage en ligne",
+      competitorFlaw: "Ignorent les particularités des riads marocains (hauteurs sous plafond de 4 à 5m et barres scellées dans le plâtre).",
+      kansotexWinningStrategy: "Outil d'autorité professionnelle : Formules exactes de métrage (ampleur 1.8x à 2.2x), calcul des lés grande largeur 280 cm et tombé cassant 3 cm.",
+      writerVoice: "Maître Hassan — Carnet d'atelier pratique et rigoureux pour décorateurs et architectes.",
+      technicalStandards: ["Formule Lés = (L x Ampleur) / Laize", "Ourlet plombé 10 cm", "Tête plissée flamande"],
+      targetAudience: "Décorateurs, Tapissiers, Architectes d'Intérieur & Propriétaires exigeants",
+      schemas: ["Schema.org/BlogPosting", "Schema.org/FAQPage", "Schema.org/BreadcrumbList"],
+      internalLinks: ["/products/velours-coton-gueliz", "/pro"],
+      publishCycle: "Cadence automatique : cycle régulier 2 à 4 jours",
+    },
+    "amenagement-textile-b2b-renover-riad-hotel-luxe": {
+      competitorTargeted: "Easy Linge Kech & Fournisseurs hôteliers d'entrée de gamme",
+      competitorFlaw: "Concurrence axée sur le polycoton basique sans charme artisanal ni certification de sécurité.",
+      kansotexWinningStrategy: "Offre B2B intégrée : Linge de lit haute densité 200-400 fils, tissus non-feu certifiés M1/Crib 5 et tarification pro dégressive.",
+      writerVoice: "Direction Technique & B2B Kansotex — Vision gestionnaire hôtelier (coût par nuitée, durabilité industrielle).",
+      technicalStandards: ["Norme non-feu M1 / EN 1021", "Thread Count 200 à 400 fils", "Lavage industriel 60°C"],
+      targetAudience: "Directeurs d'hôtels, Propriétaires de Riads de Luxe & Architectes CHR",
+      schemas: ["Schema.org/BlogPosting", "Schema.org/FAQPage", "Schema.org/BreadcrumbList"],
+      internalLinks: ["/pro", "/products"],
+      publishCycle: "Cadence automatique : cycle régulier 2 à 4 jours",
+    },
+  };
+
+  return (
+    auditMap[slug] || {
+      competitorTargeted: "Concurrence locale & distributeurs génériques",
+      competitorFlaw: "Absence de détails techniques et fiches matières imprécises.",
+      kansotexWinningStrategy: "Maison d'étoffes premium : fabrication à Marrakech, certifications internationales et conseil de maîtres tisseurs.",
+      writerVoice: "Maître Hassan & Studio Kansotex — Style d'atelier 100% humain.",
+      technicalStandards: ["Tests de laboratoire certifiés", "Fibres nobles ou techniques durables"],
+      targetAudience: "Clients High Net Worth & Professionnels CHR",
+      schemas: ["Schema.org/BlogPosting", "Schema.org/FAQPage"],
+      internalLinks: ["/pro", "/products"],
+      publishCycle: "Cadence automatique : 2 à 4 jours",
+    }
+  );
+}
+
 
 /**
  * BOT 2: HUMAN-GRADE LUXURY CONTENT WRITER

@@ -17,6 +17,8 @@ interface BlogIndexViewProps {
 export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [activeAgentTab, setActiveAgentTab] = useState<"bot1" | "bot2" | "bot3">("bot1");
+  const [showAgentShowcase, setShowAgentShowcase] = useState(true);
 
   const isEn = locale === "en";
 
@@ -51,6 +53,7 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
         day: "numeric",
         month: "long",
         year: "numeric",
+        timeZone: "UTC",
       }).format(date);
     } catch {
       return isoString;
@@ -135,6 +138,215 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
               </button>
             );
           })}
+        </div>
+      </section>
+
+      {/* Multi-Agent Editorial Intelligence Engine (3 Collaborative Bots) */}
+      <section className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pt-8 sm:pt-10">
+        <div className="rounded-3xl bg-[#141413] text-[#faf8f5] p-6 sm:p-10 border border-white/10 shadow-xl overflow-hidden relative">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[radial-gradient(circle_at_top_right,rgba(184,134,11,0.15),transparent_70%)] pointer-events-none" />
+
+          {/* Header */}
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-6 relative z-10">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#B8860B]/30 bg-[#B8860B]/10 px-3.5 py-1 mb-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#B8860B] animate-pulse" />
+                <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#B8860B]">
+                  ÉCOSYSTÈME MULTI-AGENTS KANSOTEX · 3 BOTS OPÉRATIONNELS
+                </span>
+              </div>
+              <h2 className="font-termina text-lg sm:text-2xl font-bold uppercase tracking-tight text-white">
+                {removeAccents("Comment Nos 3 Bots Travaillent Pour Dominer le Marché")}
+              </h2>
+              <p className="text-xs sm:text-sm font-light text-white/70 mt-1 max-w-2xl">
+                {isEn
+                  ? "Discover how our 3 collaborative AI personas analyze competitor loopholes, write 100% human-grade master weaver guides, and automate publishing."
+                  : "Consultez en direct les actions concrètes menées par nos 3 bots d'intelligence : radar des concurrents, rédaction d'artisan sans cliché IA et cadence de publication."}
+              </p>
+            </div>
+
+            <Link
+              href={`/${locale}/blog/studio`}
+              className="inline-flex items-center gap-2 rounded-full bg-[#B8860B] text-[#141413] px-5 py-2.5 text-xs font-semibold uppercase tracking-wider hover:bg-white transition-all shadow-md shrink-0 cursor-pointer"
+            >
+              <span>Ouvrir le Studio Cockpit IA</span>
+              <span>→</span>
+            </Link>
+          </div>
+
+          {/* Agent Tabs */}
+          <div className="flex items-center gap-2 border-b border-white/10 pb-3 mb-6 overflow-x-auto no-scrollbar relative z-10">
+            <button
+              onClick={() => setActiveAgentTab("bot1")}
+              className={`px-4 py-2 rounded-full text-xs font-medium tracking-wider uppercase transition-all flex items-center gap-2 cursor-pointer ${
+                activeAgentTab === "bot1"
+                  ? "bg-[#B8860B] text-[#141413]"
+                  : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
+              }`}
+            >
+              <span>🎯</span>
+              <span>BOT 1 : Directeur Marketing & Radar</span>
+            </button>
+            <button
+              onClick={() => setActiveAgentTab("bot2")}
+              className={`px-4 py-2 rounded-full text-xs font-medium tracking-wider uppercase transition-all flex items-center gap-2 cursor-pointer ${
+                activeAgentTab === "bot2"
+                  ? "bg-[#B8860B] text-[#141413]"
+                  : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
+              }`}
+            >
+              <span>🧵</span>
+              <span>BOT 2 : Maître Hassan (Rédacteur 100% Humain)</span>
+            </button>
+            <button
+              onClick={() => setActiveAgentTab("bot3")}
+              className={`px-4 py-2 rounded-full text-xs font-medium tracking-wider uppercase transition-all flex items-center gap-2 cursor-pointer ${
+                activeAgentTab === "bot3"
+                  ? "bg-[#B8860B] text-[#141413]"
+                  : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
+              }`}
+            >
+              <span>⚙️</span>
+              <span>BOT 3 : Chef de Projet & Automatisation</span>
+            </button>
+          </div>
+
+          {/* Tab Panels */}
+          <div className="relative z-10 text-xs sm:text-sm">
+            {activeAgentTab === "bot1" && (
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3.5">
+                  <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-bold text-white uppercase text-[11px]">Transat.ma</span>
+                      <span className="text-[10px] text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-500/30">Attaqué</span>
+                    </div>
+                    <p className="text-[11px] text-white/60 mb-2 font-light">
+                      <strong className="text-white/80">Faille :</strong> Toiles chiliennes basiques qui décolorent.
+                    </p>
+                    <div className="pt-2 border-t border-white/10">
+                      <span className="text-[10px] text-[#B8860B] font-semibold block uppercase">Article Déployé :</span>
+                      <Link href={`/${locale}/blog/toiles-remplacement-chiliennes-transats-marrakech`} className="text-white text-[11px] hover:underline font-medium line-clamp-1">
+                        Toiles de Remplacement Chiliennes (Acrylique 320g/m²)
+                      </Link>
+                    </div>
+                  </div>
+
+                  <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-bold text-white uppercase text-[11px]">AMA Group</span>
+                      <span className="text-[10px] text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-500/30">Attaqué</span>
+                    </div>
+                    <p className="text-[11px] text-white/60 mb-2 font-light">
+                      <strong className="text-white/80">Faille :</strong> Mobilier lourd sans expertise textile ni mousse drainante.
+                    </p>
+                    <div className="pt-2 border-t border-white/10">
+                      <span className="text-[10px] text-[#B8860B] font-semibold block uppercase">Article Déployé :</span>
+                      <Link href={`/${locale}/blog/mousse-dryfeel-tissus-outdoor-piscine-marrakech`} className="text-white text-[11px] hover:underline font-medium line-clamp-1">
+                        Mousse Dryfeel Réticulée & Tissus Imperméables
+                      </Link>
+                    </div>
+                  </div>
+
+                  <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-bold text-white uppercase text-[11px]">Mozaieq.com</span>
+                      <span className="text-[10px] text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-500/30">Attaqué</span>
+                    </div>
+                    <p className="text-[11px] text-white/60 mb-2 font-light">
+                      <strong className="text-white/80">Faille :</strong> Textes descriptifs sans chiffres certifiés de labo.
+                    </p>
+                    <div className="pt-2 border-t border-white/10">
+                      <span className="text-[10px] text-[#B8860B] font-semibold block uppercase">Article Déployé :</span>
+                      <Link href={`/${locale}/blog/guide-tissus-outdoor-marrakech-riads-rooftops`} className="text-white text-[11px] hover:underline font-medium line-clamp-1">
+                        Guide Tissus Outdoor (Martindale 60k & UV Grade 8/8)
+                      </Link>
+                    </div>
+                  </div>
+
+                  <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-bold text-white uppercase text-[11px]">Easy Linge Kech</span>
+                      <span className="text-[10px] text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-500/30">Attaqué</span>
+                    </div>
+                    <p className="text-[11px] text-white/60 mb-2 font-light">
+                      <strong className="text-white/80">Faille :</strong> Dominé par le polycoton 140 fils basique.
+                    </p>
+                    <div className="pt-2 border-t border-white/10">
+                      <span className="text-[10px] text-[#B8860B] font-semibold block uppercase">Article Déployé :</span>
+                      <Link href={`/${locale}/blog/amenagement-textile-b2b-renover-riad-hotel-luxe`} className="text-white text-[11px] hover:underline font-medium line-clamp-1">
+                        Linge Hôtelier & Normes Non-Feu M1 Riads
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/5 flex flex-wrap items-center justify-between gap-3 text-xs text-white/70 font-light">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[#B8860B] font-semibold uppercase text-[11px]">Cibles Backlinks & RP Actives :</span>
+                    <span>Shoelifer · A+E Magazine (Architecture) · Maisons du Maroc · Guides Sidi Ghanem</span>
+                  </div>
+                  <span className="text-emerald-400 font-medium">Radar de Marché : Opérationnel ✓</span>
+                </div>
+              </div>
+            )}
+
+            {activeAgentTab === "bot2" && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
+                  <span className="text-[#B8860B] font-semibold text-xs uppercase block mb-1">Voix d'Atelier Authentique</span>
+                  <h4 className="text-sm font-bold text-white mb-2">Maître Hassan (Chef d'Atelier)</h4>
+                  <p className="text-xs text-white/70 font-light leading-relaxed">
+                    Chaque guide est rédigé dans le langage du métier avec plus de 25 ans d'expérience du tissage à Marrakech : respect des retraits après lavage, calculs de plombage et résistance au vent du Chergui.
+                  </p>
+                </div>
+
+                <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
+                  <span className="text-[#B8860B] font-semibold text-xs uppercase block mb-1">Garantie Anti-Cliché IA</span>
+                  <h4 className="text-sm font-bold text-white mb-2">Filtre Humain & Technique</h4>
+                  <p className="text-xs text-white/70 font-light leading-relaxed">
+                    Zéro phrases génériques comme "dans cet article nous allons explorer". Remplacement systématique par des calculs réels de métrage (ampleur 1.8x à 2.2x), des coefficients acoustiques et des fiches de tests.
+                  </p>
+                </div>
+
+                <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
+                  <span className="text-[#B8860B] font-semibold text-xs uppercase block mb-1">Ancrage Architectural</span>
+                  <h4 className="text-sm font-bold text-white mb-2">Climat de Marrakech & Atlas</h4>
+                  <p className="text-xs text-white/70 font-light leading-relaxed">
+                    Dialogue direct avec l'environnement : toits-terrasses de Guéliz, patios ombragés de la Médina, villas de la Palmeraie et contraintes d'ensoleillement de 300 jours par an.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {activeAgentTab === "bot3" && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
+                  <span className="text-[#B8860B] font-semibold text-xs uppercase block mb-1">Cadence de Publication</span>
+                  <h4 className="text-sm font-bold text-white mb-2">Tous les 2 à 4 Jours</h4>
+                  <p className="text-xs text-white/70 font-light leading-relaxed">
+                    Un algorithme chronologique intelligent espace automatiquement la parution des dossiers techniques pour stimuler en continu le crawl de Googlebot sans pic artificiel.
+                  </p>
+                </div>
+
+                <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
+                  <span className="text-[#B8860B] font-semibold text-xs uppercase block mb-1">Google AI Overviews</span>
+                  <h4 className="text-sm font-bold text-white mb-2">Schemas JSON-LD Avancés</h4>
+                  <p className="text-xs text-white/70 font-light leading-relaxed">
+                    Génération automatique des balises Schema.org/BlogPosting, FAQPage et BreadcrumbList permettant aux moteurs génératifs (Perplexity, ChatGPT, SGE) d'extraire les réponses Kansotex.
+                  </p>
+                </div>
+
+                <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
+                  <span className="text-[#B8860B] font-semibold text-xs uppercase block mb-1">Commerce Connecté</span>
+                  <h4 className="text-sm font-bold text-white mb-2">Cross-Selling Contextuel</h4>
+                  <p className="text-xs text-white/70 font-light leading-relaxed">
+                    Chaque article intègre automatiquement les fiches produits associées (ex: Toile Outdoor Atlas, Velours Guéliz) avec boutons de redirection directe vers les matières.
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
