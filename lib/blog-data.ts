@@ -208,6 +208,11 @@ Sur un fil de polyester classique ou un coton enduit ordinaire, la couleur est a
           text: "Travailler la matière à Marrakech, c'est apprendre à dialoguer avec le soleil sans jamais tenter de tricher avec lui. Si le pigment n'est pas scellé dans le polymère, le ciel d'ocre finira toujours par l'emporter.",
           author: "Maître Hassan",
           role: "Chef d'atelier tapisserie Kansotex Marrakech"
+        },
+        image: {
+          url: "/gallery/matiere-tissus-outdoor-rooftop.jpg",
+          alt: "Macro-tissage acrylique déperlant teinté dans la masse Kansotex avec perles d'eau",
+          caption: "Détail de notre armure sergée déperlante : l'enduction fluor-free Téflon® EcoElite repousse l'eau sans altérer le toucher naturel du fil."
         }
       },
       {
@@ -394,6 +399,11 @@ C'est ici que le **Velours de Coton Peigné Guéliz** déploie toute sa supréma
           text: "Un salon sans rideaux de velours à Marrakech est comme une harpe sans caisse de résonance. C'est l'épaisseur du coton peigné qui apporte cette rondeur feutrée si caractéristique des grandes demeures impériales.",
           author: "Studio Kansotex",
           role: "Département Hôtellerie & Résidences Privées"
+        },
+        image: {
+          url: "/gallery/Kansotex-indoor-living-room-pinterest.webp",
+          alt: "Double rideaux en velours de coton peigné dans un salon de réception à Marrakech",
+          caption: "Absorption acoustique (NRC 0.65) et prestance feutrée : le velours lourd 540g/m² Kansotex structure les volumes sous 4m de plafond."
         }
       },
       {
@@ -591,7 +601,12 @@ Lorsque le tissu est tissé en grande laize de 280 cm, la hauteur du rideau s'in
         content: `Le type d'attache détermine non seulement le style décoratif de la pièce, mais également le repli du rideau lorsqu'il est ouvert en journée :
 - **Les Plis Flamands (Pincés doubles ou triples)** : Le summum du raffinement classique et contemporain. Les plis sont piqués de manière permanente avec une ganse rigide cachée. Ils se rangent dans un volume très compact lorsqu'ils sont ouverts.
 - **La Finition Wave (Vague ondulante)** : Moderne et épurée, elle nécessite un rail spécifique équipé de petits cordons d'espacement (généralement 6 ou 8 cm). Les vagues restent parfaitement calibrées de haut en bas.
-- **Les Œillets métalliques** : Faciles à manipuler, recommandés pour les chambres d'enfants ou les espaces informels, mais moins isolants sur le plan thermique en raison de la lumière qui s'infiltre au-dessus de la barre.`
+- **Les Œillets métalliques** : Faciles à manipuler, recommandés pour les chambres d'enfants ou les espaces informels, mais moins isolants sur le plan thermique en raison de la lumière qui s'infiltre au-dessus de la barre.`,
+        image: {
+          url: "/gallery/Kansotex-indoor-riad-tissus-pinterest-2.webp",
+          alt: "Détail de tête plissée flamande et tombé cassant de rideau sur sol en zellige",
+          caption: "Finitions haute facture : tête à plis flamands réguliers et tombé cassant de 2,5 cm reposant délicatement sur le zellige."
+        }
       },
       {
         id: "pieges-a-eviter",
@@ -719,6 +734,11 @@ Nos gammes hôtelières intègrent des fibres modacryliques et des polyesters Tr
           text: "Pour un hôtelier, la sérénité n'a pas de prix. Quand la commission de sécurité passe, avoir les certificats d'ignifugation M1 conformes permet d'ouvrir dans les délais prévus sans blocage administratif.",
           author: "Studio Kansotex",
           role: "Département Prescription Hôtelière"
+        },
+        image: {
+          url: "/gallery/bedroom_lifestyle_1791052936092.jpg",
+          alt: "Chambre d'hôtel de luxe équipée de literie 300 fils et tentures ignifugées M1 Kansotex",
+          caption: "Suite hôtelière de riad : literie percale 300 fils longues fibres et tentures ignifugées homologuées Non-Feu M1."
         }
       },
       {
@@ -767,8 +787,8 @@ Nos velours de coton peigné et nos toiles jacquard résistent aux frottements c
     excerptEn: "Your deckchair frames deserve better than faded canvas after one summer. Discover solution-dyed acrylic fabrics, custom dimensions, and expert re-canvasing in Marrakech.",
     category: "Outdoor & Terrasses",
     categorySlug: "outdoor",
-    coverImage: "/gallery/Kansotex-outdoor-terasse-rooftop-2.webp",
-    coverAlt: "Chiliennes en bois avec toiles outdoor haut de gamme Kansotex au bord d'une piscine à Marrakech",
+    coverImage: "/gallery/chilienne-luxe-transat-marrakech.jpg",
+    coverAlt: "Chilienne artisanale en bois noble avec toile rayée terracotta Kansotex au bord du bassin d'un riad à Marrakech",
     publishedAt: "2026-10-14T09:00:00.000Z",
     readingTime: "7 min",
     author: BLOG_AUTHORS.atelier,
@@ -878,6 +898,11 @@ Nos toiles de chiliennes Kansotex utilisent exclusivement des fils **100% acryli
           text: "Une chilienne réussie est celle qui accueille le corps avec fermeté et douceur. La toile doit tendre sous la charge sans jamais s'étirer irréversiblement.",
           author: "Maître Hassan",
           role: "Chef de Confection Outdoor Kansotex"
+        },
+        image: {
+          url: "/gallery/matiere-tissus-outdoor-rooftop.jpg",
+          alt: "Tissage sergé acrylique 320g/m² Kansotex avec perles d'eau et résistance au chlore",
+          caption: "Trame acrylique teintée dans la masse 320g/m² traitée Téflon® : les gouttes perlent sans altérer la fibre face aux embruns chlorés de piscine."
         }
       },
       {
@@ -896,9 +921,9 @@ Nos toiles de chiliennes Kansotex utilisent exclusivement des fils **100% acryli
    - *À fourreaux pour baguettes de bois (le plus fréquent)* : Deux tunnels cousus en haut et en bas dans lesquels glisse un jonc rond amovible.
    - *À clous tapissiers ou agrafes* : Si la toile était fixée directement sur le barreau en bois.`,
         image: {
-          url: "/gallery/Kansotex-outdoor-terasse-rooftop.webp",
-          alt: "Chiliennes avec toiles outdoor rayées et unies dans un riad de Marrakech",
-          caption: "Finitions sur-mesure confectionnées dans notre atelier avec fourreaux renforcés."
+          url: "/gallery/accompagnement-equipe-kansotex.webp",
+          alt: "Vérification des cotes et découpe d'une toile de chilienne dans l'atelier Kansotex à Marrakech",
+          caption: "Prise de cotes d'une toile de 43 cm et préparation des fourreaux doubles renforcés par nos artisans sur table de coupe."
         }
       },
       {
@@ -926,8 +951,8 @@ Nos toiles de chiliennes Kansotex utilisent exclusivement des fils **100% acryli
     excerptEn: "Discover why standard foam rots inside poolside cushions and how open-cell reticulated Dryfeel foam dries in 20 minutes without mildew.",
     category: "Outdoor & Terrasses",
     categorySlug: "outdoor",
-    coverImage: "/gallery/Kansotex-outdoor-terasse-rooftop.webp",
-    coverAlt: "Daybed de piscine haut de gamme habillé de tissu outdoor et mousse drainante à Marrakech",
+    coverImage: "/gallery/daybed-mousse-dryfeel-piscine-marrakech.jpg",
+    coverAlt: "Daybed double outdoor avec matelas déperlant et mousse réticulée Dryfeel face à la piscine et l'Atlas à Marrakech",
     publishedAt: "2026-10-14T12:00:00.000Z",
     readingTime: "8 min",
     author: BLOG_AUTHORS.studio,
@@ -1005,7 +1030,12 @@ Même si la housse extérieure est vendue comme 'imperméable', l'eau de pluie o
 
 Le résultat ? Un squelette tridimensionnel alvéolaire composé à 100% de cellules ouvertes. Versez un seau d'eau sur un bloc de mousse Dryfeel : **l'eau passe instantanément au travers comme à travers un tamis**, sans être retenue par capillarité.
 
-De plus, la matière est traitée avec un agent biocide certifié qui inhibe la formation de champignons et de bactéries même en immersion fréquente.`
+De plus, la matière est traitée avec un agent biocide certifié qui inhibe la formation de champignons et de bactéries même en immersion fréquente.`,
+        image: {
+          url: "/gallery/matiere-tissus-outdoor-rooftop.jpg",
+          alt: "Toile déperlante respirante combinée à la mousse à cellules ouvertes Dryfeel Kansotex",
+          caption: "Déperlance oléophobe et respirabilité : l'eau glisse en surface sans bloquer la respiration alvéolaire de l'assise."
+        }
       },
       {
         id: "tableau-dryfeel",
@@ -1019,7 +1049,12 @@ De plus, la matière est traitée avec un agent biocide certifié qui inhibe la 
 1. **Face supérieure et tour** : Toile acrylique Kansotex déperlante et anti-UV.
 2. **Couche d'accueil supérieure** : Mousse Dryfeel Soft (densité 30 kg/m³) de 4 cm pour un accueil moelleux sans effet de planche.
 3. **Cœur de soutien** : Mousse Dryfeel Firm (densité 35 kg/m³) de 8 à 12 cm garantissant une tenue sans affaissement.
-4. **Sous-face inférieure** : Panneau en résille technique Batyline micro-perforée qui permet à l'eau de s'évacuer immédiatement par le dessous sans jamais stagner contre le transat.`
+4. **Sous-face inférieure** : Panneau en résille technique Batyline micro-perforée qui permet à l'eau de s'évacuer immédiatement par le dessous sans jamais stagner contre le transat.`,
+        image: {
+          url: "/gallery/Kansotex-outdoor-terasse-rooftop-2.webp",
+          alt: "Daybed de piscine et banquettes avec assise drainante Dryfeel dans un riad à Marrakech",
+          caption: "Architecture 4 couches Kansotex : toile acrylique déperlante, double densité Dryfeel et sous-face respirante Batyline."
+        }
       },
       {
         id: "faq-dryfeel",

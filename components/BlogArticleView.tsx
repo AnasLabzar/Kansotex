@@ -278,13 +278,18 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
 
                 {/* Bot 3 */}
                 <div className="rounded-xl bg-white p-4 border border-[#1c1b19]/10 shadow-xs">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-base">⚙️</span>
-                    <span className="text-[10px] font-bold tracking-wider uppercase text-[#1c1b19]">
-                      BOT 3: CHEF DE PROJET
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-base">⚙️</span>
+                      <span className="text-[10px] font-bold tracking-wider uppercase text-[#1c1b19]">
+                        BOT 3: CHEF DE PROJET & CURATION
+                      </span>
+                    </div>
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-[#B8860B] bg-[#B8860B]/10 px-2 py-0.5 rounded-full">
+                      Direction Artistique
                     </span>
                   </div>
-                  <div className="space-y-1.5 text-[11px] text-[#1c1b19]/80 font-light">
+                  <div className="space-y-2 text-[11px] text-[#1c1b19]/80 font-light">
                     <p>
                       <strong className="font-semibold text-[#1c1b19]">Données Structurées :</strong>{" "}
                       {agentAudit.schemas.join(", ")}
@@ -293,7 +298,31 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
                       <strong className="font-semibold text-[#1c1b19]">Maillage Catalogue :</strong>{" "}
                       {agentAudit.internalLinks.join(", ")}
                     </p>
-                    <p className="pt-1 text-[#1c1b19]/70 font-medium">
+                    <div className="pt-1 border-t border-[#1c1b19]/10">
+                      <strong className="font-semibold text-[#1c1b19] block mb-1">
+                        Curation Visuelle (Choix du Chef de Projet) :
+                      </strong>
+                      <p className="text-[10.5px] italic text-[#1c1b19]/70 leading-relaxed bg-[#FBF9F5] p-2 rounded-lg border border-[#1c1b19]/5">
+                        « {agentAudit.visualCuration.coverReason} »
+                      </p>
+                    </div>
+                    {agentAudit.visualCuration.sectionVisuals && agentAudit.visualCuration.sectionVisuals.length > 0 && (
+                      <div className="pt-1 space-y-1.5">
+                        <span className="text-[10px] font-semibold uppercase tracking-wider text-[#B8860B] block">
+                          Visuels In-Text Calibrés ({agentAudit.visualCuration.sectionVisuals.length}) :
+                        </span>
+                        {agentAudit.visualCuration.sectionVisuals.map((vis, idx) => (
+                          <div key={idx} className="flex items-start gap-2 text-[10px] leading-tight">
+                            <span className="text-[#B8860B] shrink-0 font-bold">•</span>
+                            <div>
+                              <span className="font-semibold text-[#1c1b19]">{vis.sectionTitle} : </span>
+                              <span className="text-[#1c1b19]/70">{vis.contextualWhy}</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    <p className="pt-1 text-[#1c1b19]/70 font-medium text-[10px]">
                       {agentAudit.publishCycle}
                     </p>
                   </div>
@@ -306,19 +335,28 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
 
       {/* Cover Image */}
       <div className="max-w-5xl mx-auto px-6 sm:px-8 -mt-2 sm:-mt-4">
-        <div className="relative aspect-[16/9] sm:aspect-[21/9] rounded-2xl overflow-hidden shadow-lg border border-[#1c1b19]/10">
+        <div className="relative aspect-[16/9] sm:aspect-[21/9] rounded-2xl overflow-hidden shadow-lg border border-[#1c1b19]/10 group">
           <Image
             src={post.coverImage}
             alt={post.coverAlt}
             fill
-            className="object-cover object-center"
+            className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.01]"
             priority
             sizes="(max-width: 1200px) 100vw, 1100px"
           />
+          <div className="absolute top-4 left-4 bg-[#1c1b19]/80 backdrop-blur-md text-[#FBF9F5] text-[10px] uppercase tracking-wider font-medium px-3 py-1.5 rounded-full border border-white/10 flex items-center gap-2 shadow-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#B8860B] animate-pulse" />
+            Curation Visuelle Chef de Projet
+          </div>
         </div>
-        <p className="mt-2 text-right text-[11px] text-[#1c1b19]/50 font-light italic">
-          {post.coverAlt}
-        </p>
+        <div className="mt-2.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 text-[11px] text-[#1c1b19]/60 font-light">
+          <p className="italic">
+            <strong className="font-semibold text-[#1c1b19] not-italic">Cadre éditorial :</strong> {agentAudit.visualCuration?.coverReason || post.coverAlt}
+          </p>
+          <span className="text-[10px] uppercase tracking-wider text-[#B8860B] font-medium shrink-0">
+            Haute Définition · Kansotex Marrakech
+          </span>
+        </div>
       </div>
 
       {/* Article Body & Sidebar */}
@@ -428,17 +466,21 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
                 {/* Image Inside Section */}
                 {sec.image && (
                   <div className="my-8">
-                    <div className="relative aspect-[16/10] rounded-xl overflow-hidden border border-[#1c1b19]/10 shadow-sm">
+                    <div className="relative aspect-[16/10] rounded-xl overflow-hidden border border-[#1c1b19]/10 shadow-sm group">
                       <Image
                         src={sec.image.url}
                         alt={sec.image.alt}
                         fill
-                        className="object-cover"
+                        className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                         sizes="(max-width: 1024px) 100vw, 800px"
                       />
+                      <div className="absolute top-3 left-3 bg-[#1c1b19]/85 backdrop-blur-md text-[#FBF9F5] text-[9px] uppercase tracking-wider font-semibold px-2.5 py-1 rounded-full border border-white/10 flex items-center gap-1.5 shadow-xs">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#B8860B]" />
+                        Direction Artistique Kansotex
+                      </div>
                     </div>
                     {sec.image.caption && (
-                      <p className="mt-2 text-center text-xs text-[#1c1b19]/60 font-light italic">
+                      <p className="mt-2.5 text-center text-xs text-[#1c1b19]/70 font-light italic leading-relaxed">
                         {sec.image.caption}
                       </p>
                     )}

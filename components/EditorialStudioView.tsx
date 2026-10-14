@@ -404,10 +404,15 @@ export function EditorialStudioView({ locale }: EditorialStudioViewProps) {
 
                   {/* Bot 3 Output */}
                   <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className="text-lg">⚙️</span>
-                      <span className="text-xs font-bold text-white uppercase tracking-wider">
-                        BOT 3 : CHEF DE PROJET
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">⚙️</span>
+                        <span className="text-xs font-bold text-white uppercase tracking-wider">
+                          BOT 3 : CHEF DE PROJET
+                        </span>
+                      </div>
+                      <span className="text-[9px] font-bold uppercase tracking-wider text-[#B8860B] bg-[#B8860B]/20 px-2 py-0.5 rounded-full">
+                        Direction Artistique
                       </span>
                     </div>
                     <div className="space-y-2.5 text-xs text-white/80 font-light">
@@ -421,6 +426,19 @@ export function EditorialStudioView({ locale }: EditorialStudioViewProps) {
                       <p>
                         <strong className="text-white">Maillage Interne :</strong> Recommandations automatiques vers les tissus d'ameublement du catalogue.
                       </p>
+                      <div className="pt-2 border-t border-white/10">
+                        <span className="text-[10px] uppercase text-[#B8860B] block font-semibold mb-1">
+                          Curation Visuelle Chef de Projet (Photos Réelles) :
+                        </span>
+                        <div className="space-y-1 text-[11px] text-white/90">
+                          {simulatedBrief.recommendedImagery.map((img, i) => (
+                            <div key={i} className="flex items-center gap-2 text-white/70">
+                              <span className="text-[#B8860B]">📷</span>
+                              <span className="font-mono text-[10px] text-white/90">{img}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                       <div className="pt-2 border-t border-white/10">
                         <span className="text-[10px] uppercase text-white/50 block font-medium mb-1">Automatisation & Cadence :</span>
                         <p className="text-[11px] text-[#B8860B] font-medium">

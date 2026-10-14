@@ -243,6 +243,14 @@ export function getArticleAudit(slug: string) {
       schemas: string[];
       internalLinks: string[];
       publishCycle: string;
+      visualCuration: {
+        coverReason: string;
+        sectionVisuals: {
+          sectionTitle: string;
+          image: string;
+          contextualWhy: string;
+        }[];
+      };
     }
   > = {
     "guide-tissus-outdoor-marrakech-riads-rooftops": {
@@ -255,6 +263,21 @@ export function getArticleAudit(slug: string) {
       schemas: ["Schema.org/BlogPosting", "Schema.org/FAQPage", "Schema.org/BreadcrumbList"],
       internalLinks: ["/products/toile-outdoor-atlas-sable", "/products/velours-coton-gueliz", "/pro"],
       publishCycle: "Cadence automatique : cycle régulier 2 à 4 jours",
+      visualCuration: {
+        coverReason: "Vue panoramique d'un rooftop ensoleillé face à l'Atlas : contextualise immédiatement l'agression des UV zénithaux à Marrakech.",
+        sectionVisuals: [
+          {
+            sectionTitle: "Section 2 (Acrylique vs Polyester)",
+            image: "/gallery/matiere-tissus-outdoor-rooftop.jpg",
+            contextualWhy: "Macro-texture montrant l'effet déperlant Teflon® et les perles d'eau sur le tissage dense teinté dans la masse.",
+          },
+          {
+            sectionTitle: "Section 4 (Mousses drainantes)",
+            image: "/gallery/Kansotex-outdoor-terasse-rooftop-2.webp",
+            contextualWhy: "Banquettes d'assise en situation réelle dans un patio de riad, illustrant l'évacuation de l'eau.",
+          },
+        ],
+      },
     },
     "toiles-remplacement-chiliennes-transats-marrakech": {
       competitorTargeted: "Transat.ma",
@@ -266,6 +289,21 @@ export function getArticleAudit(slug: string) {
       schemas: ["Schema.org/BlogPosting", "Schema.org/FAQPage", "Schema.org/BreadcrumbList"],
       internalLinks: ["/products/toile-outdoor-atlas-sable", "/pro"],
       publishCycle: "Cadence automatique : cycle régulier 2 à 4 jours",
+      visualCuration: {
+        coverReason: "Chilienne artisanale en bois noble avec toile rayée terracotta Kansotex au bord du bassin d'un riad : incarne l'élégance solaire sans compromis.",
+        sectionVisuals: [
+          {
+            sectionTitle: "Section 2 (Fibres résistantes au soleil & chlore)",
+            image: "/gallery/matiere-tissus-outdoor-rooftop.jpg",
+            contextualWhy: "Détail de la trame 320g/m² insensible aux éclaboussures de chlore de piscine.",
+          },
+          {
+            sectionTitle: "Section 4 (Prise de cotes 43cm)",
+            image: "/gallery/accompagnement-equipe-kansotex.webp",
+            contextualWhy: "Atelier de confection Kansotex en plein traçage et découpe de toiles sur table de coupe.",
+          },
+        ],
+      },
     },
     "mousse-dryfeel-tissus-outdoor-piscine-marrakech": {
       competitorTargeted: "AMA Group (Amagroup.ma) & Mobilier rigide",
@@ -277,6 +315,21 @@ export function getArticleAudit(slug: string) {
       schemas: ["Schema.org/BlogPosting", "Schema.org/FAQPage", "Schema.org/BreadcrumbList"],
       internalLinks: ["/products/toile-outdoor-atlas-sable", "/pro"],
       publishCycle: "Cadence automatique : cycle régulier 2 à 4 jours",
+      visualCuration: {
+        coverReason: "Daybed contemporain double avec matelas déperlant devant une piscine à débordement de la Palmeraie : sublime l'aménagement extérieur haut de gamme.",
+        sectionVisuals: [
+          {
+            sectionTitle: "Section 2 (Anatomie de la mousse réticulée)",
+            image: "/gallery/matiere-tissus-outdoor-rooftop.jpg",
+            contextualWhy: "Déperlance de surface laissant l'air circuler à travers les alvéoles ouvertes.",
+          },
+          {
+            sectionTitle: "Section 4 (L'assemblage sandwich exclusif)",
+            image: "/gallery/Kansotex-outdoor-terasse-rooftop-2.webp",
+            contextualWhy: "Exemple d'assise modulaire d'extérieur prête à l'emploi 20 min après la pluie.",
+          },
+        ],
+      },
     },
     "lin-atlas-vs-velours-gueliz-rideaux-salons-suites": {
       competitorTargeted: "Biyadi Collection & Marchands beldi traditionnels",
@@ -288,6 +341,21 @@ export function getArticleAudit(slug: string) {
       schemas: ["Schema.org/BlogPosting", "Schema.org/FAQPage", "Schema.org/BreadcrumbList"],
       internalLinks: ["/products/velours-coton-gueliz", "/pro"],
       publishCycle: "Cadence automatique : cycle régulier 2 à 4 jours",
+      visualCuration: {
+        coverReason: "Empilement d'échantillons de lin naturel d'Atlas et de velours peigné : confronte visuellement la fraîcheur minérale et l'opulence feutrée.",
+        sectionVisuals: [
+          {
+            sectionTitle: "Section 2 (Le Pur Lin d'Atlas)",
+            image: "/gallery/linen_fabric_closeup_1791052926029.jpg",
+            contextualWhy: "Gros plan sur les irrégularités nobles du lin lavé révélant sa texture organique.",
+          },
+          {
+            sectionTitle: "Section 3 (Le Velours Peigné de Guéliz)",
+            image: "/gallery/Kansotex-indoor-living-room-pinterest.webp",
+            contextualWhy: "Salon contemporain baigné de lumière avec rideaux en velours lourd 540g/m².",
+          },
+        ],
+      },
     },
     "comment-mesurer-calculer-metrage-rideaux-sur-mesure": {
       competitorTargeted: "Tutoriels génériques de bricolage en ligne",
@@ -299,6 +367,21 @@ export function getArticleAudit(slug: string) {
       schemas: ["Schema.org/BlogPosting", "Schema.org/FAQPage", "Schema.org/BreadcrumbList"],
       internalLinks: ["/products/velours-coton-gueliz", "/pro"],
       publishCycle: "Cadence automatique : cycle régulier 2 à 4 jours",
+      visualCuration: {
+        coverReason: "Artisans de la manufacture Kansotex mesurant une pièce de tissu au mètre ruban d'atelier : légitime l'autorité technique du guide.",
+        sectionVisuals: [
+          {
+            sectionTitle: "Section 2 (La formule d'ampleur 2.0x)",
+            image: "/gallery/Kansotex-indoor-riad-tissus-pinterest-1.webp",
+            contextualWhy: "Grande hauteur sous plafond (5m) nécessitant le calcul précis des lés et de la retombée.",
+          },
+          {
+            sectionTitle: "Section 5 (Les finitions et l'ourlet plombé)",
+            image: "/gallery/Kansotex-indoor-riad-tissus-pinterest-2.webp",
+            contextualWhy: "Tombé au sol au millimètre près sur sol en bejmat traditionnel sans ramasser la poussière.",
+          },
+        ],
+      },
     },
     "amenagement-textile-b2b-renover-riad-hotel-luxe": {
       competitorTargeted: "Easy Linge Kech & Fournisseurs hôteliers d'entrée de gamme",
@@ -310,6 +393,21 @@ export function getArticleAudit(slug: string) {
       schemas: ["Schema.org/BlogPosting", "Schema.org/FAQPage", "Schema.org/BreadcrumbList"],
       internalLinks: ["/pro", "/products"],
       publishCycle: "Cadence automatique : cycle régulier 2 à 4 jours",
+      visualCuration: {
+        coverReason: "Suite parentale d'une villa de prestige avec lit king-size habillé de linge hôtelier : projection immédiate pour directeurs d'établissements.",
+        sectionVisuals: [
+          {
+            sectionTitle: "Section 2 (Normes de sécurité Non-Feu M1)",
+            image: "/gallery/bedroom_lifestyle_1791052936092.jpg",
+            contextualWhy: "Suite d'hôtel boutique avec literie 300 fils et tentures ignifugées homologuées.",
+          },
+          {
+            sectionTitle: "Section 4 (Accompagnement sur-mesure)",
+            image: "/gallery/Kansotex-indoor-riad-tissus-pinterest.webp",
+            contextualWhy: "Banquettes coordonnées de salon de riad réalisées sur-mesure pour établissement touristique.",
+          },
+        ],
+      },
     },
   };
 
@@ -324,6 +422,10 @@ export function getArticleAudit(slug: string) {
       schemas: ["Schema.org/BlogPosting", "Schema.org/FAQPage"],
       internalLinks: ["/pro", "/products"],
       publishCycle: "Cadence automatique : 2 à 4 jours",
+      visualCuration: {
+        coverReason: "Photographie éditoriale haute facture reflétant le savoir-faire textile de Marrakech.",
+        sectionVisuals: [],
+      },
     }
   );
 }
@@ -347,8 +449,8 @@ export class ContentWriterBot {
       excerptEn: "Your deckchair frames deserve better than faded canvas after one summer. Discover solution-dyed acrylic fabrics, custom dimensions, and expert re-canvasing in Marrakech.",
       category: "Outdoor & Terrasses",
       categorySlug: "outdoor",
-      coverImage: "/gallery/Kansotex-outdoor-terasse-rooftop-2.webp",
-      coverAlt: "Chiliennes en bois avec toiles outdoor haut de gamme Kansotex au bord d'une piscine à Marrakech",
+      coverImage: "/gallery/chilienne-luxe-transat-marrakech.jpg",
+      coverAlt: "Chilienne artisanale en bois noble avec toile rayée terracotta Kansotex au bord du bassin d'un riad à Marrakech",
       publishedAt: "2026-10-16T10:00:00.000Z",
       readingTime: "7 min",
       author: BLOG_AUTHORS.atelier,
@@ -448,6 +550,11 @@ Nos toiles de chiliennes Kansotex utilisent exclusivement des fils **100% acryli
             text: "Une chilienne réussie est celle qui accueille le corps avec fermeté et douceur. La toile doit tendre sous la charge sans jamais s'étirer irréversiblement.",
             author: "Maître Hassan",
             role: "Chef de Confection Outdoor Kansotex"
+          },
+          image: {
+            url: "/gallery/matiere-tissus-outdoor-rooftop.jpg",
+            alt: "Tissage sergé acrylique 320g/m² Kansotex avec perles d'eau et résistance au chlore",
+            caption: "Trame acrylique teintée dans la masse 320g/m² traitée Téflon® : les gouttes perlent sans altérer la fibre face aux embruns chlorés de piscine."
           }
         },
         {
@@ -466,9 +573,9 @@ Nos toiles de chiliennes Kansotex utilisent exclusivement des fils **100% acryli
    - *À fourreaux pour baguettes de bois (le plus fréquent)* : Deux tunnels cousus en haut et en bas dans lesquels glisse un jonc rond amovible.
    - *À clous tapissiers ou agrafes* : Si la toile était fixée directement sur le barreau en bois.`,
           image: {
-            url: "/gallery/Kansotex-outdoor-terasse-rooftop.webp",
-            alt: "Chiliennes avec toiles outdoor rayées et unies dans un riad de Marrakech",
-            caption: "Finitions sur-mesure confectionnées dans notre atelier avec fourreaux renforcés."
+            url: "/gallery/accompagnement-equipe-kansotex.webp",
+            alt: "Vérification des cotes et découpe d'une toile de chilienne dans l'atelier Kansotex à Marrakech",
+            caption: "Prise de cotes d'une toile de 43 cm et préparation des fourreaux doubles renforcés par nos artisans sur table de coupe."
           }
         },
         {
@@ -499,8 +606,8 @@ Nos toiles de chiliennes Kansotex utilisent exclusivement des fils **100% acryli
       excerptEn: "Discover why standard foam rots inside poolside cushions and how open-cell reticulated Dryfeel foam dries in 20 minutes without mildew.",
       category: "Outdoor & Terrasses",
       categorySlug: "outdoor",
-      coverImage: "/gallery/Kansotex-outdoor-terasse-rooftop.webp",
-      coverAlt: "Daybed de piscine haut de gamme habillé de tissu outdoor et mousse drainante à Marrakech",
+      coverImage: "/gallery/daybed-mousse-dryfeel-piscine-marrakech.jpg",
+      coverAlt: "Daybed double outdoor avec matelas déperlant et mousse réticulée Dryfeel face à la piscine et l'Atlas à Marrakech",
       publishedAt: "2026-10-18T10:00:00.000Z",
       readingTime: "8 min",
       author: BLOG_AUTHORS.studio,
@@ -569,7 +676,12 @@ Même si la housse extérieure est vendue comme 'imperméable', l'eau de pluie o
 
 Le résultat ? Un squelette tridimensionnel alvéolaire composé à 100% de cellules ouvertes. Versez un seau d'eau sur un bloc de mousse Dryfeel : **l'eau passe instantanément au travers comme à travers un tamis**, sans être retenue par capillarité.
 
-De plus, la matière est traitée avec un agent biocide certifié qui inhibe la formation de champignons et de bactéries même en immersion fréquente.`
+De plus, la matière est traitée avec un agent biocide certifié qui inhibe la formation de champignons et de bactéries même en immersion fréquente.`,
+          image: {
+            url: "/gallery/matiere-tissus-outdoor-rooftop.jpg",
+            alt: "Toile déperlante respirante combinée à la mousse à cellules ouvertes Dryfeel Kansotex",
+            caption: "Déperlance oléophobe et respirabilité : l'eau glisse en surface sans bloquer la respiration alvéolaire de l'assise."
+          }
         },
         {
           id: "tableau-dryfeel",
@@ -583,7 +695,12 @@ De plus, la matière est traitée avec un agent biocide certifié qui inhibe la 
 1. **Face supérieure et tour** : Toile acrylique Kansotex déperlante et anti-UV.
 2. **Couche d'accueil supérieure** : Mousse Dryfeel Soft (densité 30 kg/m³) de 4 cm pour un accueil moelleux sans effet de planche.
 3. **Cœur de soutien** : Mousse Dryfeel Firm (densité 35 kg/m³) de 8 à 12 cm garantissant une tenue sans affaissement.
-4. **Sous-face inférieure** : Panneau en résille technique Batyline micro-perforée qui permet à l'eau de s'évacuer immédiatement par le dessous sans jamais stagner contre le transat.`
+4. **Sous-face inférieure** : Panneau en résille technique Batyline micro-perforée qui permet à l'eau de s'évacuer immédiatement par le dessous sans jamais stagner contre le transat.`,
+          image: {
+            url: "/gallery/Kansotex-outdoor-terasse-rooftop-2.webp",
+            alt: "Daybed de piscine et banquettes avec assise drainante Dryfeel dans un riad à Marrakech",
+            caption: "Architecture 4 couches Kansotex : toile acrylique déperlante, double densité Dryfeel et sous-face respirante Batyline."
+          }
         },
         {
           id: "faq-dryfeel",
