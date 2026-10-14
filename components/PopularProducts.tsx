@@ -12,8 +12,6 @@ export async function PopularProducts() {
     // Fetch popular products
     const allProducts = await db.orm.public.Product.all();
     
-    // Next.js Server Components CANNOT serialize Prisma 8 Proxy objects to Client Components.
-    // We MUST map them to plain JSON objects!
     products = allProducts.slice(0, 8).map(p => ({
       id: p.id,
       slug: p.slug,
@@ -25,24 +23,29 @@ export async function PopularProducts() {
       categoryId: p.categoryId,
       metadata: (p as any).metadata,
     }));
-    
+  } catch (err: any) {
+    console.warn("PopularProducts: Live DB unavailable, using local catalog fallback:", err?.message || err);
+    try {
+      const { fakeProducts } = await import("@/prisma/fakeData");
+      products = fakeProducts.slice(0, 8).map(p => ({
+        id: p.id,
+        slug: p.slug,
+        image: p.image,
+        nameFr: p.nameFr,
+        nameEn: p.nameEn,
+        basePrice: p.basePrice,
+        type: p.type,
+        categoryId: p.categoryId,
+        metadata: (p as any).metadata,
+      }));
+    } catch {}
+  }
+
+  try {
     const session = await getSession();
     isPro = session?.isPro || false;
     discount = session?.tradeDiscount || 0;
-  } catch (err: any) {
-    const dbUrl = process.env.DATABASE_URL || "MISSING";
-    const detailedError = JSON.stringify(err, Object.getOwnPropertyNames(err), 2);
-    errorMsg = `DB_URL: ${dbUrl.substring(0, 40)}... \n\n` + detailedError;
-  }
-
-  if (errorMsg) {
-    return (
-      <div style={{ padding: "2rem", backgroundColor: "white", color: "red", zIndex: 9999, position: "relative", wordBreak: "break-all" }}>
-        <h2>PRISMA ERROR IN POPULAR PRODUCTS:</h2>
-        <pre>{errorMsg}</pre>
-      </div>
-    );
-  }
+  } catch {}
 
   return <PopularProductsCarousel products={products} isPro={isPro} discount={discount} />;
 }

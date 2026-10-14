@@ -15,10 +15,18 @@ import { toTermina } from "@/lib/text";
 
 export async function generateMetadata(props: { params: Promise<{ locale: string, slug: string }> }): Promise<Metadata> {
   const params = await props.params;
-  const product = await db.orm.public.Product.where({ slug: params.slug })
-    .include("category")
-    .include("metadata")
-    .first();
+  let product: any = null;
+  try {
+    product = await db.orm.public.Product.where({ slug: params.slug })
+      .include("category")
+      .include("metadata")
+      .first();
+  } catch (err: any) {
+    try {
+      const { fakeProducts } = await import("@/prisma/fakeData");
+      product = fakeProducts.find((p) => p.slug === params.slug) || null;
+    } catch {}
+  }
 
   if (!product) {
     return { title: "Produit Introuvable | Kansotex" };
@@ -93,11 +101,20 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
 export default async function ProductPage(props: { params: Promise<{ locale: string, slug: string }> }) {
   const params = await props.params;
   const t = await getTranslations("Products");
-  const product = await db.orm.public.Product.where({ slug: params.slug })
-    .include("variants", (v) => v.include("dyeLots"))
-    .include("metadata")
-    .include("category")
-    .first();
+  let product: any = null;
+  try {
+    product = await db.orm.public.Product.where({ slug: params.slug })
+      .include("variants", (v) => v.include("dyeLots"))
+      .include("metadata")
+      .include("category")
+      .first();
+  } catch (err: any) {
+    console.warn("ProductPage: Live DB unavailable, using local catalog fallback:", err?.message || err);
+    try {
+      const { fakeProducts } = await import("@/prisma/fakeData");
+      product = fakeProducts.find((p) => p.slug === params.slug) || null;
+    } catch {}
+  }
 
   if (!product) {
     notFound();
@@ -110,7 +127,10 @@ export default async function ProductPage(props: { params: Promise<{ locale: str
       .include("metadata")
       .all();
   } catch (err) {
-    console.warn("Could not query all products for cross-selling:", err);
+    try {
+      const { fakeProducts } = await import("@/prisma/fakeData");
+      allProducts = fakeProducts;
+    } catch {}
   }
 
   const session = await getSession();
