@@ -150,10 +150,11 @@ export function Header({ overlay = false }: HeaderProps) {
                 {removeAccents(t("contact"))}
               </Link>
             </div>
-            <nav className="hidden grid-cols-4 gap-y-2 px-10 py-5 md:grid">
+            <nav className="hidden grid-cols-5 gap-y-2 px-10 py-5 md:grid">
               {nav.map((item) => {
                 let translationKey = "navUnivers";
                 if (item.href === "/savoir-faire") translationKey = "navSavoirFaire";
+                if (item.href === "/blog") translationKey = "navJournal";
                 if (item.href === "/a-propos") translationKey = "navAbout";
                 if (item.href === "/contact") translationKey = "navContact";
                 return (

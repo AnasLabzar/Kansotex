@@ -6,7 +6,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { BlogPost, BLOG_CATEGORIES } from "@/lib/blog-data";
+import { BlogPost, BLOG_CATEGORIES, getBlogCategoryLabel } from "@/lib/blog-data";
 import { removeAccents } from "@/lib/text";
 
 interface BlogIndexViewProps {
@@ -168,7 +168,7 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
                         : "bg-white text-[#1c1b19]/70 border border-[#1c1b19]/10 hover:border-[#1c1b19]/30 hover:text-[#1c1b19]"
                     }`}
                   >
-                    {cat.name}
+                    {isEn ? (cat.nameEn || cat.name) : cat.name}
                   </button>
                 );
               })}
@@ -236,14 +236,16 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
                       <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-950/40 px-3 py-1 mb-2">
                         <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping" />
                         <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-emerald-400">
-                          COCKPIT ÉDITORIAL ACTIF · 3 BOTS COORDONNÉS
+                          {isEn ? "ACTIVE EDITORIAL COCKPIT · 3 COORDINATED BOTS" : "COCKPIT ÉDITORIAL ACTIF · 3 BOTS COORDONNÉS"}
                         </span>
                       </div>
                       <h3 className="font-sans text-base sm:text-xl font-bold uppercase tracking-wide text-white">
-                        Console de Stratégie & Intelligence Éditoriale
+                        {isEn ? "Editorial Strategy & Intelligence Console" : "Console de Stratégie & Intelligence Éditoriale"}
                       </h3>
                       <p className="text-xs text-white/60 font-light mt-0.5">
-                        Supervision du pipeline : Radar concurrentiel, plume artisanale 100% humaine et curation visuelle 8K.
+                        {isEn
+                          ? "Pipeline oversight: Competitor radar, 100% human-grade luxury writer & 8K visual curation."
+                          : "Supervision du pipeline : Radar concurrentiel, plume artisanale 100% humaine et curation visuelle 8K."}
                       </p>
                     </div>
 
@@ -252,14 +254,14 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
                         href={`/${locale}/blog/studio`}
                         className="inline-flex items-center gap-2 rounded-full bg-[#B8860B] text-[#141413] px-4 py-2 text-xs font-semibold uppercase tracking-wider hover:bg-white transition-all shadow-md shrink-0 cursor-pointer"
                       >
-                        <span>Cockpit Studio Complet</span>
+                        <span>{isEn ? "Full Studio Cockpit" : "Cockpit Studio Complet"}</span>
                         <span>→</span>
                       </Link>
                       <Link
                         href={`/${locale}/pro`}
                         className="inline-flex items-center gap-2 rounded-full bg-white/10 text-white px-4 py-2 text-xs font-semibold uppercase tracking-wider hover:bg-white/20 transition-all border border-white/10"
                       >
-                        <span>Espace Devis B2B</span>
+                        <span>{isEn ? "B2B Quote Area" : "Espace Devis B2B"}</span>
                       </Link>
                     </div>
                   </div>
@@ -275,7 +277,7 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
                       }`}
                     >
                       <span>🎯</span>
-                      <span>BOT 1 : Directrice Stratégie & Radar</span>
+                      <span>{isEn ? "BOT 1 : Strategy & Radar Director" : "BOT 1 : Directrice Stratégie & Radar"}</span>
                     </button>
                     <button
                       onClick={() => setActiveAgentTab("bot2")}
@@ -286,7 +288,7 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
                       }`}
                     >
                       <span>🧵</span>
-                      <span>BOT 2 : Maître Hassan (Rédacteur 100% Humain)</span>
+                      <span>{isEn ? "BOT 2 : Master Hassan (100% Human Writer)" : "BOT 2 : Maître Hassan (Rédacteur 100% Humain)"}</span>
                     </button>
                     <button
                       onClick={() => setActiveAgentTab("bot3")}
@@ -297,7 +299,7 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
                       }`}
                     >
                       <span>⚙️</span>
-                      <span>BOT 3 : Chef de Projet & Curation Visuelle</span>
+                      <span>{isEn ? "BOT 3 : Project Manager & Visual Curation" : "BOT 3 : Chef de Projet & Curation Visuelle"}</span>
                     </button>
                   </div>
 
@@ -462,7 +464,7 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
                       <div className="mb-3.5">
                         <span className="inline-flex items-center gap-2 rounded-full bg-white/95 backdrop-blur-md px-3.5 py-1 text-[11px] font-medium text-[#1c1b19] shadow-xs">
                           <span className="w-2 h-2 rounded-full bg-[#B8860B]" />
-                          {leadPost.category}
+                          {getBlogCategoryLabel(leadPost.category, isEn)}
                         </span>
                       </div>
 
@@ -519,7 +521,7 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
                         {/* Title & Meta Info */}
                         <div className="flex-1 min-w-0 pr-1">
                           <span className="text-[10px] font-bold uppercase tracking-wider text-[#B8860B] block mb-1">
-                            {post.category}
+                            {getBlogCategoryLabel(post.category, isEn)}
                           </span>
                           <h3 className="text-xs sm:text-[13.5px] font-semibold text-[#1c1b19] group-hover:text-[#B8860B] transition-colors line-clamp-2 leading-snug font-sans">
                             {isEn ? post.titleEn : post.title}
@@ -604,7 +606,7 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
                     <div className="mb-3">
                       <span className="inline-flex items-center gap-1.5 text-[10.5px] font-semibold tracking-wider uppercase text-[#1c1b19]/80">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#B8860B]" />
-                        {post.category}
+                        {getBlogCategoryLabel(post.category, isEn)}
                       </span>
                     </div>
 

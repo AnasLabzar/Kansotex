@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { BlogPost } from "@/lib/blog-data";
+import { BlogPost, getBlogCategoryLabel } from "@/lib/blog-data";
 import { removeAccents } from "@/lib/text";
 import { RichArticleContent } from "@/components/RichArticleContent";
 import { getArticleAudit } from "@/lib/editorial-agents";
@@ -142,7 +142,7 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
               {isEn ? "The Journal" : "Le Journal"}
             </Link>
             <span>/</span>
-            <span className="text-[#B8860B] truncate shrink-0">{post.category}</span>
+            <span className="text-[#B8860B] truncate shrink-0">{getBlogCategoryLabel(post.category, isEn)}</span>
           </nav>
 
           {/* Kicker */}
@@ -174,7 +174,7 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
               <div>
                 <p className="text-xs font-semibold text-[#1c1b19]">{post.author.name}</p>
                 <p className="text-[11px] text-[#1c1b19]/60 font-light">
-                  {formatDate(post.publishedAt)} · {post.readingTime} de lecture
+                  {formatDate(post.publishedAt)} · {post.readingTime} {isEn ? "read" : "de lecture"}
                 </p>
               </div>
             </div>
@@ -184,9 +184,9 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
               <button
                 onClick={handleCopyLink}
                 className="inline-flex items-center gap-1.5 rounded-full border border-[#1c1b19]/15 bg-white px-3.5 py-1.5 text-xs font-light text-[#1c1b19] hover:bg-[#1c1b19] hover:text-white transition-all"
-                title="Copier le lien de l'article"
+                title={isEn ? "Copy article link" : "Copier le lien de l'article"}
               >
-                <span>{copied ? "✓ Copié" : "Partager"}</span>
+                <span>{copied ? (isEn ? "✓ Copied" : "✓ Copié") : (isEn ? "Share" : "Partager")}</span>
               </button>
 
               <a
@@ -217,14 +217,14 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
               <div className="flex items-center gap-2.5">
                 <span className="flex h-2 w-2 rounded-full bg-[#B8860B] animate-pulse" />
                 <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#B8860B]">
-                  DOSSIER MULTI-AGENTS KANSOTEX (3 BOTS IA ACTIFS)
+                  {isEn ? "KANSOTEX MULTI-AGENT DOSSIER (3 ACTIVE AI BOTS)" : "DOSSIER MULTI-AGENTS KANSOTEX (3 BOTS IA ACTIFS)"}
                 </span>
               </div>
               <button
                 onClick={() => setShowAgentAudit(!showAgentAudit)}
                 className="inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-1 text-[11px] font-medium text-[#1c1b19] border border-[#1c1b19]/15 hover:bg-[#1c1b19] hover:text-white transition-all shadow-2xs cursor-pointer"
               >
-                <span>{showAgentAudit ? "Masquer l'Audit des Bots" : "Voir l'Ingénierie des 3 Bots →"}</span>
+                <span>{showAgentAudit ? (isEn ? "Hide Bots Audit" : "Masquer l'Audit des Bots") : (isEn ? "View 3-Bot Architecture →" : "Voir l'Ingénierie des 3 Bots →")}</span>
                 <span className="text-xs">{showAgentAudit ? "▲" : "▼"}</span>
               </button>
             </div>
@@ -236,19 +236,19 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-base">🎯</span>
                     <span className="text-[10px] font-bold tracking-wider uppercase text-[#1c1b19]">
-                      BOT 1: DIRECTEUR MARKETING
+                      {isEn ? "BOT 1: MARKETING DIRECTOR" : "BOT 1: DIRECTEUR MARKETING"}
                     </span>
                   </div>
                   <div className="space-y-1.5 text-[11px] text-[#1c1b19]/80 font-light">
                     <p>
-                      <strong className="font-semibold text-[#1c1b19]">Faille Ciblée :</strong>{" "}
+                      <strong className="font-semibold text-[#1c1b19]">{isEn ? "Targeted Flaw:" : "Faille Ciblée :"}</strong>{" "}
                       <span className="text-red-700 font-medium">{agentAudit.competitorTargeted}</span>
                     </p>
                     <p className="line-clamp-2 text-[#1c1b19]/70 italic">
                       "{agentAudit.competitorFlaw}"
                     </p>
                     <p className="pt-1 text-[#B8860B] font-medium">
-                      Stratégie Kansotex : {agentAudit.kansotexWinningStrategy}
+                      {isEn ? "Kansotex Strategy:" : "Stratégie Kansotex :"} {agentAudit.kansotexWinningStrategy}
                     </p>
                   </div>
                 </div>
@@ -258,20 +258,20 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-base">🧵</span>
                     <span className="text-[10px] font-bold tracking-wider uppercase text-[#1c1b19]">
-                      BOT 2: MAÎTRE HASSAN
+                      {isEn ? "BOT 2: MASTER WEAVER HASSAN" : "BOT 2: MAÎTRE HASSAN"}
                     </span>
                   </div>
                   <div className="space-y-1.5 text-[11px] text-[#1c1b19]/80 font-light">
                     <p>
-                      <strong className="font-semibold text-[#1c1b19]">Ton d'Écriture :</strong>{" "}
+                      <strong className="font-semibold text-[#1c1b19]">{isEn ? "Writing Voice:" : "Ton d'Écriture :"}</strong>{" "}
                       {agentAudit.writerVoice}
                     </p>
                     <p>
-                      <strong className="font-semibold text-[#1c1b19]">Normes Validées :</strong>{" "}
+                      <strong className="font-semibold text-[#1c1b19]">{isEn ? "Validated Standards:" : "Normes Validées :"}</strong>{" "}
                       {agentAudit.technicalStandards.join(" · ")}
                     </p>
                     <p className="pt-1 text-emerald-700 font-medium flex items-center gap-1">
-                      <span>✓</span> Style 100% humain certifié (0 cliché IA)
+                      <span>✓</span> {isEn ? "100% Certified Human Voice (Zero AI Cliché)" : "Style 100% humain certifié (0 cliché IA)"}
                     </p>
                   </div>
                 </div>
@@ -282,25 +282,25 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
                     <div className="flex items-center gap-2">
                       <span className="text-base">⚙️</span>
                       <span className="text-[10px] font-bold tracking-wider uppercase text-[#1c1b19]">
-                        BOT 3: CHEF DE PROJET & CURATION
+                        {isEn ? "BOT 3: PROJECT MANAGER & CURATION" : "BOT 3: CHEF DE PROJET & CURATION"}
                       </span>
                     </div>
                     <span className="text-[9px] font-bold uppercase tracking-wider text-[#B8860B] bg-[#B8860B]/10 px-2 py-0.5 rounded-full">
-                      Direction Artistique
+                      {isEn ? "Art Direction" : "Direction Artistique"}
                     </span>
                   </div>
                   <div className="space-y-2 text-[11px] text-[#1c1b19]/80 font-light">
                     <p>
-                      <strong className="font-semibold text-[#1c1b19]">Données Structurées :</strong>{" "}
+                      <strong className="font-semibold text-[#1c1b19]">{isEn ? "Structured Data:" : "Données Structurées :"}</strong>{" "}
                       {agentAudit.schemas.join(", ")}
                     </p>
                     <p>
-                      <strong className="font-semibold text-[#1c1b19]">Maillage Catalogue :</strong>{" "}
+                      <strong className="font-semibold text-[#1c1b19]">{isEn ? "Catalog Linking:" : "Maillage Catalogue :"}</strong>{" "}
                       {agentAudit.internalLinks.join(", ")}
                     </p>
                     <div className="pt-1 border-t border-[#1c1b19]/10">
                       <strong className="font-semibold text-[#1c1b19] block mb-1">
-                        Curation Visuelle (Choix du Chef de Projet) :
+                        {isEn ? "Visual Curation (Project Manager Selection):" : "Curation Visuelle (Choix du Chef de Projet) :"}
                       </strong>
                       <p className="text-[10.5px] italic text-[#1c1b19]/70 leading-relaxed bg-[#FBF9F5] p-2 rounded-lg border border-[#1c1b19]/5">
                         « {agentAudit.visualCuration.coverReason} »
@@ -309,7 +309,7 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
                     {agentAudit.visualCuration.sectionVisuals && agentAudit.visualCuration.sectionVisuals.length > 0 && (
                       <div className="pt-1 space-y-1.5">
                         <span className="text-[10px] font-semibold uppercase tracking-wider text-[#B8860B] block">
-                          Visuels In-Text Calibrés ({agentAudit.visualCuration.sectionVisuals.length}) :
+                          {isEn ? `Calibrated In-Text Visuals (${agentAudit.visualCuration.sectionVisuals.length}):` : `Visuels In-Text Calibrés (${agentAudit.visualCuration.sectionVisuals.length}) :`}
                         </span>
                         {agentAudit.visualCuration.sectionVisuals.map((vis, idx) => (
                           <div key={idx} className="flex items-start gap-2 text-[10px] leading-tight">
@@ -346,15 +346,15 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
           />
           <div className="absolute top-4 left-4 bg-[#1c1b19]/80 backdrop-blur-md text-[#FBF9F5] text-[10px] uppercase tracking-wider font-medium px-3 py-1.5 rounded-full border border-white/10 flex items-center gap-2 shadow-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-[#B8860B] animate-pulse" />
-            Curation Visuelle Chef de Projet
+            {isEn ? "Project Manager Visual Curation" : "Curation Visuelle Chef de Projet"}
           </div>
         </div>
         <div className="mt-2.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 text-[11px] text-[#1c1b19]/60 font-light">
           <p className="italic">
-            <strong className="font-semibold text-[#1c1b19] not-italic">Cadre éditorial :</strong> {agentAudit.visualCuration?.coverReason || post.coverAlt}
+            <strong className="font-semibold text-[#1c1b19] not-italic">{isEn ? "Editorial scope:" : "Cadre éditorial :"}</strong> {agentAudit.visualCuration?.coverReason || post.coverAlt}
           </p>
           <span className="text-[10px] uppercase tracking-wider text-[#B8860B] font-medium shrink-0">
-            Haute Définition · Kansotex Marrakech
+            {isEn ? "High Definition · Kansotex Marrakech" : "Haute Définition · Kansotex Marrakech"}
           </span>
         </div>
       </div>
@@ -494,7 +494,7 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
               <div className="mt-14 rounded-2xl bg-white border border-[#1c1b19]/10 p-6 sm:p-8 shadow-sm overflow-hidden">
                 <div className="flex items-center gap-2 mb-4">
                   <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#B8860B]">
-                    DOSSIER TECHNIQUE
+                    {isEn ? "TECHNICAL SPECIFICATIONS" : "DOSSIER TECHNIQUE"}
                   </span>
                 </div>
                 <h3 className="font-sans text-base sm:text-lg font-bold uppercase text-[#1c1b19] mb-6">
@@ -505,10 +505,10 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
                   <table className="w-full text-left text-xs sm:text-sm">
                     <thead>
                       <tr className="border-b border-[#1c1b19]/15 text-[10px] sm:text-xs uppercase tracking-wider text-[#1c1b19]/60">
-                        <th className="pb-3 pr-4 font-semibold">Critère Technique</th>
+                        <th className="pb-3 pr-4 font-semibold">{isEn ? "Technical Criteria" : "Critère Technique"}</th>
                         <th className="pb-3 px-4 font-semibold text-[#B8860B]">Kansotex Marrakech</th>
-                        <th className="pb-3 px-4 font-semibold">Standard Marché</th>
-                        <th className="pb-3 pl-4 font-semibold">Impact Pratique</th>
+                        <th className="pb-3 px-4 font-semibold">{isEn ? "Market Standard" : "Standard Marché"}</th>
+                        <th className="pb-3 pl-4 font-semibold">{isEn ? "Practical Impact" : "Impact Pratique"}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-[#1c1b19]/10 font-light">
@@ -534,10 +534,10 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
             {post.relatedProducts && post.relatedProducts.length > 0 && (
               <div className="mt-16 rounded-3xl bg-[#1c1b19] text-[#FBF9F5] p-6 sm:p-10">
                 <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-[#B8860B] block mb-2">
-                  ÉTOFFES MENTIONNÉES DANS CE GUIDE
+                  {isEn ? "FABRICS FEATURED IN THIS GUIDE" : "ÉTOFFES MENTIONNÉES DANS CE GUIDE"}
                 </span>
                 <h3 className="font-sans text-lg sm:text-xl font-bold uppercase mb-6">
-                  {isEn ? "Sélection de Matières Disponibles en Stock à Marrakech" : "Sélection de Matières Disponibles en Stock à Marrakech"}
+                  {isEn ? "Curated In-Stock Materials in Marrakech" : "Sélection de Matières Disponibles en Stock à Marrakech"}
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -585,10 +585,10 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
             {post.faqs && post.faqs.length > 0 && (
               <div className="mt-16 rounded-2xl bg-white border border-[#1c1b19]/10 p-6 sm:p-8 shadow-sm">
                 <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#B8860B] block mb-2">
-                  FOIRE AUX QUESTIONS
+                  {isEn ? "FREQUENTLY ASKED QUESTIONS" : "FOIRE AUX QUESTIONS"}
                 </span>
                 <h3 className="font-sans text-lg sm:text-xl font-bold uppercase mb-6">
-                  {isEn ? "Questions Fréquentes de Nos Clients" : "Questions Fréquentes de Nos Clients"}
+                  {isEn ? "Frequently Asked Questions" : "Questions Fréquentes de Nos Clients"}
                 </h3>
 
                 <div className="space-y-3">
@@ -674,7 +674,7 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
           <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12">
             <div className="text-center mb-12">
               <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-[#B8860B] block mb-2">
-                LECTURES COMPLÉMENTAIRES
+                {isEn ? "FURTHER READING" : "LECTURES COMPLÉMENTAIRES"}
               </span>
               <h3 className="font-sans text-xl sm:text-3xl font-extrabold uppercase text-[#1c1b19]">
                 {isEn ? "Continue Your Discovery" : "Poursuivre la Découverte"}
@@ -699,7 +699,7 @@ export function BlogArticleView({ post, relatedPosts, locale }: BlogArticleViewP
                   <div className="p-6 flex flex-col justify-between flex-1">
                     <div>
                       <span className="text-[10px] uppercase tracking-wider text-[#B8860B] font-semibold block mb-2">
-                        {rel.category}
+                        {getBlogCategoryLabel(rel.category, isEn)}
                       </span>
                       <h4 className="font-sans text-sm font-bold uppercase leading-snug line-clamp-2 group-hover:text-[#B8860B] transition-colors">
                         {isEn ? rel.titleEn : rel.title}

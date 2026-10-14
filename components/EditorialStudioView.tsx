@@ -82,7 +82,7 @@ export function EditorialStudioView({ locale }: EditorialStudioViewProps) {
                   : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
               }`}
             >
-              🤖 Les 3 Bots Collaboratifs
+              {isEn ? "🤖 3 Collaborative Bots" : "🤖 Les 3 Bots Collaboratifs"}
             </button>
             <button
               onClick={() => setActiveTab("competitors")}
@@ -92,7 +92,7 @@ export function EditorialStudioView({ locale }: EditorialStudioViewProps) {
                   : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
               }`}
             >
-              🎯 Failles Concurrentes (SEO Radar)
+              {isEn ? "🎯 Competitor Flaws (SEO Radar)" : "🎯 Failles Concurrentes (SEO Radar)"}
             </button>
             <button
               onClick={() => setActiveTab("schedule")}
@@ -102,7 +102,7 @@ export function EditorialStudioView({ locale }: EditorialStudioViewProps) {
                   : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
               }`}
             >
-              📅 Calendrier 2-4 Jours ({BLOG_POSTS.length} Publiés)
+              {isEn ? `📅 2-4 Days Schedule (${BLOG_POSTS.length} Published)` : `📅 Calendrier 2-4 Jours (${BLOG_POSTS.length} Publiés)`}
             </button>
             <button
               onClick={() => setActiveTab("backlinks")}
@@ -112,7 +112,7 @@ export function EditorialStudioView({ locale }: EditorialStudioViewProps) {
                   : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
               }`}
             >
-              🔗 Backlinks & Digital PR (Shoelifer, A+E)
+              {isEn ? "🔗 Backlinks & Digital PR (Shoelifer, A+E)" : "🔗 Backlinks & Digital PR (Shoelifer, A+E)"}
             </button>
           </div>
         </div>
@@ -467,10 +467,10 @@ export function EditorialStudioView({ locale }: EditorialStudioViewProps) {
               <table className="w-full text-left text-xs">
                 <thead>
                   <tr className="border-b border-white/15 text-[10px] uppercase tracking-wider text-white/50">
-                    <th className="pb-3 pr-4 font-semibold">Concurrent Ciblé</th>
-                    <th className="pb-3 px-4 font-semibold">Spécialité & Forces</th>
-                    <th className="pb-3 px-4 font-semibold text-rose-400">Faille Détectée</th>
-                    <th className="pb-3 pl-4 font-semibold text-[#B8860B]">Stratégie d'Attaque Kansotex</th>
+                    <th className="pb-3 pr-4 font-semibold">{isEn ? "Targeted Competitor" : "Concurrent Ciblé"}</th>
+                    <th className="pb-3 px-4 font-semibold">{isEn ? "Specialty & Strengths" : "Spécialité & Forces"}</th>
+                    <th className="pb-3 px-4 font-semibold text-rose-400">{isEn ? "Detected Gap" : "Faille Détectée"}</th>
+                    <th className="pb-3 pl-4 font-semibold text-[#B8860B]">{isEn ? "Kansotex Attack Strategy" : "Stratégie d'Attaque Kansotex"}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/10 font-light">

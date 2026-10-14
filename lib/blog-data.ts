@@ -1066,12 +1066,41 @@ De plus, la matière est traitée avec un agent biocide certifié qui inhibe la 
 ];
 
 export const BLOG_CATEGORIES = [
-  { name: "Tous les Articles", slug: "all" },
-  { name: "Outdoor & Terrasses", slug: "outdoor" },
-  { name: "Matières Nobles", slug: "matieres" },
-  { name: "Guides & Mesures", slug: "guides" },
-  { name: "Architecture & Riads", slug: "architecture" },
+  { name: "Tous les Articles", nameEn: "All Articles", slug: "all" },
+  { name: "Outdoor & Terrasses", nameEn: "Outdoor & Terraces", slug: "outdoor" },
+  { name: "Matières Nobles", nameEn: "Noble Materials", slug: "matieres" },
+  { name: "Guides & Mesures", nameEn: "Guides & Measurements", slug: "guides" },
+  { name: "Architecture & Riads", nameEn: "Architecture & Riads", slug: "architecture" },
 ];
+
+/**
+ * Universal bilingual helper for blog category display names
+ */
+export function getBlogCategoryLabel(category: string, isEn: boolean = false): string {
+  if (!isEn) return category;
+  switch (category) {
+    case "Outdoor & Terrasses":
+    case "outdoor":
+      return "Outdoor & Terraces";
+    case "Matières Nobles":
+    case "matieres":
+      return "Noble Materials";
+    case "Guides & Mesures":
+    case "guides":
+      return "Guides & Measurements";
+    case "Architecture & Riads":
+    case "architecture":
+      return "Architecture & Riads";
+    case "Savoir-Faire":
+    case "savoir-faire":
+      return "Expertise & Craft";
+    case "Tous les Articles":
+    case "all":
+      return "All Articles";
+    default:
+      return category;
+  }
+}
 
 /**
  * Filter and sort published articles.
