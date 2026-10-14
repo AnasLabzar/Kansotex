@@ -49,7 +49,6 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
 
   // Latest 4 posts (Right side of top grid)
   const latestPosts = useMemo(() => {
-    // If we have more than 1 post, display subsequent posts; fallback to others
     if (filteredPosts.length > 1) {
       return filteredPosts.slice(1, 5);
     }
@@ -58,7 +57,6 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
 
   // Founders corner / Atelier collection posts (for the lower 3-column slider)
   const foundersCornerPosts = useMemo(() => {
-    // Show remaining posts or all posts for carousel
     if (filteredPosts.length > 3) {
       return filteredPosts;
     }
@@ -86,7 +84,7 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
       const date = new Date(isoString);
       return new Intl.DateTimeFormat(isEn ? "en-US" : "fr-FR", {
         day: "numeric",
-        month: "short",
+        month: "long",
         year: "numeric",
         timeZone: "UTC",
       }).format(date);
@@ -112,13 +110,45 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
     <div className="min-h-screen bg-[#FBF9F5] text-[#1c1b19] selection:bg-[#1c1b19] selection:text-[#FBF9F5]">
       <Header overlay={false} />
 
-      {/* Main Container */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 pb-20">
+      {/* Main Container with refined breathable padding */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-36 pb-24">
 
-        {/* Top Control Bar: Search + Category Pills + Outils Pro Button */}
-        <section className="mb-8 sm:mb-12">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-[#1c1b19]/10">
-            {/* Category Pills */}
+        {/* TOP EDITORIAL BRAND HEADER */}
+        <header className="mb-10 sm:mb-12">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-[#1c1b19]/10">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#B8860B]/30 bg-[#B8860B]/8 px-3.5 py-1 mb-3">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#B8860B] animate-pulse" />
+                <span className="text-[10px] font-semibold tracking-[0.2em] uppercase text-[#B8860B]">
+                  {isEn ? "EDITORIAL GAZETTE & ARCHITECTURE" : "LE JOURNAL KANSOTEX · HAUTE FACTURE"}
+                </span>
+              </div>
+              <h1 className="font-termina text-2xl sm:text-4xl md:text-5xl font-bold uppercase tracking-tight text-[#1c1b19] leading-tight">
+                {removeAccents(isEn ? "The Textile Gazette" : "Carnet d'Étoffes & Savoir-Faire")}
+              </h1>
+              <p className="mt-2 text-xs sm:text-sm font-light text-[#1c1b19]/70 max-w-2xl leading-relaxed">
+                {isEn
+                  ? "Bespoke curtain formulas, UV resistance standards, and architectural riad textiles from our Marrakech manufacture."
+                  : "Guides de métrage sur-mesure, résistance UV zénithale, mousses alvéolaires et inspirations architecturales de notre manufacture à Marrakech."}
+              </p>
+            </div>
+
+            {/* Quick Stats or Pro Link */}
+            <div className="flex items-center gap-3 shrink-0">
+              <Link
+                href={`/${locale}/pro`}
+                className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-[#1c1b19]/80 hover:text-[#B8860B] transition-colors"
+              >
+                <span>{isEn ? "B2B Pro Portal" : "Espace Pro B2B"}</span>
+                <span>→</span>
+              </Link>
+            </div>
+          </div>
+
+          {/* SECONDARY CONTROLS BAR: CATEGORIES + SEARCH + PRO TOOLS BUTTON */}
+          <div className="mt-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            
+            {/* Category Filter Pills */}
             <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
               {BLOG_CATEGORIES.map((cat) => {
                 const isActive = selectedCategory === cat.slug;
@@ -129,10 +159,10 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
                       setSelectedCategory(cat.slug);
                       setFoundersPage(0);
                     }}
-                    className={`shrink-0 rounded-full px-4 py-2 text-xs tracking-wide transition-all cursor-pointer ${
+                    className={`shrink-0 rounded-full px-4 py-2 text-xs tracking-wide transition-all duration-200 cursor-pointer ${
                       isActive
                         ? "bg-[#1c1b19] text-[#FBF9F5] font-medium shadow-xs"
-                        : "bg-white/80 text-[#1c1b19]/70 border border-[#1c1b19]/10 hover:bg-white hover:text-[#1c1b19]"
+                        : "bg-white text-[#1c1b19]/70 border border-[#1c1b19]/10 hover:border-[#1c1b19]/30 hover:text-[#1c1b19]"
                     }`}
                   >
                     {cat.name}
@@ -141,16 +171,16 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
               })}
             </div>
 
-            {/* Pro Controls: Search & Multi-Agent Pro Cockpit Toggle */}
+            {/* Right: Search Input + Outils Pro Button */}
             <div className="flex items-center gap-3 shrink-0">
-              {/* Search input */}
-              <div className="relative w-full sm:w-64">
+              {/* Search input with modern subtle glass finish */}
+              <div className="relative w-full sm:w-60">
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder={isEn ? "Search articles..." : "Rechercher..."}
-                  className="w-full rounded-full border border-[#1c1b19]/15 bg-white px-4 py-2 pl-9 text-xs tracking-wide text-[#1c1b19] placeholder:text-[#1c1b19]/40 focus:border-[#1c1b19] focus:outline-none shadow-xs"
+                  placeholder={isEn ? "Search an article..." : "Rechercher un guide..."}
+                  className="w-full rounded-full border border-[#1c1b19]/15 bg-white/95 px-4 py-2 pl-9 text-xs tracking-wide text-[#1c1b19] placeholder:text-[#1c1b19]/45 focus:border-[#1c1b19] focus:outline-none focus:ring-1 focus:ring-[#1c1b19]/20 shadow-xs transition-all"
                 />
                 <svg
                   className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#1c1b19]/50"
@@ -173,56 +203,60 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
               {/* Outils Pro Cockpit Toggle Button */}
               <button
                 onClick={() => setShowProTools((prev) => !prev)}
-                className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold tracking-wider uppercase transition-all shadow-xs cursor-pointer ${
+                className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold tracking-wider uppercase transition-all shadow-xs cursor-pointer border ${
                   showProTools
-                    ? "bg-[#B8860B] text-white"
-                    : "bg-[#141413] text-[#FBF9F5] hover:bg-[#B8860B]"
+                    ? "bg-[#B8860B] border-[#B8860B] text-white shadow-md"
+                    : "bg-[#141413] border-white/10 text-[#FBF9F5] hover:bg-[#B8860B] hover:border-[#B8860B]"
                 }`}
               >
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span>{isEn ? "Pro Tools" : "Outils Pro"}</span>
-                <span className="text-[10px]">{showProTools ? "▲" : "▼"}</span>
+                <span>{isEn ? "AI Pro Suite" : "Outils Pro (3 Bots)"}</span>
+                <span className="text-[9px] transition-transform">{showProTools ? "▲" : "▼"}</span>
               </button>
             </div>
           </div>
 
-          {/* Collapsible Outils Pro Panel (Multi-Agent Editorial Intelligence) */}
+          {/* ADVANCED PRO DASHBOARD (COLLAPSIBLE MULTI-AGENTS CONSOLE) */}
           <AnimatePresence>
             {showProTools && (
               <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
+                initial={{ opacity: 0, height: 0, y: -8 }}
+                animate={{ opacity: 1, height: "auto", y: 0 }}
+                exit={{ opacity: 0, height: 0, y: -8 }}
                 transition={{ duration: 0.3 }}
-                className="overflow-hidden mt-4"
+                className="overflow-hidden mt-6"
               >
-                <div className="rounded-3xl bg-[#141413] text-[#faf8f5] p-6 sm:p-8 border border-white/10 shadow-xl relative">
-                  <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+                <div className="rounded-[28px] bg-[#141413] text-[#faf8f5] p-6 sm:p-9 border border-[#B8860B]/30 shadow-2xl relative">
+                  {/* Top Bar inside Pro Console */}
+                  <div className="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-white/10">
                     <div>
-                      <div className="inline-flex items-center gap-2 rounded-full border border-[#B8860B]/30 bg-[#B8860B]/10 px-3 py-1 mb-2">
-                        <span className="h-1.5 w-1.5 rounded-full bg-[#B8860B] animate-pulse" />
-                        <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#B8860B]">
-                          ÉCOSYSTÈME MULTI-AGENTS KANSOTEX · 3 BOTS OPÉRATIONNELS
+                      <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-950/40 px-3 py-1 mb-2">
+                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping" />
+                        <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-emerald-400">
+                          COCKPIT ÉDITORIAL ACTIF · 3 BOTS COORDONNÉS
                         </span>
                       </div>
                       <h3 className="font-termina text-base sm:text-xl font-bold uppercase text-white">
-                        {removeAccents("Console & Outils Professionnels d'Édition")}
+                        {removeAccents("Console de Stratégie & Intelligence Éditoriale")}
                       </h3>
+                      <p className="text-xs text-white/60 font-light mt-0.5">
+                        Supervision du pipeline : Radar concurrentiel, plume artisanale 100% humaine et curation visuelle 8K.
+                      </p>
                     </div>
 
                     <div className="flex items-center gap-3">
                       <Link
                         href={`/${locale}/blog/studio`}
-                        className="inline-flex items-center gap-2 rounded-full bg-[#B8860B] text-[#141413] px-4 py-2 text-xs font-semibold uppercase tracking-wider hover:bg-white transition-all shadow-md shrink-0"
+                        className="inline-flex items-center gap-2 rounded-full bg-[#B8860B] text-[#141413] px-4 py-2 text-xs font-semibold uppercase tracking-wider hover:bg-white transition-all shadow-md shrink-0 cursor-pointer"
                       >
-                        <span>Ouvrir Cockpit IA</span>
+                        <span>Cockpit Studio Complet</span>
                         <span>→</span>
                       </Link>
                       <Link
                         href={`/${locale}/pro`}
                         className="inline-flex items-center gap-2 rounded-full bg-white/10 text-white px-4 py-2 text-xs font-semibold uppercase tracking-wider hover:bg-white/20 transition-all border border-white/10"
                       >
-                        <span>Espace B2B Devis</span>
+                        <span>Espace Devis B2B</span>
                       </Link>
                     </div>
                   </div>
@@ -231,20 +265,20 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
                   <div className="flex items-center gap-2 border-b border-white/10 pb-3 mb-6 overflow-x-auto no-scrollbar">
                     <button
                       onClick={() => setActiveAgentTab("bot1")}
-                      className={`px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wider uppercase transition-all flex items-center gap-2 cursor-pointer ${
+                      className={`px-4 py-2 rounded-full text-xs font-medium tracking-wider uppercase transition-all flex items-center gap-2 cursor-pointer ${
                         activeAgentTab === "bot1"
-                          ? "bg-[#B8860B] text-[#141413]"
+                          ? "bg-[#B8860B] text-[#141413] font-semibold"
                           : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
                       }`}
                     >
                       <span>🎯</span>
-                      <span>BOT 1 : Directeur Marketing & Radar</span>
+                      <span>BOT 1 : Directrice Stratégie & Radar</span>
                     </button>
                     <button
                       onClick={() => setActiveAgentTab("bot2")}
-                      className={`px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wider uppercase transition-all flex items-center gap-2 cursor-pointer ${
+                      className={`px-4 py-2 rounded-full text-xs font-medium tracking-wider uppercase transition-all flex items-center gap-2 cursor-pointer ${
                         activeAgentTab === "bot2"
-                          ? "bg-[#B8860B] text-[#141413]"
+                          ? "bg-[#B8860B] text-[#141413] font-semibold"
                           : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
                       }`}
                     >
@@ -253,82 +287,122 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
                     </button>
                     <button
                       onClick={() => setActiveAgentTab("bot3")}
-                      className={`px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wider uppercase transition-all flex items-center gap-2 cursor-pointer ${
+                      className={`px-4 py-2 rounded-full text-xs font-medium tracking-wider uppercase transition-all flex items-center gap-2 cursor-pointer ${
                         activeAgentTab === "bot3"
-                          ? "bg-[#B8860B] text-[#141413]"
+                          ? "bg-[#B8860B] text-[#141413] font-semibold"
                           : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
                       }`}
                     >
                       <span>⚙️</span>
-                      <span>BOT 3 : Chef de Projet & Curation</span>
+                      <span>BOT 3 : Chef de Projet & Curation Visuelle</span>
                     </button>
                   </div>
 
                   {/* Tab Panels */}
                   <div className="text-xs">
                     {activeAgentTab === "bot1" && (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                        <div className="rounded-xl bg-white/5 border border-white/10 p-3.5">
-                          <span className="font-bold text-white text-[11px] block mb-1">Transat.ma</span>
-                          <p className="text-white/60 text-[10.5px] font-light mb-2">Faille : Toiles chiliennes basiques décolorées.</p>
-                          <Link href={`/${locale}/blog/toiles-remplacement-chiliennes-transats-marrakech`} className="text-[#B8860B] text-[10.5px] hover:underline font-medium line-clamp-1">
-                            → Toiles Acryliques 320g/m²
-                          </Link>
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+                          <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
+                            <div className="flex items-center justify-between mb-2">
+                              <span className="font-bold text-white text-[11px] uppercase">Transat.ma</span>
+                              <span className="text-[10px] text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-500/30">Attaqué</span>
+                            </div>
+                            <p className="text-white/60 text-[10.5px] font-light mb-2">Faille : Toiles chiliennes ordinaires qui décolorent.</p>
+                            <Link href={`/${locale}/blog/toiles-remplacement-chiliennes-transats-marrakech`} className="text-[#B8860B] text-[11px] hover:underline font-medium line-clamp-1">
+                              → Toiles Acryliques 320g/m²
+                            </Link>
+                          </div>
+                          <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
+                            <div className="flex items-center justify-between mb-2">
+                              <span className="font-bold text-white text-[11px] uppercase">AMA Group</span>
+                              <span className="text-[10px] text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-500/30">Attaqué</span>
+                            </div>
+                            <p className="text-white/60 text-[10.5px] font-light mb-2">Faille : Mobilier sans mousse drainante alvéolaire.</p>
+                            <Link href={`/${locale}/blog/mousse-dryfeel-tissus-outdoor-piscine-marrakech`} className="text-[#B8860B] text-[11px] hover:underline font-medium line-clamp-1">
+                              → Mousse Dryfeel Alvéolaire
+                            </Link>
+                          </div>
+                          <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
+                            <div className="flex items-center justify-between mb-2">
+                              <span className="font-bold text-white text-[11px] uppercase">Mozaieq.com</span>
+                              <span className="text-[10px] text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-500/30">Attaqué</span>
+                            </div>
+                            <p className="text-white/60 text-[10.5px] font-light mb-2">Faille : Textes sans métriques de laboratoire certifiées.</p>
+                            <Link href={`/${locale}/blog/guide-tissus-outdoor-marrakech-riads-rooftops`} className="text-[#B8860B] text-[11px] hover:underline font-medium line-clamp-1">
+                              → Normes Martindale 60k & UV 8
+                            </Link>
+                          </div>
+                          <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
+                            <div className="flex items-center justify-between mb-2">
+                              <span className="font-bold text-white text-[11px] uppercase">Easy Linge Kech</span>
+                              <span className="text-[10px] text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-500/30">Attaqué</span>
+                            </div>
+                            <p className="text-white/60 text-[10.5px] font-light mb-2">Faille : Polycoton 140 fils basique sans classement non-feu.</p>
+                            <Link href={`/${locale}/blog/amenagement-textile-b2b-renover-riad-hotel-luxe`} className="text-[#B8860B] text-[11px] hover:underline font-medium line-clamp-1">
+                              → Percale 300 Fils & Norme M1
+                            </Link>
+                          </div>
                         </div>
-                        <div className="rounded-xl bg-white/5 border border-white/10 p-3.5">
-                          <span className="font-bold text-white text-[11px] block mb-1">AMA Group</span>
-                          <p className="text-white/60 text-[10.5px] font-light mb-2">Faille : Mobilier sans mousse drainante.</p>
-                          <Link href={`/${locale}/blog/mousse-dryfeel-tissus-outdoor-piscine-marrakech`} className="text-[#B8860B] text-[10.5px] hover:underline font-medium line-clamp-1">
-                            → Mousse Dryfeel Alvéolaire
-                          </Link>
-                        </div>
-                        <div className="rounded-xl bg-white/5 border border-white/10 p-3.5">
-                          <span className="font-bold text-white text-[11px] block mb-1">Mozaieq.com</span>
-                          <p className="text-white/60 text-[10.5px] font-light mb-2">Faille : Absence de tests de laboratoire.</p>
-                          <Link href={`/${locale}/blog/guide-tissus-outdoor-marrakech-riads-rooftops`} className="text-[#B8860B] text-[10.5px] hover:underline font-medium line-clamp-1">
-                            → Normes Martindale 60k & UV 8
-                          </Link>
-                        </div>
-                        <div className="rounded-xl bg-white/5 border border-white/10 p-3.5">
-                          <span className="font-bold text-white text-[11px] block mb-1">Easy Linge Kech</span>
-                          <p className="text-white/60 text-[10.5px] font-light mb-2">Faille : Polycoton 140 fils basique.</p>
-                          <Link href={`/${locale}/blog/amenagement-textile-b2b-renover-riad-hotel-luxe`} className="text-[#B8860B] text-[10.5px] hover:underline font-medium line-clamp-1">
-                            → Percale 300 Fils & Norme M1
-                          </Link>
+
+                        <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/5 flex flex-wrap items-center justify-between gap-3 text-xs text-white/70 font-light">
+                          <div className="flex items-center gap-2">
+                            <span className="text-[#B8860B] font-semibold uppercase text-[11px]">Cibles Backlinks & Digital PR :</span>
+                            <span>Shoelifer · A+E Magazine (Architecture) · Maisons du Maroc · Guides Médina</span>
+                          </div>
+                          <span className="text-emerald-400 font-medium">Veille Opérationnelle ✓</span>
                         </div>
                       </div>
                     )}
 
                     {activeAgentTab === "bot2" && (
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <div className="rounded-xl bg-white/5 border border-white/10 p-4">
-                          <span className="text-[#B8860B] font-semibold text-[10px] uppercase block mb-1">Voix d'Atelier</span>
-                          <p className="text-white/80 text-[11px] font-light">Maître Hassan (25 ans d'expérience). Style 100% humain certifié sans cliché d'intelligence artificielle.</p>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
+                          <span className="text-[#B8860B] font-semibold text-xs uppercase block mb-1">Voix d'Atelier Authentique</span>
+                          <h4 className="text-sm font-bold text-white mb-2">Maître Hassan (25 ans de métier)</h4>
+                          <p className="text-xs text-white/70 font-light leading-relaxed">
+                            Chaque guide est rédigé dans le langage du métier : calculs de retraits après lavage, plombage invisible et résistance au vent du Chergui.
+                          </p>
                         </div>
-                        <div className="rounded-xl bg-white/5 border border-white/10 p-4">
-                          <span className="text-[#B8860B] font-semibold text-[10px] uppercase block mb-1">Métriques Précises</span>
-                          <p className="text-white/80 text-[11px] font-light">Formules de métrage au millimètre, coefficient de fronce 1.8x à 2.2x et tombé plombé 10 cm.</p>
+                        <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
+                          <span className="text-[#B8860B] font-semibold text-xs uppercase block mb-1">Filtre Anti-Cliché IA</span>
+                          <h4 className="text-sm font-bold text-white mb-2">100% Langage de Tapissier</h4>
+                          <p className="text-xs text-white/70 font-light leading-relaxed">
+                            Élimination des formules génériques d'IA. Remplacement par des formules réelles (ampleur 1.8x à 2.2x), coefficients acoustiques NRC et fiches de labo.
+                          </p>
                         </div>
-                        <div className="rounded-xl bg-white/5 border border-white/10 p-4">
-                          <span className="text-[#B8860B] font-semibold text-[10px] uppercase block mb-1">Climat de Marrakech</span>
-                          <p className="text-white/80 text-[11px] font-light">Confection adaptée au vent du Chergui, à la réverbération ocre et aux amplitudes thermiques de l'Atlas.</p>
+                        <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
+                          <span className="text-[#B8860B] font-semibold text-xs uppercase block mb-1">Ancrage Climat Marrakech</span>
+                          <h4 className="text-sm font-bold text-white mb-2">Climat de l'Atlas & Médina</h4>
+                          <p className="text-xs text-white/70 font-light leading-relaxed">
+                            Solutions pensées pour les 300 jours de soleil direct, la poussière siliceuse du désert et les amplitudes thermiques des riads.
+                          </p>
                         </div>
                       </div>
                     )}
 
                     {activeAgentTab === "bot3" && (
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <div className="rounded-xl bg-white/5 border border-white/10 p-4">
-                          <span className="text-[#B8860B] font-semibold text-[10px] uppercase block mb-1">Curation Visuelle</span>
-                          <p className="text-white/80 text-[11px] font-light">Sélection et validation des photos réelles haute facture avec rôle et cadre éditorial documenté.</p>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
+                          <span className="text-[#B8860B] font-semibold text-xs uppercase block mb-1">Direction Artistique & Curation</span>
+                          <h4 className="text-sm font-bold text-white mb-2">Photographies Réelles 8K</h4>
+                          <p className="text-xs text-white/70 font-light leading-relaxed">
+                            Zéro image stock générique. Chaque photo est sélectionnée avec un rôle éditorial explicite (patio riad, découpe table, macro déperlance).
+                          </p>
                         </div>
-                        <div className="rounded-xl bg-white/5 border border-white/10 p-4">
-                          <span className="text-[#B8860B] font-semibold text-[10px] uppercase block mb-1">Schemas Google Rich</span>
-                          <p className="text-white/80 text-[11px] font-light">Injection BlogPosting, FAQPage et BreadcrumbList pour le référencement IA & Google SGE.</p>
+                        <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
+                          <span className="text-[#B8860B] font-semibold text-xs uppercase block mb-1">Schemas Google Rich Snippets</span>
+                          <h4 className="text-sm font-bold text-white mb-2">BlogPosting, FAQPage & Breadcrumb</h4>
+                          <p className="text-xs text-white/70 font-light leading-relaxed">
+                            Structuration JSON-LD conforme aux exigences SEO pour l'indexation dans Google Search et les moteurs génératifs (Perplexity, SGE).
+                          </p>
                         </div>
-                        <div className="rounded-xl bg-white/5 border border-white/10 p-4">
-                          <span className="text-[#B8860B] font-semibold text-[10px] uppercase block mb-1">Cadence Automatisée</span>
-                          <p className="text-white/80 text-[11px] font-light">Publication tous les 2 à 4 jours synchronisée avec le Sitemap XML et Google Search Console.</p>
+                        <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
+                          <span className="text-[#B8860B] font-semibold text-xs uppercase block mb-1">Cadence Automatisée</span>
+                          <h4 className="text-sm font-bold text-white mb-2">Intervalle de 2 à 4 Jours</h4>
+                          <p className="text-xs text-white/70 font-light leading-relaxed">
+                            Publication continue programmée dans le Sitemap XML pour un crawl naturel et une prise d'autorité rapide sur le marché marocain.
+                          </p>
                         </div>
                       </div>
                     )}
@@ -337,7 +411,7 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
               </motion.div>
             )}
           </AnimatePresence>
-        </section>
+        </header>
 
         {/* SECTION 1: HERO TOP GRID (MATCHING USER SCREENSHOT) */}
         {filteredPosts.length === 0 ? (
@@ -356,31 +430,31 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
             </button>
           </div>
         ) : (
-          <section className="mb-16 sm:mb-20">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
+          <section className="mb-20 sm:mb-24">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
               
               {/* LEFT COLUMN: Featured Large Lead Post Card */}
               {leadPost && (
                 <div className="lg:col-span-7 flex flex-col">
                   <Link
                     href={`/${locale}/blog/${leadPost.slug}`}
-                    className="group relative flex-1 min-h-[380px] sm:min-h-[460px] lg:min-h-[500px] rounded-[28px] overflow-hidden border border-[#1c1b19]/10 shadow-[0_4px_24px_rgba(28,27,25,0.05)] hover:shadow-[0_12px_36px_rgba(28,27,25,0.12)] transition-all duration-500 flex flex-col justify-end"
+                    className="group relative flex-1 min-h-[400px] sm:min-h-[480px] lg:min-h-[520px] rounded-[32px] overflow-hidden border border-[#1c1b19]/10 shadow-[0_8px_30px_rgba(28,27,25,0.06)] hover:shadow-[0_20px_48px_rgba(28,27,25,0.14)] transition-all duration-700 flex flex-col justify-end"
                   >
-                    {/* Background Master Image */}
+                    {/* Background Master Architectural Image */}
                     <Image
                       src={leadPost.coverImage}
                       alt={leadPost.coverAlt}
                       fill
-                      className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                      className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.02]"
                       priority
                       sizes="(max-width: 1024px) 100vw, 60vw"
                     />
 
-                    {/* Dark Vignette / Gradient Overlay at Bottom */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
+                    {/* Subtle Frosted Dark Vignette at Bottom */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent" />
 
                     {/* Content on Bottom Overlay */}
-                    <div className="relative z-10 p-6 sm:p-8 md:p-10">
+                    <div className="relative z-10 p-7 sm:p-9 md:p-10">
                       {/* Category Pill with Dot */}
                       <div className="mb-3.5">
                         <span className="inline-flex items-center gap-2 rounded-full bg-white/95 backdrop-blur-md px-3.5 py-1 text-[11px] font-medium text-[#1c1b19] shadow-xs">
@@ -389,42 +463,44 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
                         </span>
                       </div>
 
-                      {/* Headline */}
-                      <h2 className="font-termina text-lg sm:text-2xl md:text-3xl font-bold uppercase text-white leading-snug tracking-tight group-hover:text-[#B8860B] transition-colors line-clamp-3">
-                        {removeAccents(isEn ? leadPost.titleEn : leadPost.title)}
+                      {/* Headline in Natural Editorial Case (Readable, Luxury Typography) */}
+                      <h2 className="text-xl sm:text-2xl lg:text-[28px] font-bold text-white leading-snug tracking-tight font-sans group-hover:text-[#F3EEE6] transition-colors line-clamp-3">
+                        {isEn ? leadPost.titleEn : leadPost.title}
                       </h2>
 
-                      {/* Meta line: Date • Reading time */}
+                      {/* Meta line: Date • Reading time • Author */}
                       <div className="mt-3.5 flex items-center gap-2 text-xs text-white/75 font-light">
                         <span>{formatDate(leadPost.publishedAt)}</span>
                         <span>•</span>
                         <span>{leadPost.readingTime} {isEn ? "read" : "de lecture"}</span>
+                        <span>•</span>
+                        <span className="text-white/60">{leadPost.author.name}</span>
                       </div>
                     </div>
                   </Link>
                 </div>
               )}
 
-              {/* RIGHT COLUMN: "Latest post" List Stack */}
+              {/* RIGHT COLUMN: "Latest post" List Stack (Matching Reference Layout) */}
               <div className="lg:col-span-5 flex flex-col justify-between">
                 <div>
                   {/* Section Title */}
-                  <div className="flex items-center justify-between mb-4 sm:mb-5 px-1">
+                  <div className="flex items-center justify-between mb-5 px-1">
                     <h2 className="font-termina text-xl sm:text-2xl font-bold text-[#1c1b19] tracking-tight">
                       {isEn ? "Latest post" : "Derniers articles"}
                     </h2>
                     <span className="text-[11px] font-semibold uppercase tracking-wider text-[#B8860B]">
-                      {latestPosts.length} {isEn ? "items" : "guides"}
+                      {latestPosts.length} {isEn ? "recent guides" : "dossiers récents"}
                     </span>
                   </div>
 
-                  {/* 4 Stacked Rows */}
-                  <div className="space-y-3">
+                  {/* 4 Clean Airy Rows */}
+                  <div className="space-y-3.5">
                     {latestPosts.map((post) => (
                       <Link
                         key={post.slug}
                         href={`/${locale}/blog/${post.slug}`}
-                        className="group flex items-center gap-4 p-2.5 sm:p-3 rounded-2xl bg-white/60 hover:bg-white border border-transparent hover:border-[#1c1b19]/10 shadow-[0_2px_8px_rgba(28,27,25,0.02)] hover:shadow-[0_8px_20px_rgba(28,27,25,0.06)] transition-all duration-300"
+                        className="group flex items-center gap-4 p-2.5 rounded-2xl hover:bg-white hover:shadow-xs border border-transparent hover:border-[#1c1b19]/8 transition-all duration-300"
                       >
                         {/* Square Rounded Thumbnail */}
                         <div className="relative w-18 h-18 sm:w-20 sm:h-20 rounded-2xl overflow-hidden shrink-0 border border-[#1c1b19]/10 bg-[#e8e4dc]">
@@ -439,8 +515,11 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
 
                         {/* Title & Meta Info */}
                         <div className="flex-1 min-w-0 pr-1">
-                          <h3 className="text-xs sm:text-[13px] font-semibold text-[#1c1b19] group-hover:text-[#B8860B] transition-colors line-clamp-2 leading-snug">
-                            {removeAccents(isEn ? post.titleEn : post.title)}
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-[#B8860B] block mb-1">
+                            {post.category}
+                          </span>
+                          <h3 className="text-xs sm:text-[13.5px] font-semibold text-[#1c1b19] group-hover:text-[#B8860B] transition-colors line-clamp-2 leading-snug font-sans">
+                            {isEn ? post.titleEn : post.title}
                           </h3>
                           <div className="mt-1.5 flex items-center gap-1.5 text-[11px] text-[#1c1b19]/55 font-light">
                             <span>{formatDateShort(post.publishedAt)}</span>
@@ -460,15 +539,17 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
 
         {/* SECTION 2: "Founders corner" / CARNET D'ATELIER (MATCHING USER SCREENSHOT) */}
         {filteredPosts.length > 0 && (
-          <section className="mb-16 sm:mb-20">
+          <section className="mb-20 sm:mb-24">
             {/* Header with Title on Left, Navigation Arrows on Right */}
-            <div className="flex items-center justify-between mb-6 sm:mb-8 px-1">
+            <div className="flex items-center justify-between mb-8 sm:mb-10 px-1">
               <div>
                 <h2 className="font-termina text-xl sm:text-2xl font-bold text-[#1c1b19] tracking-tight">
                   {isEn ? "Founders corner" : "Carnet d'Atelier & Savoir-Faire"}
                 </h2>
-                <p className="text-xs text-[#1c1b19]/60 font-light mt-0.5">
-                  {isEn ? "Master artisan techniques, measuring formulas and technical metrics." : "Transmission de savoir-faire, formules de métrage et fiches techniques."}
+                <p className="text-xs sm:text-sm text-[#1c1b19]/60 font-light mt-1">
+                  {isEn
+                    ? "Master artisan techniques, measuring formulas and technical metrics."
+                    : "Transmission de métier, formules de métrage de rideaux et ingénierie textile in & outdoor."}
                 </p>
               </div>
 
@@ -476,14 +557,14 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
               <div className="flex items-center gap-2">
                 <button
                   onClick={handlePrevFounders}
-                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#1c1b19]/20 bg-white flex items-center justify-center text-[#1c1b19] hover:bg-[#1c1b19] hover:text-white transition-all shadow-xs cursor-pointer"
+                  className="w-10 h-10 rounded-full border border-[#1c1b19]/20 bg-white flex items-center justify-center text-[#1c1b19] hover:bg-[#1c1b19] hover:text-white transition-all shadow-xs cursor-pointer"
                   aria-label="Previous articles"
                 >
                   ←
                 </button>
                 <button
                   onClick={handleNextFounders}
-                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#1c1b19]/20 bg-white flex items-center justify-center text-[#1c1b19] hover:bg-[#1c1b19] hover:text-white transition-all shadow-xs cursor-pointer"
+                  className="w-10 h-10 rounded-full border border-[#1c1b19]/20 bg-white flex items-center justify-center text-[#1c1b19] hover:bg-[#1c1b19] hover:text-white transition-all shadow-xs cursor-pointer"
                   aria-label="Next articles"
                 >
                   →
@@ -492,20 +573,20 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
             </div>
 
             {/* 3 Columns of Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 sm:gap-8">
               {displayedFoundersPosts.map((post, idx) => (
                 <motion.article
                   key={post.slug}
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.35, delay: idx * 0.05 }}
-                  className="group rounded-[24px] bg-white p-5 sm:p-6 border border-[#1c1b19]/10 shadow-[0_4px_20px_rgba(28,27,25,0.03)] hover:shadow-[0_12px_32px_rgba(28,27,25,0.08)] hover:border-[#1c1b19]/20 transition-all duration-300 flex flex-col justify-between"
+                  className="group rounded-[28px] bg-white p-6 sm:p-7 border border-[#1c1b19]/10 shadow-[0_4px_24px_rgba(28,27,25,0.03)] hover:shadow-[0_16px_40px_rgba(28,27,25,0.08)] hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
                 >
                   <div>
                     {/* Top Rounded Image Thumbnail */}
                     <Link
                       href={`/${locale}/blog/${post.slug}`}
-                      className="block relative aspect-[16/10] rounded-2xl overflow-hidden mb-4 border border-[#1c1b19]/10 bg-[#f0ece5]"
+                      className="block relative aspect-[16/10] rounded-2xl overflow-hidden mb-5 border border-[#1c1b19]/10 bg-[#f0ece5]"
                     >
                       <Image
                         src={post.coverImage}
@@ -517,17 +598,17 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
                     </Link>
 
                     {/* Category Pill with Dot */}
-                    <div className="mb-2.5">
-                      <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold tracking-wider uppercase text-[#1c1b19]/80">
+                    <div className="mb-3">
+                      <span className="inline-flex items-center gap-1.5 text-[10.5px] font-semibold tracking-wider uppercase text-[#1c1b19]/80">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#B8860B]" />
                         {post.category}
                       </span>
                     </div>
 
                     {/* Title */}
-                    <h3 className="font-termina text-sm sm:text-base font-bold text-[#1c1b19] group-hover:text-[#B8860B] transition-colors line-clamp-2 leading-snug">
+                    <h3 className="font-sans text-base sm:text-lg font-bold text-[#1c1b19] group-hover:text-[#B8860B] transition-colors line-clamp-2 leading-snug">
                       <Link href={`/${locale}/blog/${post.slug}`}>
-                        {removeAccents(isEn ? post.titleEn : post.title)}
+                        {isEn ? post.titleEn : post.title}
                       </Link>
                     </h3>
 
@@ -538,7 +619,7 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
                   </div>
 
                   {/* Footer Meta */}
-                  <div className="mt-5 pt-3.5 border-t border-[#1c1b19]/10 flex items-center justify-between text-[11px] text-[#1c1b19]/55 font-light">
+                  <div className="mt-6 pt-4 border-t border-[#1c1b19]/10 flex items-center justify-between text-[11px] text-[#1c1b19]/60 font-light">
                     <div className="flex items-center gap-1.5">
                       <span>{formatDateShort(post.publishedAt)}</span>
                       <span>•</span>
@@ -546,9 +627,9 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
                     </div>
                     <Link
                       href={`/${locale}/blog/${post.slug}`}
-                      className="font-medium text-[#1c1b19] group-hover:text-[#B8860B] transition-colors"
+                      className="font-medium text-[#1c1b19] group-hover:text-[#B8860B] transition-colors flex items-center gap-1"
                     >
-                      {isEn ? "Read" : "Lire"} →
+                      {isEn ? "Read guide" : "Lire"} →
                     </Link>
                   </div>
                 </motion.article>
@@ -556,14 +637,14 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
             </div>
 
             {/* Bottom Minimal Pagination (Matching the Screenshot: ← 1 2 3 →) */}
-            <div className="mt-14 flex items-center justify-center gap-2 sm:gap-3">
+            <div className="mt-16 flex items-center justify-center gap-2 sm:gap-3">
               <button
                 onClick={() => {
                   setActivePaginationPage((p) => Math.max(1, p - 1));
                   handlePrevFounders();
                 }}
                 disabled={activePaginationPage === 1}
-                className="w-8 h-8 rounded-full border border-[#1c1b19]/20 bg-white flex items-center justify-center text-xs text-[#1c1b19] hover:bg-[#1c1b19] hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-white disabled:hover:text-[#1c1b19] cursor-pointer"
+                className="w-9 h-9 rounded-full border border-[#1c1b19]/20 bg-white flex items-center justify-center text-xs text-[#1c1b19] hover:bg-[#1c1b19] hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-white disabled:hover:text-[#1c1b19] cursor-pointer"
                 aria-label="Previous page"
               >
                 ←
@@ -578,10 +659,10 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
                       setActivePaginationPage(num);
                       setFoundersPage(num - 1);
                     }}
-                    className={`w-8 h-8 rounded-full text-xs font-medium flex items-center justify-center transition-all cursor-pointer ${
+                    className={`w-9 h-9 rounded-full text-xs font-medium flex items-center justify-center transition-all cursor-pointer ${
                       isActive
                         ? "bg-[#1c1b19] text-white shadow-xs"
-                        : "bg-white/60 text-[#1c1b19]/70 border border-[#1c1b19]/10 hover:bg-white hover:text-[#1c1b19]"
+                        : "bg-white text-[#1c1b19]/70 border border-[#1c1b19]/10 hover:border-[#1c1b19]/30 hover:text-[#1c1b19]"
                     }`}
                   >
                     {num}
@@ -595,7 +676,7 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
                   handleNextFounders();
                 }}
                 disabled={activePaginationPage === 3}
-                className="w-8 h-8 rounded-full border border-[#1c1b19]/20 bg-white flex items-center justify-center text-xs text-[#1c1b19] hover:bg-[#1c1b19] hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-white disabled:hover:text-[#1c1b19] cursor-pointer"
+                className="w-9 h-9 rounded-full border border-[#1c1b19]/20 bg-white flex items-center justify-center text-xs text-[#1c1b19] hover:bg-[#1c1b19] hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-white disabled:hover:text-[#1c1b19] cursor-pointer"
                 aria-label="Next page"
               >
                 →
@@ -605,8 +686,8 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
         )}
 
         {/* Editorial Dispatch & Pro Consultation Block */}
-        <section className="rounded-3xl bg-[#141413] text-[#faf8f5] p-8 sm:p-12 relative overflow-hidden">
-          <div className="absolute right-0 bottom-0 pointer-events-none opacity-15 w-72 h-72">
+        <section className="rounded-[32px] bg-[#141413] text-[#faf8f5] p-8 sm:p-14 relative overflow-hidden shadow-xl">
+          <div className="absolute right-0 bottom-0 pointer-events-none opacity-15 w-80 h-80">
             <Image
               src="/icon-light.png"
               alt="Kansotex Watermark"
@@ -616,10 +697,10 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
           </div>
 
           <div className="relative z-10 max-w-2xl">
-            <span className="text-[10px] font-semibold tracking-[0.25em] uppercase text-[#B8860B] block mb-2">
+            <span className="text-[10px] font-semibold tracking-[0.25em] uppercase text-[#B8860B] block mb-2.5">
               {isEn ? "THE KANSOTEX DISPATCH & B2B" : "LE CARNET D'ÉTOFFES · PRESCRIPTION"}
             </span>
-            <h3 className="font-termina text-xl sm:text-2xl font-bold uppercase tracking-tight leading-snug">
+            <h3 className="font-termina text-xl sm:text-2xl md:text-3xl font-bold uppercase tracking-tight leading-snug">
               {removeAccents(
                 isEn
                   ? "Bespoke Fabric Trends & Architecture Dossiers"
@@ -632,13 +713,13 @@ export function BlogIndexView({ initialPosts, locale }: BlogIndexViewProps) {
                 : "Recevez les secrets de coupe de notre atelier de Marrakech, les guides de métrage sur-mesure et l'accès prioritaire à nos stocks professionnels."}
             </p>
 
-            <div className="mt-6 flex flex-col sm:flex-row gap-3">
+            <div className="mt-7 flex flex-col sm:flex-row gap-3">
               <input
                 type="email"
-                placeholder={isEn ? "Your email..." : "Votre adresse email..."}
-                className="rounded-full bg-white/10 border border-white/20 px-5 py-3 text-xs text-white placeholder:text-white/40 focus:border-white focus:outline-none flex-1"
+                placeholder={isEn ? "Your professional email..." : "Votre adresse email professionnelle..."}
+                className="rounded-full bg-white/10 border border-white/20 px-6 py-3.5 text-xs text-white placeholder:text-white/40 focus:border-white focus:outline-none flex-1"
               />
-              <button className="rounded-full bg-white text-[#141413] px-7 py-3 text-xs font-semibold uppercase tracking-wider hover:bg-[#faf8f5] transition-all shrink-0 cursor-pointer">
+              <button className="rounded-full bg-white text-[#141413] px-8 py-3.5 text-xs font-semibold uppercase tracking-wider hover:bg-[#faf8f5] transition-all shrink-0 cursor-pointer">
                 {isEn ? "Subscribe" : "S'abonner"}
               </button>
             </div>
