@@ -100,7 +100,7 @@ export function ProClientView() {
   const handleDemoLogin = async (role: "ARCHITECT" | "DECORATOR", discount: number) => {
     setIsLoading(true);
     await loginAsPro(role, discount);
-    window.location.href = "/products";
+    window.location.href = "/pro";
   };
 
   const handleRequestOtp = async (e: React.FormEvent) => {
@@ -159,7 +159,7 @@ export function ProClientView() {
         if (res.isNewUser) {
           setStep("signup");
         } else {
-          window.location.href = "/products";
+          window.location.href = "/pro";
         }
       } else {
         setError(res.error || "Code invalide.");
@@ -183,7 +183,7 @@ export function ProClientView() {
     try {
       const res = await completeSignupAndLogin(email, signupData);
       if (res.success) {
-        window.location.href = "/products";
+        window.location.href = "/pro";
       }
     } catch {
       setError("Erreur lors de la création du compte.");
@@ -287,13 +287,21 @@ export function ProClientView() {
                   <span className="text-[10px] font-sans uppercase tracking-widest text-[#d8cbb6] font-medium">
                     Portail Sécurisé Pro
                   </span>
-                  <button
-                    type="button"
-                    onClick={() => handleDemoLogin("ARCHITECT", 0.20)}
-                    className="text-[10px] font-sans font-medium text-white/80 hover:text-white bg-white/10 hover:bg-white/20 px-3 py-1 rounded-full border border-white/15 transition-all"
-                  >
-                    Accès Démo Immédiat (-20%)
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <Link
+                      href="/pro/dashboard"
+                      className="text-[10px] font-sans font-medium text-[#c5a059] hover:text-white underline transition-all"
+                    >
+                      Aperçu Tableau de bord →
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => handleDemoLogin("ARCHITECT", 0.25)}
+                      className="text-[10px] font-sans font-medium text-white/90 hover:text-white bg-white/10 hover:bg-white/20 px-3 py-1 rounded-full border border-white/15 transition-all cursor-pointer"
+                    >
+                      Connexion Démo (-25%)
+                    </button>
+                  </div>
                 </div>
 
                 {/* Card Title & Instructions */}

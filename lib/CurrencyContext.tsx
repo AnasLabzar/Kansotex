@@ -13,7 +13,7 @@ interface CurrencyContextType {
   setCurrency: (c: CurrencyCode) => void;
   rates: Rates;
   isLoadingRates: boolean;
-  formatPrice: (amountInEur: number) => { value: string, symbol: string };
+  formatPrice: (amountInEur: number) => { value: string; symbol: string; formatted: string };
 }
 
 const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined);
@@ -70,9 +70,11 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
       ? convertedAmount.toLocaleString("fr-FR", { minimumFractionDigits: 0, maximumFractionDigits: 0 })
       : convertedAmount.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       
+    const symbol = CURRENCY_SYMBOLS[currency];
     return {
       value,
-      symbol: CURRENCY_SYMBOLS[currency]
+      symbol,
+      formatted: `${value} ${symbol}`,
     };
   };
 

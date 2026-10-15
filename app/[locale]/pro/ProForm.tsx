@@ -41,7 +41,7 @@ export default function ProForm() {
   const handleDemoLogin = async (role: "ARCHITECT" | "DECORATOR", discount: number) => {
     setIsLoading(true);
     await loginAsPro(role, discount);
-    window.location.href = "/products";
+    window.location.href = "/pro";
   };
 
   const handleRequestOtp = async (e: React.FormEvent) => {
@@ -102,7 +102,7 @@ export default function ProForm() {
           setStep("signup");
         } else {
           // Logged in successfully!
-          window.location.href = "/products";
+          window.location.href = "/pro";
         }
       } else {
         setError(res.error || "Code invalide.");
@@ -126,7 +126,7 @@ export default function ProForm() {
     try {
       const res = await completeSignupAndLogin(email, signupData);
       if (res.success) {
-        window.location.href = "/products";
+        window.location.href = "/pro";
       }
     } catch (err) {
       setError("Erreur lors de la création du compte.");

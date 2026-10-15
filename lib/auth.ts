@@ -93,7 +93,11 @@ export async function verifyOtpAndLogin(email: string, code: string) {
   
   if (user) {
     // Log them in
-    await loginAsPro(user.role, user.tradeDiscount);
+    await loginAsPro(user.role, user.tradeDiscount, {
+      name: `${user.firstName || ''} ${user.lastName || ''}`.trim() || undefined,
+      companyName: user.companyName || undefined,
+      email: user.email,
+    });
     return { success: true, isNewUser: false };
   } else {
     // Need to create new user profile
@@ -125,6 +129,10 @@ export async function completeSignupAndLogin(
     tradeDiscount: 0.20,
   });
 
-  await loginAsPro(user.role, user.tradeDiscount);
+  await loginAsPro(user.role, user.tradeDiscount, {
+    name: `${data.firstName.trim()} ${data.lastName.trim()}`,
+    companyName: data.companyName.trim(),
+    email: cleanEmail,
+  });
   return { success: true };
 }

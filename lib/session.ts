@@ -6,6 +6,11 @@ export type SessionData = {
   isPro: boolean;
   role: "CUSTOMER" | "ARCHITECT" | "DECORATOR" | "HOTEL" | "ADMIN";
   tradeDiscount: number; // e.g., 0.20 for 20%
+  name?: string;
+  companyName?: string;
+  email?: string;
+  city?: string;
+  phone?: string;
 };
 
 const SESSION_COOKIE_NAME = "kansotex_session";
@@ -23,11 +28,26 @@ export async function getSession(): Promise<SessionData | null> {
   }
 }
 
-export async function loginAsPro(role: SessionData["role"], discount: number) {
+export async function loginAsPro(
+  role: SessionData["role"],
+  discount: number,
+  extra?: {
+    name?: string;
+    companyName?: string;
+    email?: string;
+    city?: string;
+    phone?: string;
+  }
+) {
   const session: SessionData = {
     isPro: true,
     role,
     tradeDiscount: discount,
+    name: extra?.name || (role === "ARCHITECT" ? "Karim Benjelloun" : role === "HOTEL" ? "Directeur d'Exploitation" : "Studio Interior"),
+    companyName: extra?.companyName || (role === "ARCHITECT" ? "Studio KB Architecture & Design" : role === "HOTEL" ? "Palais & Riad Atlas Luxury" : "Atelier Déco Marrakech"),
+    email: extra?.email || "architecte@kansotex-partner.com",
+    city: extra?.city || "Marrakech / Casablanca",
+    phone: extra?.phone || "+212 6 61 00 00 00",
   };
   
   const cookieStore = await cookies();
