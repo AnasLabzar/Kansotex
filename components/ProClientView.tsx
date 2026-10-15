@@ -52,8 +52,17 @@ const SECTORS_DATA = [
 ];
 
 import { NavbarRightActions } from "@/components/NavbarRightActions";
+import { useSession } from "@/lib/SessionContext";
+import { ProDashboardView } from "@/components/ProDashboardView";
 
 export function ProClientView() {
+  const { session } = useSession();
+
+  // If already authenticated as Pro, immediately show Pro Dashboard
+  if (session?.isPro) {
+    return <ProDashboardView session={session} />;
+  }
+
   const [menuOpen, setMenuOpen] = useState(false);
 
   // Pro Form States: 'email' -> 'otp' -> 'signup'

@@ -4,6 +4,9 @@ import { ProDashboardView } from "@/components/ProDashboardView";
 import { getSession } from "@/lib/session";
 import { buildCanonicalMetadata } from "@/lib/seo";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function generateMetadata({
   params,
 }: {
