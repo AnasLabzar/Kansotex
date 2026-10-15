@@ -108,18 +108,37 @@ function IconTrendingUp({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
-// B2B Project Interface (Amounts are in base EUR, converted via formatPrice)
+function IconInvoice({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+    </svg>
+  );
+}
+
+function IconPrinter({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4H7v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+    </svg>
+  );
+}
+
+// B2B Project & Invoice Interface
 export interface B2BProject {
   id: string;
   ref: string;
+  invoiceRef: string;
   name: string;
   location: string;
   type: string;
   meters: number;
   publicPriceEur: number; // Base in EUR so multi-currency works smoothly
   status: "DEVIS" | "CONFECTION" | "EXPEDIE" | "POSE";
+  invoiceStatus: "PAID" | "DEPOSIT_50" | "PENDING";
   progressPct: number;
   deadline: string;
+  invoiceDate: string;
   items: string[];
   notes: string;
 }
@@ -129,14 +148,17 @@ const INITIAL_PROJECTS: B2BProject[] = [
   {
     id: "1",
     ref: "KTX-2026-042",
+    invoiceRef: "FA-2026-0042",
     name: "Riad Dar Al Atlas — Suites Royales & Patio",
     location: "Médina, Marrakech",
     type: "Hôtellerie de Caractère",
     meters: 180,
     publicPriceEur: 7800, // ~84,600 MAD
     status: "CONFECTION",
+    invoiceStatus: "DEPOSIT_50",
     progressPct: 75,
     deadline: "28 Octobre 2026",
+    invoiceDate: "12 Octobre 2026",
     items: [
       "12 pans Rideaux Wave grande hauteur 4.80m en Lin Lavé Blanc Craie",
       "8 banquettes marocaines modernes velours ocre côtelé antitache",
@@ -147,14 +169,17 @@ const INITIAL_PROJECTS: B2BProject[] = [
   {
     id: "2",
     ref: "KTX-2026-039",
+    invoiceRef: "FA-2026-0039",
     name: "Villa Palmeraie — Pavillon Invités & Piscine",
     location: "Palmeraie, Marrakech",
     type: "Résidence Privée de Prestige",
     meters: 135,
     publicPriceEur: 5900, // ~64,000 MAD
     status: "CONFECTION",
+    invoiceStatus: "DEPOSIT_50",
     progressPct: 40,
     deadline: "12 Novembre 2026",
+    invoiceDate: "05 Octobre 2026",
     items: [
       "Voilages grande largeur 300cm Lin Céleste pour baies vitrées 6m",
       "40m Toile Suntech Outdoor déperlante pour daybeds piscine",
@@ -165,14 +190,17 @@ const INITIAL_PROJECTS: B2BProject[] = [
   {
     id: "3",
     ref: "KTX-2026-044",
+    invoiceRef: "FA-2026-0044",
     name: "Boutique Hôtel Guéliz — Salons & Bar",
     location: "Avenue Mohammed V, Guéliz",
     type: "Hôtel & Lounge Bar",
     meters: 95,
     publicPriceEur: 4700, // ~51,000 MAD
     status: "DEVIS",
+    invoiceStatus: "PENDING",
     progressPct: 20,
     deadline: "24 Novembre 2026",
+    invoiceDate: "14 Octobre 2026",
     items: [
       "Banquettes d'angle capitonnées velours d'apparat émeraude M1",
       "Draperies phoniques acoustiques occultantes pour salon d'écoute",
@@ -182,14 +210,17 @@ const INITIAL_PROJECTS: B2BProject[] = [
   {
     id: "4",
     ref: "KTX-2026-046",
+    invoiceRef: "FA-2026-0046",
     name: "Riad El Fenn Extension — Salon d'Hiver",
     location: "Derb Sidi Bouloukhat, Marrakech",
     type: "Maison d'Hôtes & Galerie",
     meters: 65,
     publicPriceEur: 3200, // ~34,700 MAD
     status: "EXPEDIE",
+    invoiceStatus: "PAID",
     progressPct: 90,
     deadline: "20 Octobre 2026",
+    invoiceDate: "28 Septembre 2026",
     items: [
       "Tentures lourdes lin naturel doublées satinette thermique",
       "Galettes d'assise capitonnées coton jacquard Kasbah",
@@ -199,14 +230,17 @@ const INITIAL_PROJECTS: B2BProject[] = [
   {
     id: "5",
     ref: "KTX-2026-031",
+    invoiceRef: "FA-2026-0031",
     name: "Penthouse Hivernage — Réception & Master",
     location: "Boulevard Moulay Rachid, Hivernage",
     type: "Appartement d'Architecte",
     meters: 110,
     publicPriceEur: 5500, // ~59,600 MAD
     status: "POSE",
+    invoiceStatus: "PAID",
     progressPct: 100,
     deadline: "04 Octobre 2026",
+    invoiceDate: "15 Septembre 2026",
     items: [
       "Double rideaux occultants blackout 100% avec tombé cassant au sol",
       "Têtes de lit tapissées en tissu chenille ivoire",
@@ -216,14 +250,17 @@ const INITIAL_PROJECTS: B2BProject[] = [
   {
     id: "6",
     ref: "KTX-2026-027",
+    invoiceRef: "FA-2026-0027",
     name: "Domaine des Oliviers — Pergolas & Terrasses",
     location: "Route de l'Ourika, km 14",
     type: "Domaine Événementiel & Villa",
     meters: 320,
     publicPriceEur: 13600, // ~147,500 MAD
     status: "POSE",
+    invoiceStatus: "PAID",
     progressPct: 100,
     deadline: "18 Septembre 2026",
+    invoiceDate: "02 Septembre 2026",
     items: [
       "Toiles tendues coulissantes pour 6 pergolas bioclimatiques",
       "18 chiliennes et bains de soleil en tissu outdoor traité UV",
@@ -256,11 +293,25 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
   }
   const isEn = rawLocale === "en" || pathname?.startsWith("/en");
 
-  const { formatPrice, currency, setCurrency, rates } = useCurrency();
+  const { currency, setCurrency, rates } = useCurrency();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Active Tab
-  type TabKey = "overview" | "orders" | "planning" | "calculator" | "margin" | "stocks" | "swatches" | "atelier";
+  // Robust, perfectly spaced number formatter with thousands separator
+  const formatMoney = (amountEur: number) => {
+    const rate = rates?.[currency] || (currency === "MAD" ? 10.85 : 1);
+    const amount = amountEur * rate;
+    const rounded = Math.round(amount);
+    const numWithSpaces = rounded.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    const symbol = currency === "MAD" ? "MAD" : currency === "EUR" ? "€" : "$";
+    return {
+      value: numWithSpaces,
+      symbol,
+      formatted: `${numWithSpaces} ${symbol}`,
+    };
+  };
+
+  // Active Tab: default to "orders"
+  type TabKey = "orders" | "invoices" | "overview" | "planning" | "calculator" | "margin" | "stocks" | "swatches" | "atelier";
   const [activeTab, setActiveTab] = useState<TabKey>("orders");
 
   // Pro Tier Demo Switcher State
@@ -279,7 +330,9 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
   const [projects, setProjects] = useState<B2BProject[]>(INITIAL_PROJECTS);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStatusFilter, setSelectedStatusFilter] = useState<string>("ALL");
+  const [selectedInvoiceFilter, setSelectedInvoiceFilter] = useState<string>("ALL");
   const [selectedProjectModal, setSelectedProjectModal] = useState<B2BProject | null>(null);
+  const [selectedInvoiceModal, setSelectedInvoiceModal] = useState<B2BProject | null>(null);
 
   // New Project Planning Modal
   const [isAddProjectOpen, setIsAddProjectOpen] = useState(false);
@@ -292,8 +345,6 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
     notes: "Confection rideaux wave lin",
   });
 
-  // Export Report Dialog State
-  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [swatchSentNotice, setSwatchSentNotice] = useState<string | null>(null);
 
   // -------------------------------------------------------------
@@ -373,7 +424,19 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
   const totalMeters = useMemo(() => projects.reduce((acc, p) => acc + p.meters, 0), [projects]);
   const activeCount = useMemo(() => projects.filter((p) => p.status !== "POSE").length, [projects]);
 
-  // Filtered Projects for Table
+  // Invoices Aggregate Totals
+  const totalInvoicedTTCEur = useMemo(() => totalProEur * 1.20, [totalProEur]);
+  const totalCollectedEur = useMemo(() => {
+    return projects.reduce((acc, p) => {
+      const net = p.publicPriceEur * (1 - currentDiscount) * 1.20;
+      if (p.invoiceStatus === "PAID") return acc + net;
+      if (p.invoiceStatus === "DEPOSIT_50") return acc + net * 0.5;
+      return acc;
+    }, 0);
+  }, [projects, currentDiscount]);
+  const totalPendingEur = totalInvoicedTTCEur - totalCollectedEur;
+
+  // Filtered Projects for Orders Table
   const filteredProjects = useMemo(() => {
     return projects.filter((p) => {
       const matchSearch =
@@ -386,6 +449,19 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
       return matchSearch && matchStatus;
     });
   }, [projects, searchQuery, selectedStatusFilter]);
+
+  // Filtered Projects for Invoices Table
+  const filteredInvoices = useMemo(() => {
+    return projects.filter((p) => {
+      const matchSearch =
+        p.ref.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.invoiceRef.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchStatus =
+        selectedInvoiceFilter === "ALL" || p.invoiceStatus === selectedInvoiceFilter;
+      return matchSearch && matchStatus;
+    });
+  }, [projects, searchQuery, selectedInvoiceFilter]);
 
   // Role Switcher Handler
   const handleSwitchRole = async (role: SessionData["role"], discount: number) => {
@@ -410,14 +486,15 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
 
   // Export CSV
   const handleExportCSV = () => {
-    const headers = ["Reference", "Chantier", "Lieu", "Metrage_ml", "Prix_Public_HT", "Prix_Pro_HT", "Statut", "Deadline"];
+    const headers = ["Reference", "Facture_No", "Chantier", "Lieu", "Metrage_ml", "Prix_Public_HT", "Prix_Pro_HT", "Statut", "Deadline"];
     const rows = filteredProjects.map((p) => [
       p.ref,
+      p.invoiceRef,
       `"${p.name.replace(/"/g, '""')}"`,
       `"${p.location}"`,
       p.meters,
-      formatPrice(p.publicPriceEur).value,
-      formatPrice(p.publicPriceEur * (1 - currentDiscount)).value,
+      formatMoney(p.publicPriceEur).value,
+      formatMoney(p.publicPriceEur * (1 - currentDiscount)).value,
       p.status,
       `"${p.deadline}"`,
     ]);
@@ -436,17 +513,21 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
     e.preventDefault();
     const newM = parseInt(newProjectForm.meters, 10) || 60;
     const estEur = newM * 40;
+    const randNum = Math.floor(100 + Math.random() * 900);
     const newProj: B2BProject = {
       id: String(Date.now()),
-      ref: `KTX-2026-${Math.floor(100 + Math.random() * 900)}`,
+      ref: `KTX-2026-${randNum}`,
+      invoiceRef: `FA-2026-${randNum}`,
       name: newProjectForm.name.trim() || "Nouveau Chantier Déco",
       location: newProjectForm.location.trim() || "Marrakech",
       type: newProjectForm.type,
       meters: newM,
       publicPriceEur: estEur,
       status: "DEVIS",
+      invoiceStatus: "PENDING",
       progressPct: 15,
       deadline: newProjectForm.deadline,
+      invoiceDate: "Aujourd'hui",
       items: [newProjectForm.notes],
       notes: "Projet planifié par le bureau d'études.",
     };
@@ -464,7 +545,7 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
       {/* 1. TOP GLOBAL NAVIGATION HEADER */}
       {/* ============================================================ */}
       <header className="sticky top-0 z-40 bg-[#faf9f6]/95 backdrop-blur-md border-b border-[#e7e3da] py-3 transition-all">
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-between min-h-[46px]">
+        <div className="max-w-[1480px] mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-between min-h-[46px]">
           {/* Left: Burger & Brand */}
           <div className="flex items-center gap-6">
             <button
@@ -518,11 +599,11 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
       {/* 2. REFINED B2B COMMAND BAR & PARTNER PROFILE */}
       {/* ============================================================ */}
       <section className="bg-white border-b border-[#e7e3da]">
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 py-5 sm:py-6">
+        <div className="max-w-[1480px] mx-auto px-4 sm:px-8 lg:px-12 py-5 sm:py-6">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
             {/* Left: Studio Identity & Live Badge */}
             <div className="flex items-center gap-3.5">
-              <div className="w-11 h-11 rounded-xl bg-[#141311] text-[#c5a059] flex items-center justify-center font-serif text-lg font-bold shadow-xs">
+              <div className="w-11 h-11 rounded-xl bg-[#141311] text-[#c5a059] flex items-center justify-center font-serif text-lg font-bold shadow-xs shrink-0">
                 K
               </div>
               <div className="space-y-0.5">
@@ -601,11 +682,12 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
         </div>
 
         {/* ============================================================ */}
-        {/* 3. SLICK STRIPE/LINEAR-STYLE TAB NAVIGATION */}
+        {/* 3. SLICK STRIPE/LINEAR-STYLE TAB NAVIGATION (WITH INVOICES) */}
         {/* ============================================================ */}
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 flex items-center gap-6 overflow-x-auto scrollbar-none border-t border-[#f0ece3]">
+        <div className="max-w-[1480px] mx-auto px-4 sm:px-8 lg:px-12 flex items-center gap-6 overflow-x-auto scrollbar-none border-t border-[#f0ece3]">
           {[
             { key: "orders", label: "Chantiers & Devis", icon: IconTable, count: projects.length },
+            { key: "invoices", label: "Factures & Règlements", icon: IconInvoice, count: projects.length },
             { key: "overview", label: "Vue d'Ensemble & Stats", icon: IconLayers },
             { key: "planning", label: "Planning & Pose", icon: IconCalendar, count: activeCount },
             { key: "calculator", label: "Calculateur Draperie", icon: IconCalculator },
@@ -654,10 +736,11 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
       {/* ============================================================ */}
       {/* 4. MAIN WORKSPACE CONTENT */}
       {/* ============================================================ */}
-      <main className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 pt-8">
+      <main className="max-w-[1480px] mx-auto px-4 sm:px-8 lg:px-12 pt-8">
 
         {/* ------------------------------------------------------------- */}
-        {/* TAB 1: CHANTIERS & DEVIS (THE CORE B2B DATA TABLE) */}
+        {/* TAB 1: CHANTIERS & DEVIS (THE MASTER DATA TABLE) */}
+        {/* FULL WIDTH COLUMN BREATHING ROOM & PROPER ACTION BUTTONS */}
         {/* ------------------------------------------------------------- */}
         {activeTab === "orders" && (
           <div className="space-y-6">
@@ -739,20 +822,20 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
               </div>
             </div>
 
-            {/* The Master Data Table (Crisp, High-End Typography) */}
+            {/* The Master Data Table with Full Widths on Every Column */}
             <div className="bg-white rounded-2xl border border-[#e7e3da] shadow-2xs overflow-hidden">
               <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
+                <table className="w-full min-w-[1240px] text-left border-collapse">
                   <thead>
                     <tr className="bg-[#fbfaf8] border-b border-[#e7e3da] text-[11px] font-sans font-medium uppercase tracking-[0.08em] text-neutral-500">
-                      <th className="py-3 px-5 font-semibold">Réf &amp; Date</th>
-                      <th className="py-3 px-5 font-semibold">Chantier &amp; Client</th>
-                      <th className="py-3 px-4 font-semibold">Métrage</th>
-                      <th className="py-3 px-4 font-semibold text-right">Tarif Public HT</th>
-                      <th className="py-3 px-4 font-semibold text-right">Tarif Pro Net HT</th>
-                      <th className="py-3 px-4 font-semibold text-right">Économie Nette</th>
-                      <th className="py-3 px-5 font-semibold text-center">Statut Confection</th>
-                      <th className="py-3 px-5 font-semibold text-right">Actions</th>
+                      <th className="py-3.5 px-5 font-semibold w-[140px]">Réf &amp; Date</th>
+                      <th className="py-3.5 px-5 font-semibold min-w-[260px]">Chantier &amp; Client</th>
+                      <th className="py-3.5 px-4 font-semibold text-center w-[100px]">Métrage</th>
+                      <th className="py-3.5 px-4 font-semibold text-right w-[140px]">Tarif Public HT</th>
+                      <th className="py-3.5 px-4 font-semibold text-right w-[145px]">Tarif Pro Net HT</th>
+                      <th className="py-3.5 px-4 font-semibold text-right w-[155px]">Économie Nette</th>
+                      <th className="py-3.5 px-5 font-semibold text-center w-[160px]">Statut Confection</th>
+                      <th className="py-3.5 px-5 font-semibold text-right w-[280px]">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#f2eee7] text-xs">
@@ -767,45 +850,47 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
                             <span className="font-semibold text-[#141311] block">
                               {p.ref}
                             </span>
-                            <span className="text-[11px] text-neutral-400 font-light block">
+                            <span className="text-[11px] text-neutral-400 font-light block mt-0.5">
                               {p.deadline}
                             </span>
                           </td>
 
                           {/* Chantier & Client */}
                           <td className="py-4 px-5">
-                            <span className="font-medium text-[#141311] block group-hover:text-[#8e6e2f] transition-colors">
+                            <span className="font-semibold text-[#141311] block group-hover:text-[#8e6e2f] transition-colors">
                               {p.name}
                             </span>
-                            <span className="text-[11px] text-neutral-500 font-light block truncate max-w-sm">
+                            <span className="text-[11px] text-neutral-500 font-light block truncate max-w-sm mt-0.5">
                               {p.location} · {p.type}
                             </span>
                           </td>
 
                           {/* Métrage */}
-                          <td className="py-4 px-4 font-medium text-neutral-800 tabular-nums">
+                          <td className="py-4 px-4 text-center font-medium text-neutral-800 tabular-nums">
                             {p.meters} ml
                           </td>
 
                           {/* Tarif Public HT */}
                           <td className="py-4 px-4 text-right tabular-nums text-neutral-400 line-through">
-                            {formatPrice(p.publicPriceEur).formatted}
+                            {formatMoney(p.publicPriceEur).formatted}
                           </td>
 
                           {/* Tarif Pro Net HT */}
                           <td className="py-4 px-4 text-right tabular-nums font-semibold text-[#141311]">
-                            {formatPrice(proPriceEur).formatted}
+                            {formatMoney(proPriceEur).formatted}
                           </td>
 
-                          {/* Économie Nette */}
-                          <td className="py-4 px-4 text-right tabular-nums font-medium text-emerald-800">
-                            +{formatPrice(savingsEur).formatted}
+                          {/* Économie Nette (Wrapped in dedicated soft badge with clean spacing) */}
+                          <td className="py-4 px-4 text-right">
+                            <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[11px] font-medium bg-emerald-50 text-emerald-800 border border-emerald-200/80 tabular-nums shadow-2xs">
+                              + {formatMoney(savingsEur).formatted}
+                            </span>
                           </td>
 
                           {/* Statut Badge */}
                           <td className="py-4 px-5 text-center">
                             <span
-                              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium tracking-wide ${
+                              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium tracking-wide ${
                                 p.status === "POSE"
                                   ? "bg-emerald-50 text-emerald-900 border border-emerald-200"
                                   : p.status === "EXPEDIE"
@@ -838,24 +923,40 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
                             </span>
                           </td>
 
-                          {/* Actions */}
+                          {/* Actions: Full Width Buttons (Fiche, Facture, WhatsApp) */}
                           <td className="py-4 px-5 text-right">
-                            <div className="inline-flex items-center gap-2">
+                            <div className="flex items-center justify-end gap-1.5">
+                              {/* 1. Fiche & Côtes */}
                               <button
                                 type="button"
                                 onClick={() => setSelectedProjectModal(p)}
-                                className="px-3 py-1 rounded-lg bg-[#f5f3ee] hover:bg-[#eae5dc] text-neutral-800 text-[11px] font-medium transition-colors cursor-pointer"
+                                className="px-2.5 py-1.5 rounded-lg bg-[#f5f3ee] hover:bg-[#eae5dc] text-neutral-800 text-[11px] font-medium transition-colors cursor-pointer whitespace-nowrap"
+                                title="Voir la fiche technique et le calepinage"
                               >
                                 Fiche &amp; Côtes
                               </button>
+
+                              {/* 2. Facture Pro Button */}
+                              <button
+                                type="button"
+                                onClick={() => setSelectedInvoiceModal(p)}
+                                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white border border-[#dedad1] hover:border-[#141311] text-[#141311] text-[11px] font-medium transition-colors cursor-pointer whitespace-nowrap shadow-2xs"
+                                title="Consulter la facture B2B officielle"
+                              >
+                                <IconInvoice className="w-3.5 h-3.5 text-[#8e6e2f]" />
+                                <span>Facture</span>
+                              </button>
+
+                              {/* 3. WhatsApp Direct */}
                               <a
                                 href={`https://wa.me/212661234567?text=Bonjour%20Atelier,%20question%20sur%20le%20projet%20${encodeURIComponent(p.ref)}%20(${encodeURIComponent(p.name)})`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="p-1.5 rounded-lg text-emerald-700 hover:bg-emerald-50 transition-colors"
-                                title="Contacter l'atelier sur WhatsApp"
+                                className="inline-flex items-center gap-1 px-2 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-200/80 text-emerald-800 text-[11px] font-medium transition-colors whitespace-nowrap"
+                                title="Contacter le chef d'atelier sur WhatsApp"
                               >
-                                <IconWhatsApp className="w-3.5 h-3.5" />
+                                <IconWhatsApp className="w-3.5 h-3.5 text-emerald-600" />
+                                <span>Atelier</span>
                               </a>
                             </div>
                           </td>
@@ -873,10 +974,10 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
                 </span>
                 <div className="flex items-center gap-6">
                   <span className="text-neutral-500">
-                    Total Facturé Net : <strong className="text-[#141311] tabular-nums font-semibold">{formatPrice(totalProEur).formatted}</strong>
+                    Total Facturé Net : <strong className="text-[#141311] tabular-nums font-semibold">{formatMoney(totalProEur).formatted}</strong>
                   </span>
                   <span className="text-emerald-800 font-medium tabular-nums">
-                    Gain Remise Pro : +{formatPrice(totalSavingsEur).formatted}
+                    Gain Remise Pro : + {formatMoney(totalSavingsEur).formatted}
                   </span>
                 </div>
               </div>
@@ -885,7 +986,176 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
         )}
 
         {/* ------------------------------------------------------------- */}
-        {/* TAB 2: OVERVIEW & STATS */}
+        {/* TAB 2: FACTURES & RÈGLEMENTS (DEDICATED B2B INVOICE SYSTEM) */}
+        {/* ------------------------------------------------------------- */}
+        {activeTab === "invoices" && (
+          <div className="space-y-6">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-[#141311]">
+                  Factures &amp; Règlements Pro
+                </h1>
+                <p className="text-xs text-neutral-500 mt-0.5 font-light">
+                  Relevé des factures d&apos;atelier, suivi des acomptes à 50% et soldes à réception.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2.5">
+                <button
+                  type="button"
+                  onClick={handleExportCSV}
+                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-[#dedad1] hover:border-[#141311] text-neutral-800 text-xs font-medium transition-colors cursor-pointer"
+                >
+                  <IconDownload className="w-3.5 h-3.5 text-neutral-500" />
+                  <span>Exporter le Grand Livre (CSV)</span>
+                </button>
+              </div>
+            </div>
+
+            {/* 3 Summary Financial Metric Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="p-5 rounded-2xl bg-white border border-[#e7e3da] shadow-2xs space-y-2">
+                <span className="text-xs text-neutral-500 font-medium uppercase tracking-wider block">
+                  Total Facturé Net TTC
+                </span>
+                <div className="text-2xl font-semibold text-[#141311] tabular-nums">
+                  {formatMoney(totalInvoicedTTCEur).formatted}
+                </div>
+                <div className="text-[11px] text-neutral-400">TVA 20% incluse sur l&apos;ensemble des chantiers</div>
+              </div>
+
+              <div className="p-5 rounded-2xl bg-white border border-[#e7e3da] shadow-2xs space-y-2">
+                <span className="text-xs text-neutral-500 font-medium uppercase tracking-wider block">
+                  Règlements &amp; Acomptes Reçus
+                </span>
+                <div className="text-2xl font-semibold text-emerald-800 tabular-nums">
+                  {formatMoney(totalCollectedEur).formatted}
+                </div>
+                <div className="text-[11px] text-emerald-700 font-medium">Virés sur compte manufacture</div>
+              </div>
+
+              <div className="p-5 rounded-2xl bg-white border border-[#e7e3da] shadow-2xs space-y-2">
+                <span className="text-xs text-neutral-500 font-medium uppercase tracking-wider block">
+                  Solde Restant en Attente
+                </span>
+                <div className="text-2xl font-semibold text-amber-800 tabular-nums">
+                  {formatMoney(totalPendingEur).formatted}
+                </div>
+                <div className="text-[11px] text-amber-700 font-medium">Exigible à la pose &amp; réception in-situ</div>
+              </div>
+            </div>
+
+            {/* Invoices Filter Bar */}
+            <div className="flex items-center gap-1 overflow-x-auto scrollbar-none py-1">
+              {[
+                { key: "ALL", label: "Toutes les Factures", count: projects.length },
+                { key: "PAID", label: "Payées (100%)", count: projects.filter(p => p.invoiceStatus === "PAID").length },
+                { key: "DEPOSIT_50", label: "Acompte Réglé (50%)", count: projects.filter(p => p.invoiceStatus === "DEPOSIT_50").length },
+                { key: "PENDING", label: "En Attente de Règlement", count: projects.filter(p => p.invoiceStatus === "PENDING").length },
+              ].map((st) => (
+                <button
+                  key={st.key}
+                  type="button"
+                  onClick={() => setSelectedInvoiceFilter(st.key)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer whitespace-nowrap ${
+                    selectedInvoiceFilter === st.key
+                      ? "bg-[#141311] text-white"
+                      : "bg-white border border-[#dedad1] text-neutral-600 hover:text-neutral-900"
+                  }`}
+                >
+                  {st.label} ({st.count})
+                </button>
+              ))}
+            </div>
+
+            {/* Invoices Master Table */}
+            <div className="bg-white rounded-2xl border border-[#e7e3da] shadow-2xs overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[1100px] text-left border-collapse">
+                  <thead>
+                    <tr className="bg-[#fbfaf8] border-b border-[#e7e3da] text-[11px] font-sans font-medium uppercase tracking-[0.08em] text-neutral-500">
+                      <th className="py-3.5 px-5 font-semibold w-[140px]">N° Facture</th>
+                      <th className="py-3.5 px-5 font-semibold w-[130px]">Date d&apos;Émission</th>
+                      <th className="py-3.5 px-5 font-semibold min-w-[260px]">Chantier &amp; Client</th>
+                      <th className="py-3.5 px-4 font-semibold text-right w-[140px]">Montant Net HT</th>
+                      <th className="py-3.5 px-4 font-semibold text-right w-[140px]">Total TTC</th>
+                      <th className="py-3.5 px-5 font-semibold text-center w-[160px]">Statut Règlement</th>
+                      <th className="py-3.5 px-5 font-semibold text-right w-[180px]">Document</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#f2eee7] text-xs">
+                    {filteredInvoices.map((p) => {
+                      const netHTEur = p.publicPriceEur * (1 - currentDiscount);
+                      const ttcEur = netHTEur * 1.20;
+
+                      return (
+                        <tr key={p.id} className="hover:bg-[#fbfaf7] transition-colors">
+                          <td className="py-4 px-5 font-semibold text-[#141311]">
+                            {p.invoiceRef}
+                          </td>
+                          <td className="py-4 px-5 text-neutral-500 font-light">
+                            {p.invoiceDate}
+                          </td>
+                          <td className="py-4 px-5">
+                            <span className="font-semibold text-[#141311] block">{p.name}</span>
+                            <span className="text-[11px] text-neutral-500 font-light block">{p.location}</span>
+                          </td>
+                          <td className="py-4 px-4 text-right tabular-nums font-medium text-neutral-800">
+                            {formatMoney(netHTEur).formatted}
+                          </td>
+                          <td className="py-4 px-4 text-right tabular-nums font-semibold text-[#141311]">
+                            {formatMoney(ttcEur).formatted}
+                          </td>
+                          <td className="py-4 px-5 text-center">
+                            <span
+                              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium tracking-wide ${
+                                p.invoiceStatus === "PAID"
+                                  ? "bg-emerald-50 text-emerald-900 border border-emerald-200"
+                                  : p.invoiceStatus === "DEPOSIT_50"
+                                  ? "bg-amber-50 text-amber-900 border border-amber-200"
+                                  : "bg-neutral-100 text-neutral-800 border border-neutral-200"
+                              }`}
+                            >
+                              <span
+                                className={`w-1.5 h-1.5 rounded-full ${
+                                  p.invoiceStatus === "PAID"
+                                    ? "bg-emerald-500"
+                                    : p.invoiceStatus === "DEPOSIT_50"
+                                    ? "bg-amber-500"
+                                    : "bg-neutral-400"
+                                }`}
+                              />
+                              <span>
+                                {p.invoiceStatus === "PAID"
+                                  ? "Payée (100%)"
+                                  : p.invoiceStatus === "DEPOSIT_50"
+                                  ? "Acompte 50% Réglé"
+                                  : "En Attente"}
+                              </span>
+                            </span>
+                          </td>
+                          <td className="py-4 px-5 text-right">
+                            <button
+                              type="button"
+                              onClick={() => setSelectedInvoiceModal(p)}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#141311] hover:bg-neutral-800 text-white text-[11px] font-medium transition-colors cursor-pointer shadow-2xs"
+                            >
+                              <IconInvoice className="w-3.5 h-3.5 text-[#c5a059]" />
+                              <span>Ouvrir Facture</span>
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ------------------------------------------------------------- */}
+        {/* TAB 3: OVERVIEW & STATS */}
         {/* ------------------------------------------------------------- */}
         {activeTab === "overview" && (
           <div className="space-y-8">
@@ -910,7 +1180,7 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
                 </div>
                 <div>
                   <div className="text-2xl font-semibold text-[#141311] tabular-nums tracking-tight">
-                    {formatPrice(totalProEur).formatted}
+                    {formatMoney(totalProEur).formatted}
                   </div>
                   <div className="text-[11px] text-emerald-700 font-medium mt-1 flex items-center gap-1">
                     <span>↑ +18.4%</span>
@@ -929,7 +1199,7 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
                 </div>
                 <div>
                   <div className="text-2xl font-semibold text-emerald-800 tabular-nums tracking-tight">
-                    +{formatPrice(totalSavingsEur).formatted}
+                    + {formatMoney(totalSavingsEur).formatted}
                   </div>
                   <div className="text-[11px] text-neutral-500 font-light mt-1">
                     Remise éditeur {Math.round(currentDiscount * 100)}% appliquée
@@ -1029,7 +1299,7 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
         )}
 
         {/* ------------------------------------------------------------- */}
-        {/* TAB 3: PLANNING & JALONS */}
+        {/* TAB 4: PLANNING & JALONS */}
         {/* ------------------------------------------------------------- */}
         {activeTab === "planning" && (
           <div className="space-y-6">
@@ -1114,7 +1384,7 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
         )}
 
         {/* ------------------------------------------------------------- */}
-        {/* TAB 4: CALCULATEUR DE METRAGE DRAPERIE */}
+        {/* TAB 5: CALCULATEUR DE METRAGE DRAPERIE */}
         {/* ------------------------------------------------------------- */}
         {activeTab === "calculator" && (
           <div className="space-y-6">
@@ -1258,15 +1528,15 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
                   <div className="space-y-2 pt-3 border-t border-neutral-800 text-xs">
                     <div className="flex justify-between text-neutral-400">
                       <span>Tarif Public Estimé :</span>
-                      <span className="tabular-nums line-through">{formatPrice(calculatedYardage.publicTotalEstimateEur).formatted}</span>
+                      <span className="tabular-nums line-through">{formatMoney(calculatedYardage.publicTotalEstimateEur).formatted}</span>
                     </div>
                     <div className="flex justify-between text-white font-medium">
                       <span>Tarif Pro Net HT :</span>
-                      <span className="tabular-nums font-semibold text-[#c5a059]">{formatPrice(calculatedYardage.totalEstimateProEur).formatted}</span>
+                      <span className="tabular-nums font-semibold text-[#c5a059]">{formatMoney(calculatedYardage.totalEstimateProEur).formatted}</span>
                     </div>
                     <div className="flex justify-between text-emerald-400">
                       <span>Économie Prescripteur :</span>
-                      <span className="tabular-nums font-medium">+{formatPrice(calculatedYardage.savingsEur).formatted}</span>
+                      <span className="tabular-nums font-medium">+ {formatMoney(calculatedYardage.savingsEur).formatted}</span>
                     </div>
                   </div>
                 </div>
@@ -1283,7 +1553,7 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
         )}
 
         {/* ------------------------------------------------------------- */}
-        {/* TAB 5: SIMULATEUR DE MARGE AGENCE */}
+        {/* TAB 6: SIMULATEUR DE MARGE AGENCE */}
         {/* ------------------------------------------------------------- */}
         {activeTab === "margin" && (
           <div className="space-y-6">
@@ -1305,8 +1575,8 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
                   </label>
                   <input
                     type="number"
-                    value={Math.round(agencyPurchaseEur * (rates[currency] || 1))}
-                    onChange={(e) => setAgencyPurchaseEur((parseInt(e.target.value, 10) || 1000) / (rates[currency] || 1))}
+                    value={Math.round(agencyPurchaseEur * (rates?.[currency] || 1))}
+                    onChange={(e) => setAgencyPurchaseEur((parseInt(e.target.value, 10) || 1000) / (rates?.[currency] || 1))}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-[#dedad1] bg-[#faf9f6] text-sm tabular-nums font-semibold outline-none"
                   />
                   <span className="text-[11px] text-neutral-400 block">En {currency}</span>
@@ -1341,7 +1611,7 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
                     Bénéfice Net Agence Généré
                   </span>
                   <div className="text-3xl font-semibold text-emerald-800 tabular-nums tracking-tight mt-2">
-                    +{formatPrice(calculatedAgencyMargin.netAgencyProfitEur).formatted}
+                    + {formatMoney(calculatedAgencyMargin.netAgencyProfitEur).formatted}
                   </div>
                   <p className="text-xs text-neutral-500 font-light mt-2 leading-relaxed">
                     Honoraires de prescription et coordination de chantier conservés par votre cabinet d&apos;architecture.
@@ -1356,16 +1626,16 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
                     Prix Conseillé Client Final TTC
                   </span>
                   <div className="text-3xl font-semibold text-white tabular-nums tracking-tight mt-2">
-                    {formatPrice(calculatedAgencyMargin.clientPriceTTCEur).formatted}
+                    {formatMoney(calculatedAgencyMargin.clientPriceTTCEur).formatted}
                   </div>
                   <div className="space-y-1.5 pt-3 mt-3 border-t border-neutral-800 text-xs text-neutral-400">
                     <div className="flex justify-between">
                       <span>Prix Agence Revente HT :</span>
-                      <span className="tabular-nums text-white">{formatPrice(calculatedAgencyMargin.resalePriceHTEur).formatted}</span>
+                      <span className="tabular-nums text-white">{formatMoney(calculatedAgencyMargin.resalePriceHTEur).formatted}</span>
                     </div>
                     <div className="flex justify-between">
                       <span>TVA 20% :</span>
-                      <span className="tabular-nums text-white">{formatPrice(calculatedAgencyMargin.clientPriceTTCEur - calculatedAgencyMargin.resalePriceHTEur).formatted}</span>
+                      <span className="tabular-nums text-white">{formatMoney(calculatedAgencyMargin.clientPriceTTCEur - calculatedAgencyMargin.resalePriceHTEur).formatted}</span>
                     </div>
                   </div>
                 </div>
@@ -1375,7 +1645,7 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
         )}
 
         {/* ------------------------------------------------------------- */}
-        {/* TAB 6: STOCKS ATELIER */}
+        {/* TAB 7: STOCKS ATELIER */}
         {/* ------------------------------------------------------------- */}
         {activeTab === "stocks" && (
           <div className="space-y-6">
@@ -1422,7 +1692,7 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
         )}
 
         {/* ------------------------------------------------------------- */}
-        {/* TAB 7: SWATCHES & SAMPLES ORDER */}
+        {/* TAB 8: SWATCHES & SAMPLES ORDER */}
         {/* ------------------------------------------------------------- */}
         {activeTab === "swatches" && (
           <div className="space-y-6">
@@ -1470,7 +1740,7 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
         )}
 
         {/* ------------------------------------------------------------- */}
-        {/* TAB 8: ATELIER TEAM */}
+        {/* TAB 9: ATELIER TEAM */}
         {/* ------------------------------------------------------------- */}
         {activeTab === "atelier" && (
           <div className="space-y-6">
@@ -1526,7 +1796,253 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
       </main>
 
       {/* ============================================================ */}
-      {/* 5. MODAL: FICHE CHANTIER DETAILLEE */}
+      {/* 5. MODAL: OFFICIAL B2B INVOICE VIEWER (FACTURE PRO KANSOTEX) */}
+      {/* ============================================================ */}
+      <AnimatePresence>
+        {selectedInvoiceModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedInvoiceModal(null)}
+              className="absolute inset-0 bg-black/50 backdrop-blur-xs"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.96 }}
+              className="relative w-full max-w-3xl bg-white rounded-2xl shadow-2xl border border-[#dedad1] p-6 sm:p-9 z-10 space-y-6 max-h-[90vh] overflow-y-auto"
+            >
+              {/* Header Bar with Action Buttons */}
+              <div className="flex items-center justify-between border-b border-[#f2eee7] pb-4">
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-1 rounded-md text-xs font-semibold bg-[#faf3e8] text-[#8e6e2f] border border-[#e8d7b8]">
+                    Facture Officielle Pro
+                  </span>
+                  <span className="text-xs text-neutral-500">Réf : {selectedInvoiceModal.invoiceRef}</span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => window.print()}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#dedad1] hover:border-[#141311] text-xs font-medium text-neutral-800 transition-colors cursor-pointer"
+                  >
+                    <IconPrinter className="w-3.5 h-3.5" />
+                    <span>Imprimer / PDF</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedInvoiceModal(null)}
+                    className="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-xs font-bold text-neutral-600 cursor-pointer"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+
+              {/* Printable Invoice Sheet */}
+              <div id="printable-invoice" className="space-y-6 font-sans text-xs">
+                {/* Brand & Client Details */}
+                <div className="flex flex-col sm:flex-row justify-between gap-6 pb-6 border-b border-[#f2eee7]">
+                  <div className="space-y-1.5">
+                    <Image
+                      src="/KANSOTEX-marque-Black.png"
+                      alt="Kansotex"
+                      width={180}
+                      height={45}
+                      className="w-[140px] h-auto object-contain mb-2"
+                    />
+                    <div className="font-semibold text-neutral-900">Kanso Business SARL · Manufacture Kansotex</div>
+                    <div className="text-neutral-500 font-light">983 Al Massar, Route de Safi, Marrakech</div>
+                    <div className="text-neutral-500 font-light">ICE : 002134567000089 · IF : 40291823 · RC : 68421</div>
+                    <div className="text-neutral-500 font-light">Email : facturation@kansotex.com · Tél : +212 5 24 20 09 96</div>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-[#faf9f6] border border-[#e7e3da] space-y-1 min-w-[240px]">
+                    <span className="text-[10px] uppercase font-sans font-semibold tracking-wider text-neutral-400 block">
+                      Client Facturé
+                    </span>
+                    <div className="font-semibold text-neutral-900 text-sm">{companyName}</div>
+                    <div className="text-neutral-600">{userName}</div>
+                    <div className="text-neutral-500 font-light">ICE Client : 002984123000045</div>
+                    <div className="text-neutral-500 font-light">Marrakech / Casablanca</div>
+                    <div className="pt-2 mt-2 border-t border-[#ede9e1] flex justify-between font-medium">
+                      <span>Projet :</span>
+                      <strong className="text-neutral-900">{selectedInvoiceModal.name}</strong>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Invoice Meta details */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <div className="p-3 rounded-lg bg-[#faf9f6] border border-[#e7e3da]">
+                    <span className="text-[10px] text-neutral-400 uppercase font-medium block">N° Facture</span>
+                    <strong className="text-neutral-900 font-mono">{selectedInvoiceModal.invoiceRef}</strong>
+                  </div>
+                  <div className="p-3 rounded-lg bg-[#faf9f6] border border-[#e7e3da]">
+                    <span className="text-[10px] text-neutral-400 uppercase font-medium block">Date d&apos;Émission</span>
+                    <strong className="text-neutral-900">{selectedInvoiceModal.invoiceDate}</strong>
+                  </div>
+                  <div className="p-3 rounded-lg bg-[#faf9f6] border border-[#e7e3da]">
+                    <span className="text-[10px] text-neutral-400 uppercase font-medium block">Remise Éditeur</span>
+                    <strong className="text-[#8e6e2f]">-{Math.round(currentDiscount * 100)}% Partenaire</strong>
+                  </div>
+                  <div className="p-3 rounded-lg bg-[#faf9f6] border border-[#e7e3da]">
+                    <span className="text-[10px] text-neutral-400 uppercase font-medium block">Statut Règlement</span>
+                    <strong className={selectedInvoiceModal.invoiceStatus === "PAID" ? "text-emerald-800" : "text-amber-800"}>
+                      {selectedInvoiceModal.invoiceStatus === "PAID" ? "Réglé à 100%" : "Acompte 50% Reçu"}
+                    </strong>
+                  </div>
+                </div>
+
+                {/* Line Items Table */}
+                <div className="rounded-xl border border-[#e7e3da] overflow-hidden">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-[#fbfaf8] border-b border-[#e7e3da] text-[10px] font-sans font-medium uppercase tracking-wider text-neutral-500">
+                        <th className="py-2.5 px-4">Désignation Prestation / Tissu</th>
+                        <th className="py-2.5 px-3 text-center">Quantité</th>
+                        <th className="py-2.5 px-4 text-right">Tarif Brut HT</th>
+                        <th className="py-2.5 px-3 text-center">Remise</th>
+                        <th className="py-2.5 px-4 text-right">Net HT</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#f2eee7] text-xs">
+                      <tr>
+                        <td className="py-3 px-4">
+                          <span className="font-semibold text-neutral-900 block">Étoffe Haut de Gamme &amp; Métrage Linéaire</span>
+                          <span className="text-[11px] text-neutral-500 font-light">{selectedInvoiceModal.items[0] || "Tissus sur-mesure"}</span>
+                        </td>
+                        <td className="py-3 px-3 text-center tabular-nums">{selectedInvoiceModal.meters} ml</td>
+                        <td className="py-3 px-4 text-right tabular-nums text-neutral-400 line-through">
+                          {formatMoney(selectedInvoiceModal.publicPriceEur * 0.75).formatted}
+                        </td>
+                        <td className="py-3 px-3 text-center font-medium text-[#8e6e2f]">-{Math.round(currentDiscount * 100)}%</td>
+                        <td className="py-3 px-4 text-right tabular-nums font-semibold text-neutral-900">
+                          {formatMoney(selectedInvoiceModal.publicPriceEur * 0.75 * (1 - currentDiscount)).formatted}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="py-3 px-4">
+                          <span className="font-semibold text-neutral-900 block">Façonnage Tapissier &amp; Têtes sur-mesure</span>
+                          <span className="text-[11px] text-neutral-500 font-light">Plissage d&apos;atelier, étuve vapeur verticale et contrôle tombé</span>
+                        </td>
+                        <td className="py-3 px-3 text-center tabular-nums">{selectedInvoiceModal.meters} ml</td>
+                        <td className="py-3 px-4 text-right tabular-nums text-neutral-400 line-through">
+                          {formatMoney(selectedInvoiceModal.publicPriceEur * 0.25).formatted}
+                        </td>
+                        <td className="py-3 px-3 text-center font-medium text-[#8e6e2f]">-{Math.round(currentDiscount * 100)}%</td>
+                        <td className="py-3 px-4 text-right tabular-nums font-semibold text-neutral-900">
+                          {formatMoney(selectedInvoiceModal.publicPriceEur * 0.25 * (1 - currentDiscount)).formatted}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="py-3 px-4">
+                          <span className="font-semibold text-neutral-900 block">Conditionnement Sous Housse &amp; Livraison Chantier</span>
+                          <span className="text-[11px] text-neutral-500 font-light">Protection atelier, livraison sur cintre et déchargement soigné</span>
+                        </td>
+                        <td className="py-3 px-3 text-center tabular-nums">1 Lot</td>
+                        <td className="py-3 px-4 text-right tabular-nums text-neutral-500">Offert</td>
+                        <td className="py-3 px-3 text-center font-medium text-emerald-800">100%</td>
+                        <td className="py-3 px-4 text-right tabular-nums font-semibold text-emerald-800">0 MAD</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Financial Summary Calculation */}
+                {(() => {
+                  const proHT = selectedInvoiceModal.publicPriceEur * (1 - currentDiscount);
+                  const publicHT = selectedInvoiceModal.publicPriceEur;
+                  const discountGain = publicHT - proHT;
+                  const tvaEur = proHT * 0.20;
+                  const ttcEur = proHT * 1.20;
+                  const depositEur = selectedInvoiceModal.invoiceStatus === "PAID" ? ttcEur : ttcEur * 0.5;
+                  const balanceDueEur = ttcEur - depositEur;
+
+                  return (
+                    <div className="flex flex-col sm:flex-row justify-between gap-6 pt-2">
+                      <div className="p-4 rounded-xl bg-[#faf9f6] border border-[#e7e3da] text-[11px] space-y-1.5 flex-1">
+                        <strong className="text-neutral-900 block font-semibold">Modalités de Paiement &amp; Virement :</strong>
+                        <div className="text-neutral-600 font-light">Banque : CIH Bank — Agence Guéliz Marrakech</div>
+                        <div className="text-neutral-600 font-mono">RIB : 230 450 1234567890123456 89</div>
+                        <div className="text-neutral-600 font-light">Bénéficiaire : Kanso Business SARL (Kansotex)</div>
+                        <div className="text-neutral-500 font-light pt-1">Échéance de solde : à réception et pose sur chantier.</div>
+                      </div>
+
+                      <div className="w-full sm:w-[280px] space-y-1.5 text-xs">
+                        <div className="flex justify-between text-neutral-500">
+                          <span>Sous-total Public HT :</span>
+                          <span className="tabular-nums line-through">{formatMoney(publicHT).formatted}</span>
+                        </div>
+                        <div className="flex justify-between text-emerald-800 font-medium">
+                          <span>Remise Partenaire ({Math.round(currentDiscount * 100)}%) :</span>
+                          <span className="tabular-nums">- {formatMoney(discountGain).formatted}</span>
+                        </div>
+                        <div className="flex justify-between font-semibold text-neutral-900 pt-1 border-t border-[#f2eee7]">
+                          <span>Total Net HT :</span>
+                          <span className="tabular-nums">{formatMoney(proHT).formatted}</span>
+                        </div>
+                        <div className="flex justify-between text-neutral-600">
+                          <span>TVA 20% :</span>
+                          <span className="tabular-nums">{formatMoney(tvaEur).formatted}</span>
+                        </div>
+                        <div className="flex justify-between text-base font-bold text-neutral-900 pt-2 border-t border-[#dedad1]">
+                          <span>Total TTC :</span>
+                          <span className="tabular-nums text-[#8e6e2f]">{formatMoney(ttcEur).formatted}</span>
+                        </div>
+                        <div className="flex justify-between text-emerald-800 text-xs font-medium pt-1">
+                          <span>Acompte 50% réglé :</span>
+                          <span className="tabular-nums">{formatMoney(depositEur).formatted}</span>
+                        </div>
+                        <div className="flex justify-between text-neutral-900 text-xs font-semibold pt-1 border-t border-[#f2eee7]">
+                          <span>Reste à payer :</span>
+                          <span className="tabular-nums">{formatMoney(balanceDueEur).formatted}</span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
+
+              {/* Modal Footer Actions */}
+              <div className="pt-4 border-t border-[#f2eee7] flex flex-col sm:flex-row items-center justify-between gap-3">
+                <a
+                  href={`https://wa.me/212661234567?text=Bonjour%20Comptabilit%C3%A9%20Kansotex,%20je%20souhaite%20un%20point%20sur%20la%20facture%20${encodeURIComponent(selectedInvoiceModal.invoiceRef)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs text-emerald-800 font-medium hover:underline"
+                >
+                  <IconWhatsApp className="w-4 h-4 text-emerald-600" />
+                  <span>Envoyer à la Comptabilité via WhatsApp</span>
+                </a>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => window.print()}
+                    className="px-4 py-2 rounded-xl bg-[#141311] text-white text-xs font-medium transition-colors cursor-pointer"
+                  >
+                    Télécharger PDF
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedInvoiceModal(null)}
+                    className="px-4 py-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-xs font-medium text-neutral-800 transition-colors cursor-pointer"
+                  >
+                    Fermer
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* ============================================================ */}
+      {/* 6. MODAL: FICHE CHANTIER DETAILLEE */}
       {/* ============================================================ */}
       <AnimatePresence>
         {selectedProjectModal && (
@@ -1570,13 +2086,13 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
                 <div className="p-3 rounded-xl bg-[#faf9f6] border border-[#e7e3da]">
                   <span className="text-[10px] text-neutral-400 uppercase font-sans font-medium block">Tarif Pro Net HT</span>
                   <span className="font-semibold text-neutral-900 tabular-nums">
-                    {formatPrice(selectedProjectModal.publicPriceEur * (1 - currentDiscount)).formatted}
+                    {formatMoney(selectedProjectModal.publicPriceEur * (1 - currentDiscount)).formatted}
                   </span>
                 </div>
                 <div className="p-3 rounded-xl bg-[#faf9f6] border border-[#e7e3da]">
                   <span className="text-[10px] text-neutral-400 uppercase font-sans font-medium block">Gain Partenaire</span>
                   <span className="font-semibold text-emerald-800 tabular-nums">
-                    +{formatPrice(selectedProjectModal.publicPriceEur * currentDiscount).formatted}
+                    + {formatMoney(selectedProjectModal.publicPriceEur * currentDiscount).formatted}
                   </span>
                 </div>
                 <div className="p-3 rounded-xl bg-[#faf9f6] border border-[#e7e3da]">
@@ -1629,7 +2145,7 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
       </AnimatePresence>
 
       {/* ============================================================ */}
-      {/* 6. MODAL: NOUVEAU CHANTIER */}
+      {/* 7. MODAL: NOUVEAU CHANTIER */}
       {/* ============================================================ */}
       <AnimatePresence>
         {isAddProjectOpen && (
@@ -1734,13 +2250,13 @@ export function ProDashboardView({ session }: ProDashboardViewProps) {
                   <button
                     type="button"
                     onClick={() => setIsAddProjectOpen(false)}
-                    className="flex-1 py-2.5 rounded-xl bg-neutral-100 text-neutral-700 font-medium"
+                    className="flex-1 py-2.5 rounded-xl bg-neutral-100 text-neutral-700 font-medium cursor-pointer"
                   >
                     Annuler
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 py-2.5 rounded-xl bg-[#141311] text-white font-medium"
+                    className="flex-1 py-2.5 rounded-xl bg-[#141311] text-white font-medium cursor-pointer"
                   >
                     Enregistrer le Chantier
                   </button>
