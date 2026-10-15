@@ -324,7 +324,7 @@ export function ContactClientView() {
             <div className="shrink-0 z-10 w-full sm:w-auto">
               <Link
                 href={`/${locale}/devis`}
-                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-[#d4af37] text-[#1c1b19] hover:bg-[#c39e2e] font-sans text-xs font-semibold uppercase tracking-wider transition-all shadow-md hover:scale-[1.02]"
+                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-white text-[#1c1b19] hover:text-[#fff] hover:bg-[#1c1b19] font-sans text-xs font-semibold uppercase tracking-wider transition-all shadow-md hover:scale-[1.02]"
               >
                 <span>{isEn ? "Open Quote Request Form →" : "Accéder au Formulaire de Devis →"}</span>
               </Link>
