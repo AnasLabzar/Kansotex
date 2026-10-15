@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { brand, nav } from "@/lib/content";
 import { Wordmark } from "./Logo";
 import { CurrencySelector } from "./CurrencySelector";
@@ -9,10 +12,15 @@ import { removeAccents } from "@/lib/text";
 import { NewsletterForm } from "./NewsletterForm";
 
 export function Footer() {
+  const pathname = usePathname();
   const t = useTranslations("Footer");
   const rawLocale = useLocale();
   const isEn = rawLocale === "en";
   const locale = isEn ? "en" : "fr";
+
+  if (pathname?.includes("/admin")) {
+    return null;
+  }
 
   return (
     <footer className="relative overflow-hidden bg-[#1c1b19] px-6 pb-10 pt-20 text-[#f3eee6] md:px-12 md:pt-32">

@@ -59,6 +59,33 @@ export async function loginAsPro(
   });
 }
 
+export async function loginAsAdmin(extra?: {
+  name?: string;
+  companyName?: string;
+  email?: string;
+  city?: string;
+  phone?: string;
+}) {
+  const session: SessionData = {
+    isPro: true,
+    role: "ADMIN",
+    tradeDiscount: 0.35,
+    name: extra?.name || "Direction Générale Kansotex",
+    companyName: extra?.companyName || "Kansotex Maroc — Siège & Ateliers",
+    email: extra?.email || "admin@kansotex.com",
+    city: extra?.city || "Marrakech",
+    phone: extra?.phone || "+212 5 24 33 00 00",
+  };
+  
+  const cookieStore = await cookies();
+  cookieStore.set(SESSION_COOKIE_NAME, JSON.stringify(session), {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+  });
+}
+
 export async function logout() {
   const cookieStore = await cookies();
   cookieStore.delete(SESSION_COOKIE_NAME);

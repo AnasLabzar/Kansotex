@@ -60,8 +60,8 @@ export function MobileAppBottomNav() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // If on checkout, hide bottom nav to avoid cart distraction
-  if (pathname?.includes("/checkout")) {
+  // If on checkout or admin, hide bottom nav
+  if (pathname?.includes("/checkout") || pathname?.includes("/admin")) {
     return null;
   }
 

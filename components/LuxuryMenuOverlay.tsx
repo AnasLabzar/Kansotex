@@ -575,6 +575,13 @@ export function LuxuryMenuOverlay({ isOpen, onClose }: LuxuryMenuOverlayProps) {
               >
                 {isEn ? "Trade B2B →" : "Espace B2B →"}
               </Link>
+              <Link
+                href={getLocalizedHref("/admin")}
+                onClick={onClose}
+                className="hover:text-[#c29d59] transition-colors font-bold text-[#c29d59] bg-[#c29d59]/15 border border-[#c29d59]/35 px-2.5 py-1 rounded text-[10px] tracking-wider"
+              >
+                {isEn ? "Admin Suite" : "Administration Pro"}
+              </Link>
             </div>
           </div>
         </motion.div>
