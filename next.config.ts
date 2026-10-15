@@ -19,7 +19,7 @@ const nextConfig: NextConfig = {
       {
         source: '/',
         destination: '/fr',
-        permanent: false, // 307 redirect
+        permanent: true, // 308 permanent redirect
       },
     ];
   },

@@ -70,8 +70,9 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     alternates: {
       canonical: canonicalUrl,
       languages: {
-        "fr-MA": `${baseUrl}/fr/products/${params.slug}`,
-        "en-US": `${baseUrl}/en/products/${params.slug}`,
+        fr: `${baseUrl}/fr/products/${params.slug}`,
+        en: `${baseUrl}/en/products/${params.slug}`,
+        "x-default": `${baseUrl}/fr/products/${params.slug}`,
       },
     },
     openGraph: {

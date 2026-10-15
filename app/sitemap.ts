@@ -6,13 +6,23 @@ const BASE_URL = "https://kansotex.com";
 const LOCALES = ["fr", "en"] as const;
 
 /**
- * Normalizes relative image paths to absolute public URLs for Google Images sitemap inclusion.
+ * Normalizes relative image paths to absolute public URLs and escapes XML entities for sitemap compliance.
  */
 function toAbsoluteImageUrl(path: string | null | undefined): string | null {
   if (!path) return null;
-  if (path.startsWith("http://") || path.startsWith("https://")) return path;
-  const cleanPath = path.startsWith("/") ? path : `/${path}`;
-  return `${BASE_URL}${cleanPath}`;
+  let fullUrl = path.trim();
+  if (!fullUrl.startsWith("http://") && !fullUrl.startsWith("https://")) {
+    const cleanPath = fullUrl.startsWith("/") ? fullUrl : `/${fullUrl}`;
+    fullUrl = `${BASE_URL}${cleanPath}`;
+  }
+  // Strictly XML-escape special characters according to sitemap protocol
+  return fullUrl
+    .replace(/&amp;/g, "&")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
 }
 
 /**
@@ -237,9 +247,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const blogPosts = getAutomatedPublishingSchedule();
     for (const post of blogPosts) {
       const path = `/blog/${post.slug}`;
-      const imgUrl = post.coverImage.startsWith("http")
-        ? post.coverImage
-        : `${BASE_URL}${post.coverImage.startsWith("/") ? "" : "/"}${post.coverImage}`;
+      const imgUrl = toAbsoluteImageUrl(post.coverImage);
 
       for (const locale of LOCALES) {
         entries.push({
@@ -247,7 +255,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           lastModified: new Date(post.publishedAt),
           changeFrequency: "weekly",
           priority: 0.85,
-          images: [imgUrl],
+          images: imgUrl ? [imgUrl] : undefined,
           alternates: {
             languages: {
               fr: `${BASE_URL}/fr${path}`,

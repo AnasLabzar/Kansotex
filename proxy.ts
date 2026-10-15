@@ -22,8 +22,8 @@ export function proxy(request: NextRequest) {
     return response;
   }
 
-  // Redirect if there is no locale
-  const response = NextResponse.redirect(new URL(`/${defaultLocale}${pathname}`, request.url));
+  // Enforce 308 Permanent Redirect for SEO (instead of temporary 307)
+  const response = NextResponse.redirect(new URL(`/${defaultLocale}${pathname}`, request.url), 308);
   response.headers.set('x-next-intl-locale', defaultLocale);
   return response;
 }

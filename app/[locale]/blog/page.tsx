@@ -35,8 +35,9 @@ export async function generateMetadata(props: {
     alternates: {
       canonical: canonicalUrl,
       languages: {
-        "fr-MA": `${baseUrl}/fr/blog`,
-        "en-US": `${baseUrl}/en/blog`,
+        fr: `${baseUrl}/fr/blog`,
+        en: `${baseUrl}/en/blog`,
+        "x-default": `${baseUrl}/fr/blog`,
       },
     },
     openGraph: {

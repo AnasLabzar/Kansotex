@@ -92,7 +92,7 @@ export const universes: Universe[] = [
     description:
       "Le bain mérite autant d’attention que le salon. Éponges, peignoirs et tapis Kansotex offrent un toucher généreux, des grammages maîtrisés et des teintes minérales qui s’installent dans le spa comme dans la maison.",
     image:
-      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1600&q=80",
+      "/gallery/bath_towels_set_1791048635743.jpg",
     tone: "#7A746C",
   },
   {
