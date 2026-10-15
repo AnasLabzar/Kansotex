@@ -6,6 +6,8 @@ import { PageHero } from "@/components/PageHero";
 import { UnderlineLink } from "@/components/UnderlineLink";
 import { universes } from "@/lib/content";
 
+import { buildCanonicalMetadata } from "@/lib/seo";
+
 type Props = {
   params: Promise<{ locale: string, slug: string }>;
 };
@@ -15,10 +17,17 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const item = universes.find((u) => u.slug === slug);
   if (!item) return { title: "Univers" };
-  return { title: item.title, description: item.excerpt };
+
+  return buildCanonicalMetadata({
+    locale,
+    path: `/univers/${slug}`,
+    title: `${item.title} — Univers Textile | Kansotex`,
+    description: item.excerpt || item.description,
+    image: item.image,
+  });
 }
 
 export default async function UniverseDetailPage({ params }: Props) {

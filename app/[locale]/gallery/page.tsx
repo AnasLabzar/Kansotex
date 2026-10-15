@@ -1,23 +1,21 @@
 import type { Metadata } from "next";
 import { GalleryClientView } from "@/components/GalleryClientView";
+import { buildCanonicalMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Galerie & Inspirations — Pinterest & Instagram | Kansotex",
-  description:
-    "Explorez la galerie Kansotex : inspirations textiles haut de gamme, indoor & outdoor. Retrouvez-nous sur Pinterest et Instagram pour des idees deco et tissus d'exception.",
-  openGraph: {
-    title: "Galerie & Inspirations — Kansotex",
-    description: "Inspirations textiles, ambiances et projets Kansotex. Suivez-nous sur Pinterest et Instagram.",
-    images: [
-      {
-        url: "https://kansotex.com/gallery/Kansotex-indoor-riad-tissus-pinterest-1.webp",
-        width: 1200,
-        height: 630,
-        alt: "Kansotex Gallery — Inspirations textiles",
-      },
-    ],
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return buildCanonicalMetadata({
+    locale,
+    path: "/gallery",
+    title: locale === "en" ? "Gallery & Inspirations — Pinterest & Instagram | Kansotex" : "Galerie & Inspirations — Pinterest & Instagram | Kansotex",
+    description: locale === "en" ? "Explore Kansotex gallery: luxury indoor & outdoor textile inspirations, moodboards and Instagram reels in Marrakech." : "Explorez la galerie Kansotex : inspirations textiles haut de gamme, indoor & outdoor, tableaux Pinterest et reels Instagram à Marrakech.",
+    image: "/gallery/Kansotex-indoor-riad-tissus-pinterest-1.webp",
+  });
+}
 
 export default function GalleryPage() {
   return <GalleryClientView />;

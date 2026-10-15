@@ -51,67 +51,94 @@ const termina = localFont({
   weight: "700",
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: "Kansotex — In & Outdoor | Textile haut de gamme",
-    template: "%s — Kansotex",
-  },
-  description:
-    "Kansotex, maison de textile in & outdoor. Tissus haut de gamme, linge de maison, linge de lit et linge de bain pour professionnels et particuliers.",
-  keywords: ["textile", "in and outdoor", "tissu ameublement", "maroc", "luxe", "architecture", "hôtellerie"],
-  openGraph: {
-    title: "Kansotex — In & Outdoor | Textile haut de gamme",
-    description: "Kansotex, maison de textile in & outdoor pour professionnels et particuliers.",
-    url: "https://kansotex.com",
-    siteName: "Kansotex",
-    locale: "fr_FR",
-    type: "website",
-    images: [
-      {
-        url: "https://kansotex.com/KANSOTEX-marque-Black.png",
-        width: 1200,
-        height: 630,
-        alt: "Kansotex",
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const validLocale = locale === "en" ? "en" : "fr";
+
+  return {
+    metadataBase: new URL("https://kansotex.com"),
+    title: {
+      default: "Kansotex — In & Outdoor | Textile haut de gamme",
+      template: "%s — Kansotex",
+    },
+    description:
+      validLocale === "en"
+        ? "Kansotex, high-end in & outdoor textile house in Marrakech. Premium fabrics, bespoke curtains, bed & bath linen for luxury hotels and private residences."
+        : "Kansotex, maison de textile in & outdoor. Tissus haut de gamme, rideaux sur-mesure, linge de maison et de lit pour professionnels et particuliers à Marrakech.",
+    keywords: ["textile", "in and outdoor", "tissu ameublement", "maroc", "luxe", "architecture", "hôtellerie"],
+    alternates: {
+      canonical: `/${validLocale}`,
+      languages: {
+        fr: "/fr",
+        en: "/en",
+        "x-default": "/fr",
       },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Kansotex — In & Outdoor | Textile haut de gamme",
-    description: "Kansotex, maison de textile in & outdoor.",
-  },
-  icons: {
-    icon: [
-      {
-        url: "/icon.svg",
-        type: "image/svg+xml",
+    },
+    openGraph: {
+      title: "Kansotex — In & Outdoor | Textile haut de gamme",
+      description: "Kansotex, maison de textile in & outdoor pour professionnels et particuliers.",
+      url: `https://kansotex.com/${validLocale}`,
+      siteName: "Kansotex",
+      locale: validLocale === "en" ? "en_US" : "fr_FR",
+      type: "website",
+      images: [
+        {
+          url: "https://kansotex.com/KANSOTEX-marque-Black.png",
+          width: 1200,
+          height: 630,
+          alt: "Kansotex",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Kansotex — In & Outdoor | Textile haut de gamme",
+      description: "Kansotex, maison de textile in & outdoor.",
+    },
+    icons: {
+      icon: [
+        {
+          url: "/icon.svg",
+          type: "image/svg+xml",
+        },
+        {
+          url: "/icon-dark.png",
+          type: "image/png",
+          media: "(prefers-color-scheme: dark)",
+        },
+        {
+          url: "/icon-light.png",
+          type: "image/png",
+          media: "(prefers-color-scheme: light)",
+        },
+        {
+          url: "/favicon.ico",
+          sizes: "any",
+        },
+      ],
+      shortcut: "/favicon.ico",
+      apple: "/icon-light.png",
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
       },
-      {
-        url: "/icon-dark.png",
-        type: "image/png",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/icon-light.png",
-        type: "image/png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/favicon.ico",
-        sizes: "any",
-      },
-    ],
-    shortcut: "/favicon.ico",
-    apple: "/icon-light.png",
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-  other: {
-    "p:domain_verify": "33dd61d6a90f26a330463e04397a6ecb",
-  },
-};
+    },
+    other: {
+      "p:domain_verify": "33dd61d6a90f26a330463e04397a6ecb",
+    },
+  };
+}
 
 const structuredData = {
   "@context": "https://schema.org",

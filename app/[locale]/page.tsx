@@ -9,8 +9,24 @@ import { getTranslations, getLocale } from "next-intl/server";
 import { Suspense } from "react";
 import { removeAccents } from "@/lib/text";
 import { HeroBackground } from "@/components/HeroBackground";
+import { buildCanonicalMetadata } from "@/lib/seo";
+import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return buildCanonicalMetadata({
+    locale,
+    path: "",
+    title: locale === "en" ? "Kansotex — In & Outdoor | Luxury Textile House Marrakech" : "Kansotex — In & Outdoor | Maison de Textile Haut de Gamme Marrakech",
+    description: locale === "en" ? "Maison de textile in & outdoor. Premium fabrics, bespoke curtains, linen and hospitality furnishings in Marrakech." : "Maison de textile in & outdoor. Tissus d'ameublement haut de gamme, confection sur-mesure de rideaux, voilages et linge de maison à Marrakech.",
+  });
+}
 
 export default async function Home() {
   try {

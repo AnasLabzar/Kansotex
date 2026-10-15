@@ -152,20 +152,27 @@ export async function GET() {
         // Support common feed structures (e.g., Behold array or Curator posts)
         const items = Array.isArray(feedData) ? feedData : feedData?.posts || feedData?.data || [];
         if (Array.isArray(items) && items.length > 0) {
-          const reels: LiveReel[] = items.slice(0, 12).map((item: any, idx: number) => {
-            const caption = item.caption || item.text || "Kansotex Marrakech";
+          const reels: LiveReel[] = items.slice(0, 16).map((item: any, idx: number) => {
+            const caption = item.caption || item.text || "Kansotex Marrakech — Création textile d'exception";
             const firstLine = caption.split("\n")[0].trim();
             const cleanTitle = firstLine.length > 70 ? firstLine.slice(0, 67) + "..." : firstLine;
-            const isVideo = item.mediaType === "VIDEO" || item.is_video || item.videoUrl || item.video_url;
+            const isVideo = item.mediaType === "VIDEO" || item.is_video || Boolean(item.videoUrl) || Boolean(item.video_url);
+
+            const videoSrc = isVideo ? (item.videoUrl || item.video_url || item.mediaUrl) : undefined;
+            const poster = item.thumbnailUrl || item.sizes?.large?.mediaUrl || item.mediaUrl || item.image || item.poster || "/gallery/Kansotex-indoor-riad-tissus-pinterest-1.webp";
+
+            // Extract hashtag or category
+            const hashtagMatch = caption.match(/#(\w+)/);
+            const category = hashtagMatch ? `#${hashtagMatch[1]}` : isVideo ? "Reel" : "Instagram";
 
             return {
               id: item.id ? `feed-${item.id}` : `feed-${idx + 1}`,
               title: cleanTitle || "Kansotex Marrakech",
               description: caption.length > 150 ? caption.slice(0, 147) + "..." : caption,
-              poster: item.thumbnailUrl || item.mediaUrl || item.image || item.poster || "/gallery/Kansotex-indoor-riad-tissus-pinterest-1.webp",
-              videoSrc: item.videoUrl || item.video_url || undefined,
+              poster,
+              videoSrc,
               instagramUrl: item.permalink || item.url || "https://www.instagram.com/kansotex/",
-              category: "Instagram",
+              category,
               duration: isVideo ? "Reel" : "Post",
               views: "Kansotex",
               publishedAt: item.timestamp || item.created_at,
