@@ -170,6 +170,79 @@ export async function POST(req: Request) {
         return NextResponse.json({ success: true, orderId: ordId, message: "Commande enregistrée dans la base Postgres!" });
       }
 
+      case "UPDATE_PRODUCT_PRICE": {
+        const { productId, basePrice } = payload;
+        await db.orm.public.Product.where({ id: productId }).update({
+          basePrice: parseFloat(basePrice),
+        });
+        return NextResponse.json({ success: true, message: "Prix public mis à jour avec succès dans PostgreSQL." });
+      }
+
+      case "UPDATE_PRODUCT_FULL": {
+        const { productId, nameFr, descriptionFr, basePrice, categoryId, laize, martindale, composition } = payload;
+        
+        await db.orm.public.Product.where({ id: productId }).update({
+          nameFr,
+          descriptionFr,
+          basePrice: parseFloat(basePrice),
+          categoryId: categoryId || undefined,
+        });
+
+        // Check if metadata exists
+        const meta = await db.orm.public.ProductMetadata.where({ productId }).first();
+        if (meta) {
+          await db.orm.public.ProductMetadata.where({ productId }).update({
+            laize: parseFloat(laize) || 280,
+            martindale: parseInt(martindale) || 35000,
+            composition: composition || "100% Lin Français Lavé",
+          });
+        } else {
+          await db.orm.public.ProductMetadata.create({
+            id: `meta-${Date.now()}`,
+            productId,
+            laize: parseFloat(laize) || 280,
+            martindale: parseInt(martindale) || 35000,
+            composition: composition || "100% Lin Français Lavé",
+          });
+        }
+
+        return NextResponse.json({ success: true, message: "Fiche technique et prix enregistrés." });
+      }
+
+      case "UPDATE_USER_FULL": {
+        const { userId, role, tradeDiscount, isVerifiedPro, companyName, siret } = payload;
+        await db.orm.public.User.where({ id: userId }).update({
+          role: role as any,
+          tradeDiscount: parseFloat(tradeDiscount),
+          isVerifiedPro: Boolean(isVerifiedPro),
+          companyName: companyName?.trim() || undefined,
+          siret: siret?.trim() || undefined,
+        });
+        return NextResponse.json({ success: true, message: "Profil client & remise B2B mis à jour." });
+      }
+
+      case "CREATE_CATEGORY": {
+        const { nameFr, nameEn, slug, descriptionFr } = payload;
+        const catId = `cat-${Date.now()}`;
+        await db.orm.public.Category.create({
+          id: catId,
+          slug: slug || nameFr.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+          nameFr,
+          nameEn: nameEn || nameFr,
+          descriptionFr: descriptionFr || null,
+        });
+        return NextResponse.json({ success: true, categoryId: catId, message: "Catégorie créée dans la base Postgres." });
+      }
+
+      case "UPDATE_CATEGORY": {
+        const { categoryId, nameFr, descriptionFr } = payload;
+        await db.orm.public.Category.where({ id: categoryId }).update({
+          nameFr,
+          descriptionFr,
+        });
+        return NextResponse.json({ success: true, message: "Catégorie mise à jour." });
+      }
+
       default:
         return NextResponse.json({ success: false, error: "Action non reconnue." }, { status: 400 });
     }

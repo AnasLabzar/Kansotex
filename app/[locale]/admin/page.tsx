@@ -41,6 +41,8 @@ export default async function AdminPage() {
     console.warn("AdminPage: Error reading promos:", err);
   }
 
+  let quotes: any[] = [];
+
   try {
     const results = await Promise.all([
       db.orm.public.Product.all(),
@@ -49,6 +51,7 @@ export default async function AdminPage() {
       db.orm.public.ProductMetadata.all(),
       db.orm.public.Order.all(),
       db.orm.public.User.all(),
+      db.orm.public.Quote.all(),
     ]);
 
     products = results[0] || [];
@@ -57,6 +60,7 @@ export default async function AdminPage() {
     metadata = results[3] || [];
     orders = results[4] || [];
     users = results[5] || [];
+    quotes = results[6] || [];
   } catch (err) {
     console.warn("AdminPage: Live DB error, using fallbacks:", err);
   }
@@ -109,6 +113,49 @@ export default async function AdminPage() {
     };
   });
 
+  // Format rich quotes
+  const enrichedQuotes = (quotes.length > 0 ? quotes : [
+    {
+      id: "quote-1",
+      userId: users[0]?.id || "usr-1",
+      status: "SENT",
+      totalEstimate: 48500,
+      projectTitle: "Rénovation Suites Palatiales & Rideaux Lin 320cm",
+      createdAt: new Date(Date.now() - 2 * 86400000).toISOString(),
+    },
+    {
+      id: "quote-2",
+      userId: users[1]?.id || "usr-2",
+      status: "ACCEPTED",
+      totalEstimate: 82000,
+      projectTitle: "Fourniture Complète Villa Riad Privé Palmeraie",
+      createdAt: new Date(Date.now() - 5 * 86400000).toISOString(),
+    },
+    {
+      id: "quote-3",
+      userId: users[2]?.id || "usr-3",
+      status: "DRAFT",
+      totalEstimate: 19800,
+      projectTitle: "Linge de Lit Satin Coton 500 Fils — 14 Chambres",
+      createdAt: new Date(Date.now() - 86400000).toISOString(),
+    }
+  ]).map((q: any) => {
+    const user = users.find((u: any) => u.id === q.userId) || null;
+    return {
+      id: q.id,
+      quoteNumber: `DEV-${q.id.slice(-6).toUpperCase()}`,
+      userId: q.userId,
+      status: q.status || "SENT",
+      totalEstimate: q.totalEstimate || 35000,
+      projectTitle: q.projectTitle || "Prescription Textile & Confection Sur-Mesure",
+      createdAt: q.createdAt,
+      customerName: user ? `${user.firstName} ${user.lastName}` : "Directeur Technique",
+      customerCompany: user?.companyName || "Studio Architecture & Décoration",
+      customerEmail: user?.email || "projet@marrakech-design.com",
+      customerPhone: "+212 6 61 24 55 00",
+    };
+  });
+
   return (
     <AdminDashboardView
       initialData={{
@@ -117,6 +164,7 @@ export default async function AdminPage() {
         orders: enrichedOrders,
         users,
         promos,
+        quotes: enrichedQuotes,
         adminUser: session,
       }}
     />
