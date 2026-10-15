@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { AdminDashboardView } from "@/components/AdminDashboardView";
+import { AdminLoginView } from "@/components/AdminLoginView";
 import { db } from "@/prisma/db";
+import { getSession } from "@/lib/session";
+import { getAllPromos } from "@/lib/promos";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -17,12 +20,26 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function AdminPage() {
+  // 1. Verify that the user has an active ADMIN session
+  const session = await getSession();
+
+  if (!session || session.role !== "ADMIN") {
+    return <AdminLoginView />;
+  }
+
   let products: any[] = [];
   let categories: any[] = [];
   let variants: any[] = [];
   let metadata: any[] = [];
   let orders: any[] = [];
   let users: any[] = [];
+  let promos: any[] = [];
+
+  try {
+    promos = getAllPromos();
+  } catch (err) {
+    console.warn("AdminPage: Error reading promos:", err);
+  }
 
   try {
     const results = await Promise.all([
@@ -99,6 +116,8 @@ export default async function AdminPage() {
         categories,
         orders: enrichedOrders,
         users,
+        promos,
+        adminUser: session,
       }}
     />
   );

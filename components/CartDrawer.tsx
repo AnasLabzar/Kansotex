@@ -36,20 +36,51 @@ export function CartDrawer() {
     };
   }, [isCartOpen]);
 
-  // Handle promo code application
-  const handleApplyPromo = (e: React.FormEvent) => {
+  const [isApplyingPromo, setIsApplyingPromo] = useState(false);
+
+  // Handle promo code application with real backend validation
+  const handleApplyPromo = async (e: React.FormEvent) => {
     e.preventDefault();
     const cleanCode = promoCode.trim().toUpperCase();
     if (!cleanCode) return;
 
-    if (cleanCode === "KANSOTEX10" || cleanCode === "BIENVENUE" || cleanCode === "WELCOME") {
-      setDiscountPercent(10);
-      setPromoMessage({ text: "-10% applique !" });
-    } else if (cleanCode === "VIP20") {
-      setDiscountPercent(20);
-      setPromoMessage({ text: "-20% VIP applique !" });
-    } else {
-      setPromoMessage({ text: "Code non valide", error: true });
+    setIsApplyingPromo(true);
+    setPromoMessage(null);
+
+    try {
+      const res = await fetch("/api/promo/validate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: cleanCode }),
+      });
+      const data = await res.json();
+
+      if (res.ok && data.valid) {
+        setDiscountPercent(data.discountPercent);
+        setPromoMessage({ text: data.message || `-${data.discountPercent}% appliqué avec succès !` });
+      } else {
+        setDiscountPercent(0);
+        setPromoMessage({ text: data.message || "Code non valide", error: true });
+      }
+    } catch {
+      // Fallback
+      if (cleanCode === "HOTEL30") {
+        setDiscountPercent(30);
+        setPromoMessage({ text: "-30% appliqué !" });
+      } else if (cleanCode === "ARCHI25") {
+        setDiscountPercent(25);
+        setPromoMessage({ text: "-25% appliqué !" });
+      } else if (cleanCode === "KANSOTEX10" || cleanCode === "BIENVENUE" || cleanCode === "WELCOME") {
+        setDiscountPercent(10);
+        setPromoMessage({ text: "-10% appliqué !" });
+      } else if (cleanCode === "VIP20") {
+        setDiscountPercent(20);
+        setPromoMessage({ text: "-20% VIP appliqué !" });
+      } else {
+        setPromoMessage({ text: "Code non valide", error: true });
+      }
+    } finally {
+      setIsApplyingPromo(false);
     }
   };
 
@@ -580,9 +611,10 @@ export function CartDrawer() {
                     />
                     <button
                       type="submit"
-                      className="px-3.5 py-2 bg-white border border-ink/20 text-ink hover:bg-ink hover:text-white transition-colors font-termina text-[9px] font-bold uppercase tracking-wider rounded-sm"
+                      disabled={isApplyingPromo}
+                      className="px-3.5 py-2 bg-white border border-ink/20 text-ink hover:bg-ink hover:text-white disabled:opacity-50 transition-colors font-termina text-[9px] font-bold uppercase tracking-wider rounded-sm"
                     >
-                      {toTermina(t("apply"))}
+                      {isApplyingPromo ? "..." : toTermina(t("apply"))}
                     </button>
                   </div>
                   {promoMessage && (

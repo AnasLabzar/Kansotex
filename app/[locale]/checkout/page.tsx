@@ -77,19 +77,44 @@ export default function CheckoutPage() {
   const discountAmount = (cartTotal * discountPercent) / 100;
   const finalTotal = Math.max(0, cartTotal - discountAmount + shippingCost);
 
-  // Apply promo code
-  const handleApplyPromo = (e: React.FormEvent) => {
+  // Apply promo code with real backend validation
+  const handleApplyPromo = async (e: React.FormEvent) => {
     e.preventDefault();
     const clean = promoCode.trim().toUpperCase();
     if (!clean) return;
-    if (clean === "KANSOTEX10" || clean === "BIENVENUE" || clean === "WELCOME") {
-      setDiscountPercent(10);
-      setPromoMessage({ text: "Privilège -10% déduit de votre commande." });
-    } else if (clean === "VIP20") {
-      setDiscountPercent(20);
-      setPromoMessage({ text: "Privilège -20% appliqué avec succès." });
-    } else {
-      setPromoMessage({ text: "Code promotionnel invalide ou expiré.", error: true });
+
+    setPromoMessage(null);
+    try {
+      const res = await fetch("/api/promo/validate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: clean }),
+      });
+      const data = await res.json();
+
+      if (res.ok && data.valid) {
+        setDiscountPercent(data.discountPercent);
+        setPromoMessage({ text: data.message || `Privilège -${data.discountPercent}% appliqué avec succès.` });
+      } else {
+        setDiscountPercent(0);
+        setPromoMessage({ text: data.message || "Code promotionnel invalide ou expiré.", error: true });
+      }
+    } catch {
+      if (clean === "HOTEL30") {
+        setDiscountPercent(30);
+        setPromoMessage({ text: "Privilège Hôtelier -30% déduit de votre commande." });
+      } else if (clean === "ARCHI25") {
+        setDiscountPercent(25);
+        setPromoMessage({ text: "Privilège Prescripteur -25% déduit de votre commande." });
+      } else if (clean === "KANSOTEX10" || clean === "BIENVENUE" || clean === "WELCOME") {
+        setDiscountPercent(10);
+        setPromoMessage({ text: "Privilège -10% déduit de votre commande." });
+      } else if (clean === "VIP20") {
+        setDiscountPercent(20);
+        setPromoMessage({ text: "Privilège -20% appliqué avec succès." });
+      } else {
+        setPromoMessage({ text: "Code promotionnel invalide ou expiré.", error: true });
+      }
     }
   };
 

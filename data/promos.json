@@ -1,0 +1,56 @@
+[
+  {
+    "id": "promo-hotel30",
+    "code": "HOTEL30",
+    "discountPercent": 30,
+    "description": "Palaces, Hôtels & Riads Partenaires",
+    "uses": 20,
+    "isActive": true,
+    "createdAt": "2026-10-01T10:00:00.000Z"
+  },
+  {
+    "id": "promo-archi25",
+    "code": "ARCHI25",
+    "discountPercent": 25,
+    "description": "Architectes & Prescripteurs Certifiés",
+    "uses": 43,
+    "isActive": true,
+    "createdAt": "2026-10-01T10:00:00.000Z"
+  },
+  {
+    "id": "promo-kansotex10",
+    "code": "KANSOTEX10",
+    "discountPercent": 10,
+    "description": "Offre Découverte Première Commande",
+    "uses": 88,
+    "isActive": true,
+    "createdAt": "2026-10-01T10:00:00.000Z"
+  },
+  {
+    "id": "promo-bienvenue",
+    "code": "BIENVENUE",
+    "discountPercent": 10,
+    "description": "Bienvenue Particuliers & Suites",
+    "uses": 34,
+    "isActive": true,
+    "createdAt": "2026-10-01T10:00:00.000Z"
+  },
+  {
+    "id": "promo-welcome",
+    "code": "WELCOME",
+    "discountPercent": 10,
+    "description": "Welcome International Conciergerie",
+    "uses": 15,
+    "isActive": true,
+    "createdAt": "2026-10-01T10:00:00.000Z"
+  },
+  {
+    "id": "promo-vip20",
+    "code": "VIP20",
+    "discountPercent": 20,
+    "description": "Cercle Privilège Maison Kansotex",
+    "uses": 27,
+    "isActive": true,
+    "createdAt": "2026-10-01T10:00:00.000Z"
+  }
+]

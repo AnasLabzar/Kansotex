@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useCurrency, type CurrencyCode } from "@/lib/CurrencyContext";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -198,10 +198,13 @@ interface AdminDashboardViewProps {
     categories: any[];
     orders: EnrichedOrder[];
     users: EnrichedUser[];
+    promos?: any[];
+    adminUser?: any;
   };
 }
 
 export function AdminDashboardView({ initialData }: AdminDashboardViewProps) {
+  const router = useRouter();
   const pathname = usePathname();
   const currentLocale = pathname?.startsWith("/en") ? "en" : "fr";
   const { currency, setCurrency, formatPrice } = useCurrency();
@@ -214,6 +217,8 @@ export function AdminDashboardView({ initialData }: AdminDashboardViewProps) {
   const [categories, setCategories] = useState<any[]>(initialData?.categories || []);
   const [orders, setOrders] = useState<EnrichedOrder[]>(initialData?.orders || []);
   const [users, setUsers] = useState<EnrichedUser[]>(initialData?.users || []);
+  const [promos, setPromos] = useState<any[]>(initialData?.promos || []);
+  const [adminUser, setAdminUser] = useState<any>(initialData?.adminUser || null);
 
   // UI States
   const [searchQuery, setSearchQuery] = useState("");
@@ -222,6 +227,7 @@ export function AdminDashboardView({ initialData }: AdminDashboardViewProps) {
   const [selectedOrder, setSelectedOrder] = useState<EnrichedOrder | null>(null);
   const [selectedInvoice, setSelectedInvoice] = useState<any | null>(null);
   const [isNewProductModalOpen, setIsNewProductModalOpen] = useState(false);
+  const [isNewPromoModalOpen, setIsNewPromoModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -232,6 +238,11 @@ export function AdminDashboardView({ initialData }: AdminDashboardViewProps) {
   const [newProdStock, setNewProdStock] = useState("200");
   const [newProdLaize, setNewProdLaize] = useState("280");
   const [newProdComp, setNewProdComp] = useState("100% Lin Français Lavé");
+
+  // New promo form
+  const [newPromoCode, setNewPromoCode] = useState("");
+  const [newPromoDiscount, setNewPromoDiscount] = useState("20");
+  const [newPromoDesc, setNewPromoDesc] = useState("");
 
   // Show toast notification
   const showToast = (msg: string) => {
@@ -249,16 +260,108 @@ export function AdminDashboardView({ initialData }: AdminDashboardViewProps) {
   // Fetch real data on mount or refresh
   const refreshDatabase = async () => {
     try {
-      const res = await fetch("/api/admin/actions");
-      const data = await res.json();
+      const [actionsRes, promosRes] = await Promise.all([
+        fetch("/api/admin/actions"),
+        fetch("/api/promo"),
+      ]);
+      const data = await actionsRes.json();
+      const promoData = await promosRes.json();
+
       if (data.success) {
         setProducts(data.products || []);
         setCategories(data.categories || []);
         setOrders(data.orders || []);
         setUsers(data.users || []);
       }
+      if (promoData.success) {
+        setPromos(promoData.promos || []);
+      }
     } catch (err) {
       console.error("Refresh error:", err);
+    }
+  };
+
+  // Logout handler
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/admin/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "logout" }),
+      });
+      router.refresh();
+    } catch (err) {
+      console.error("Logout error:", err);
+    }
+  };
+
+  // Promo Code Handlers (100% Real Backend Sync)
+  const handleCreatePromo = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newPromoCode.trim()) return;
+
+    setIsSubmitting(true);
+    try {
+      const res = await fetch("/api/promo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          code: newPromoCode.trim(),
+          discountPercent: Number(newPromoDiscount),
+          description: newPromoDesc.trim() || `Remise Partenaire -${newPromoDiscount}%`,
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast(`Code promo ${data.promo.code} (-${data.promo.discountPercent}%) activé sur tout le site !`);
+        setIsNewPromoModalOpen(false);
+        setNewPromoCode("");
+        setNewPromoDesc("");
+        // Refresh promos list
+        const refreshed = await fetch("/api/promo").then(r => r.json());
+        if (refreshed.success) setPromos(refreshed.promos);
+      } else {
+        showToast(data.error || "Erreur lors de la création du code.");
+      }
+    } catch (err) {
+      console.error(err);
+      showToast("Erreur de connexion au serveur promo.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleTogglePromo = async (id: string) => {
+    try {
+      const res = await fetch("/api/promo", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setPromos(prev => prev.map(p => p.id === id ? { ...p, isActive: data.promo.isActive } : p));
+        showToast(`Statut du code ${data.promo.code} mis à jour (${data.promo.isActive ? "Actif" : "Inactif"}).`);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleDeletePromo = async (id: string, code: string) => {
+    if (!confirm(`Supprimer définitivement le code promo ${code} ?`)) return;
+    try {
+      const res = await fetch(`/api/promo?id=${encodeURIComponent(id)}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setPromos(prev => prev.filter(p => p.id !== id));
+        showToast(`Code promo ${code} supprimé.`);
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -676,11 +779,27 @@ export function AdminDashboardView({ initialData }: AdminDashboardViewProps) {
               <span>Boutique Live</span>
             </Link>
 
-            {/* Profile Avatar */}
-            <div className="flex items-center gap-2 pl-3 border-l border-slate-200">
-              <div className="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold font-mono">
-                DG
+            {/* Admin Profile & Logout */}
+            <div className="flex items-center gap-3 pl-3 border-l border-slate-200">
+              <div className="text-right hidden sm:block">
+                <div className="text-xs font-bold text-slate-900 leading-tight">
+                  {adminUser?.name || "Directeur Kansotex"}
+                </div>
+                <div className="text-[10px] text-emerald-700 font-mono font-bold flex items-center justify-end gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  ADMIN VÉRIFIÉ
+                </div>
               </div>
+              <button
+                onClick={handleLogout}
+                title="Se déconnecter de la session Administrateur"
+                className="h-8 px-2.5 bg-slate-100 hover:bg-red-50 text-slate-600 hover:text-red-700 border border-slate-200 hover:border-red-200 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                <span className="hidden md:inline">Déconnexion</span>
+              </button>
             </div>
           </div>
         </header>
@@ -1292,14 +1411,33 @@ export function AdminDashboardView({ initialData }: AdminDashboardViewProps) {
           )}
 
           {/* ================================================================ */}
-          {/* 7. MARKETING & DISCOUNTS                                         */}
+          {/* 7. MARKETING & DISCOUNTS (REAL BACKEND PROMO ENGINE)              */}
           {/* ================================================================ */}
           {activeTab === "marketing" && (
             <div className="max-w-7xl mx-auto space-y-5">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-200">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-200">
                 <div>
                   <h1 className="text-xl font-bold text-slate-900 tracking-tight">Codes Promotionnels & Campagnes</h1>
-                  <p className="text-xs text-slate-500 mt-0.5">Gestion des remises partenaires, coupons influenceurs et kits d'échantillons.</p>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Gestion des remises partenaires, hôtels et clients VIP synchronisées en direct avec le panier et la caisse.
+                  </p>
+                </div>
+                <button
+                  onClick={() => setIsNewPromoModalOpen(true)}
+                  className="flex items-center gap-1.5 h-9 px-3.5 bg-[#c29d59] hover:bg-[#b08b49] text-white text-xs font-semibold rounded-lg shadow-sm transition-all self-start sm:self-auto cursor-pointer"
+                >
+                  <IconPlus className="w-3.5 h-3.5" />
+                  <span>Nouveau Code Promo</span>
+                </button>
+              </div>
+
+              {/* Status Note */}
+              <div className="bg-amber-50 border border-amber-200/80 rounded-xl p-3.5 text-xs text-amber-900 flex items-start gap-2.5">
+                <svg className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div>
+                  <span className="font-bold">Moteur Promotionnel Live Connecté :</span> Tout code actif ci-dessous est immédiatement déductible dans le panier client (<span className="font-mono font-bold">CartDrawer</span>) et la page de commande (<span className="font-mono font-bold">Checkout</span>).
                 </div>
               </div>
 
@@ -1308,28 +1446,56 @@ export function AdminDashboardView({ initialData }: AdminDashboardViewProps) {
                   <thead>
                     <tr className="bg-slate-50 text-[11px] font-semibold text-slate-500 border-b border-slate-200">
                       <th className="py-3 px-5">Code Promo</th>
-                      <th className="py-3 px-5">Valeur</th>
+                      <th className="py-3 px-5">Valeur & Bénéficiaires</th>
                       <th className="py-3 px-5">Utilisations</th>
-                      <th className="py-3 px-5">Statut</th>
+                      <th className="py-3 px-5">Statut Live</th>
+                      <th className="py-3 px-5 text-right">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
-                    <tr className="hover:bg-slate-50/70">
-                      <td className="py-3.5 px-5 font-mono font-bold text-slate-900">ARCHI25</td>
-                      <td className="py-3.5 px-5 font-bold text-emerald-600">-25% (Prescripteurs)</td>
-                      <td className="py-3.5 px-5 text-slate-600">42 utilisations</td>
-                      <td className="py-3.5 px-5">
-                        <span className="px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded text-[10px] font-bold border border-emerald-200">Actif</span>
-                      </td>
-                    </tr>
-                    <tr className="hover:bg-slate-50/70">
-                      <td className="py-3.5 px-5 font-mono font-bold text-slate-900">HOTEL30</td>
-                      <td className="py-3.5 px-5 font-bold text-emerald-600">-30% (Palaces & Riads)</td>
-                      <td className="py-3.5 px-5 text-slate-600">19 utilisations</td>
-                      <td className="py-3.5 px-5">
-                        <span className="px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded text-[10px] font-bold border border-emerald-200">Actif</span>
-                      </td>
-                    </tr>
+                    {promos.length === 0 ? (
+                      <tr>
+                        <td colSpan={5} className="py-8 text-center text-slate-400">
+                          Aucun code promotionnel configuré. Cliquez sur "Nouveau Code Promo" pour en créer un.
+                        </td>
+                      </tr>
+                    ) : (
+                      promos.map((promo) => (
+                        <tr key={promo.id} className="hover:bg-slate-50/70 transition-colors">
+                          <td className="py-3.5 px-5 font-mono font-bold text-slate-900 text-sm">
+                            {promo.code}
+                          </td>
+                          <td className="py-3.5 px-5">
+                            <span className="font-bold text-emerald-600 mr-2">-{promo.discountPercent}%</span>
+                            <span className="text-slate-600 text-xs">({promo.description})</span>
+                          </td>
+                          <td className="py-3.5 px-5 text-slate-600 font-mono">
+                            {promo.uses || 0} utilisation{(promo.uses || 0) > 1 ? "s" : ""}
+                          </td>
+                          <td className="py-3.5 px-5">
+                            <button
+                              onClick={() => handleTogglePromo(promo.id)}
+                              title="Cliquer pour basculer Actif / Inactif"
+                              className={`px-2.5 py-1 rounded text-[10px] font-bold border transition-all cursor-pointer ${
+                                promo.isActive
+                                  ? "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100"
+                                  : "bg-slate-100 text-slate-500 border-slate-300 hover:bg-slate-200"
+                              }`}
+                            >
+                              {promo.isActive ? "● Actif" : "○ Inactif"}
+                            </button>
+                          </td>
+                          <td className="py-3.5 px-5 text-right">
+                            <button
+                              onClick={() => handleDeletePromo(promo.id, promo.code)}
+                              className="text-xs text-red-600 hover:text-red-800 font-semibold px-2 py-1 rounded hover:bg-red-50 transition-colors cursor-pointer"
+                            >
+                              Supprimer
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -1666,6 +1832,109 @@ export function AdminDashboardView({ initialData }: AdminDashboardViewProps) {
                     className="px-5 py-2 bg-[#c29d59] hover:bg-[#b08b49] text-white font-bold rounded-lg shadow-sm transition-all disabled:opacity-50"
                   >
                     {isSubmitting ? "Enregistrement DB..." : "Créer dans Postgres"}
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+
+        {/* NEW PROMO CODE MODAL */}
+        {isNewPromoModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsNewPromoModalOpen(false)}
+              className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs"
+            />
+
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="relative w-full max-w-md bg-white text-slate-900 rounded-xl shadow-2xl overflow-hidden z-10 font-sans"
+            >
+              <div className="bg-slate-900 px-6 py-4 flex items-center justify-between text-white">
+                <div className="flex items-center gap-2">
+                  <IconDiscounts className="w-4 h-4 text-[#c29d59]" />
+                  <h3 className="font-bold text-sm">Nouveau Code Promotionnel</h3>
+                </div>
+                <button
+                  onClick={() => setIsNewPromoModalOpen(false)}
+                  className="w-7 h-7 flex items-center justify-center text-white/70 hover:text-white cursor-pointer"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <form onSubmit={handleCreatePromo} className="p-6 space-y-4 text-xs">
+                <div>
+                  <label className="block text-slate-600 mb-1 font-semibold uppercase tracking-wider text-[11px]">
+                    Code Promo (Majuscules)
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="EX: HOTEL30, ARCHI25, SUMMER15"
+                    value={newPromoCode}
+                    onChange={(e) => setNewPromoCode(e.target.value.toUpperCase())}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-900 font-mono font-bold uppercase focus:outline-none focus:border-[#c29d59]"
+                  />
+                  <p className="text-[10px] text-slate-400 mt-1">Le code que les clients saisiront dans leur panier.</p>
+                </div>
+
+                <div>
+                  <label className="block text-slate-600 mb-1 font-semibold uppercase tracking-wider text-[11px]">
+                    Pourcentage de Remise (%)
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      required
+                      min="1"
+                      max="100"
+                      placeholder="20"
+                      value={newPromoDiscount}
+                      onChange={(e) => setNewPromoDiscount(e.target.value)}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-900 font-mono font-bold focus:outline-none focus:border-[#c29d59]"
+                    />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold">%</span>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-slate-600 mb-1 font-semibold uppercase tracking-wider text-[11px]">
+                    Description & Bénéficiaires
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Ex: Palaces & Riads Marrakech, Partenaires Architectes"
+                    value={newPromoDesc}
+                    onChange={(e) => setNewPromoDesc(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-[#c29d59]"
+                  />
+                </div>
+
+                <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-800 text-[11px] leading-relaxed">
+                  ✓ Ce code sera instantanément actif sur toute la boutique, dans le tiroir panier et sur la page de paiement.
+                </div>
+
+                <div className="pt-3 border-t border-slate-200 flex justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsNewPromoModalOpen(false)}
+                    className="px-4 py-2 bg-slate-100 text-slate-600 hover:text-slate-900 rounded-lg font-medium cursor-pointer"
+                  >
+                    Annuler
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="px-5 py-2 bg-[#c29d59] hover:bg-[#b08b49] text-white font-bold rounded-lg shadow-sm transition-all disabled:opacity-50 cursor-pointer"
+                  >
+                    {isSubmitting ? "Activation..." : "Activer le Code Promo"}
                   </button>
                 </div>
               </form>
