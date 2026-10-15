@@ -94,6 +94,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       image: `${BASE_URL}/gallery/accompagnement-equipe-kansotex.jpg`,
     },
     {
+      path: "/devis",
+      priority: 0.85,
+      changeFrequency: "weekly",
+      image: `${BASE_URL}/gallery/accompagnement-equipe-kansotex.jpg`,
+    },
+    {
       path: "/gallery",
       priority: 0.80,
       changeFrequency: "weekly",

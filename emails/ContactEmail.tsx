@@ -5,55 +5,85 @@ import { BaseTemplate } from "./BaseTemplate";
 export interface ContactEmailProps {
   name: string;
   email: string;
-  projectDescription: string;
+  phone?: string;
+  subject?: string;
+  message?: string;
+  projectDescription?: string;
 }
 
 export const ContactEmail = ({
-  name = "John Doe",
-  email = "john@example.com",
-  projectDescription = "Je souhaite aménager une villa avec vos tissus...",
+  name = "Client Kansotex",
+  email = "client@example.com",
+  phone = "",
+  subject = "Prise de contact générale",
+  message = "",
+  projectDescription = "",
 }: ContactEmailProps) => {
+  const finalMessage = message || projectDescription || "Aucun message précisé.";
+
   return (
-    <BaseTemplate previewText={`Nouvelle demande de contact de ${name}`}>
-      <Heading className="text-brand text-[20px] font-semibold uppercase tracking-[0.15em] text-center mb-[35px] m-0">
-        Nouveau Contact
+    <BaseTemplate previewText={`Nouveau message de contact : ${name} (${subject})`}>
+      <Heading className="text-brand text-[20px] font-semibold uppercase tracking-[0.15em] text-center mb-[30px] m-0">
+        Message de Contact
       </Heading>
 
       <Text className="text-brand/80 text-[15px] leading-[1.8] font-light mb-[20px]">
         Bonjour l'équipe Kansotex,
       </Text>
       
-      <Text className="text-brand/80 text-[15px] leading-[1.8] font-light mb-[35px]">
-        Vous avez reçu une nouvelle demande de contact depuis le site web :
+      <Text className="text-brand/80 text-[15px] leading-[1.8] font-light mb-[30px]">
+        Un visiteur vous a envoyé un nouveau message depuis le formulaire de contact du site kansotex.com :
       </Text>
 
-      <div className="bg-[#fcfbf9] border border-[#e5e0d8] p-[30px] mb-[40px]">
-        <Text className="text-brand text-[12px] uppercase tracking-[0.15em] font-medium m-0 mb-[8px]">
-          Nom Complet
+      <div className="bg-[#fcfbf9] border border-[#e5e0d8] p-[30px] mb-[35px]">
+        <Text className="text-brand text-[12px] uppercase tracking-[0.15em] font-medium m-0 mb-[6px]">
+          Expéditeur
         </Text>
-        <Text className="text-brand/70 text-[15px] font-light m-0 mb-[25px]">
+        <Text className="text-brand/80 text-[15px] font-light m-0 mb-[20px]">
           {name}
         </Text>
 
-        <Text className="text-brand text-[12px] uppercase tracking-[0.15em] font-medium m-0 mb-[8px]">
+        <Text className="text-brand text-[12px] uppercase tracking-[0.15em] font-medium m-0 mb-[6px]">
           Adresse Email
         </Text>
-        <Text className="text-brand/70 text-[15px] font-light m-0 mb-[25px]">
-          <a href={`mailto:${email}`} className="text-gold no-underline">{email}</a>
+        <Text className="text-brand/80 text-[15px] font-light m-0 mb-[20px]">
+          <a href={`mailto:${email}`} className="text-gold no-underline font-medium">{email}</a>
         </Text>
 
-        <Text className="text-brand text-[12px] uppercase tracking-[0.15em] font-medium m-0 mb-[8px]">
-          Le Projet
+        {phone && (
+          <>
+            <Text className="text-brand text-[12px] uppercase tracking-[0.15em] font-medium m-0 mb-[6px]">
+              Téléphone / WhatsApp
+            </Text>
+            <Text className="text-brand/80 text-[15px] font-light m-0 mb-[20px]">
+              <a href={`tel:${phone}`} className="text-gold no-underline">{phone}</a>
+            </Text>
+          </>
+        )}
+
+        {subject && (
+          <>
+            <Text className="text-brand text-[12px] uppercase tracking-[0.15em] font-medium m-0 mb-[6px]">
+              Objet de la demande
+            </Text>
+            <Text className="text-brand/90 text-[15px] font-medium m-0 mb-[20px]">
+              {subject}
+            </Text>
+          </>
+        )}
+
+        <Text className="text-brand text-[12px] uppercase tracking-[0.15em] font-medium m-0 mb-[6px]">
+          Message
         </Text>
         <Text className="text-brand/70 text-[15px] font-light leading-[1.8] m-0 whitespace-pre-wrap">
-          {projectDescription}
+          {finalMessage}
         </Text>
       </div>
 
       <Hr className="border-[#e5e0d8] my-[30px]" />
       
       <Text className="text-muted text-[12px] font-light text-center m-0">
-        Cet email a été envoyé automatiquement depuis kansotex.com
+        Message envoyé depuis la page Contact Kansotex (kansotex.com)
       </Text>
     </BaseTemplate>
   );

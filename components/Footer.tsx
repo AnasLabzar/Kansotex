@@ -96,6 +96,7 @@ export function Footer() {
           <div>
             <h4 className="font-termina mb-8 text-[11px] font-bold uppercase tracking-[0.2em] text-[#a49a8d]">{removeAccents(t("customerService"))}</h4>
             <ul className="flex flex-col gap-5">
+              <li><Link href={`/${locale}/devis`} className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#d4af37] transition-colors hover:text-white">{removeAccents(isEn ? "Request a Quote" : "Demande de Devis")}</Link></li>
               <li><Link href={`/${locale}/faq`} className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">{removeAccents(t("faq"))}</Link></li>
               <li><Link href={`/${locale}/livraison`} className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">{removeAccents(t("shippingReturns"))}</Link></li>
               <li><Link href={`/${locale}/echantillons`} className="font-termina text-[10px] font-bold uppercase tracking-[0.15em] text-[#f3eee6]/80 transition-colors hover:text-white">{removeAccents(t("samples"))}</Link></li>

@@ -3,12 +3,16 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useCart } from "@/lib/CartContext";
 import { useCurrency, CurrencyCode } from "@/lib/CurrencyContext";
 import { NavbarRightActions } from "@/components/NavbarRightActions";
 import { LuxuryMenuOverlay } from "@/components/LuxuryMenuOverlay";
 
 export function ContactClientView() {
+  const pathname = usePathname();
+  const isEn = pathname?.startsWith("/en");
+  const locale = isEn ? "en" : "fr";
   const [menuOpen, setMenuOpen] = useState(false);
 
   // Form State
@@ -18,11 +22,9 @@ export function ContactClientView() {
     name: "",
     email: "",
     phone: "",
-    projectType: "residentiel",
+    subject: "rendez-vous",
     message: "",
   });
-
-
 
   // Lock body scroll when menu overlay is open
   useEffect(() => {
@@ -48,18 +50,18 @@ export function ContactClientView() {
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
-          projectType: formData.projectType,
-          projectDescription: formData.message,
+          subject: formData.subject,
+          message: formData.message,
         }),
       });
 
       if (res.ok) {
         setSent(true);
       } else {
-        alert("Une erreur s'est produite lors de l'envoi. Veuillez réessayer.");
+        alert(isEn ? "An error occurred while sending. Please try again." : "Une erreur s'est produite lors de l'envoi. Veuillez réessayer.");
       }
     } catch {
-      alert("Erreur de connexion. Veuillez vérifier votre réseau.");
+      alert(isEn ? "Connection error. Please check your network." : "Erreur de connexion. Veuillez vérifier votre réseau.");
     } finally {
       setLoading(false);
     }
@@ -300,23 +302,51 @@ export function ContactClientView() {
         </section>
 
         {/* ============================================================ */}
-        {/* 3. ARCHITECTURAL PROJECT INQUIRY FORM */}
+        {/* 3. DEDICATED CONTACT FORM + DEVIS INVITATION BANNER */}
         {/* ============================================================ */}
-        <section className="pt-6 border-t border-[#ded6c8]">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
+        <section className="pt-6 border-t border-[#ded6c8] space-y-12">
+          {/* Pro / Bespoke Quote Highlight Banner */}
+          <div className="rounded-2xl sm:rounded-3xl bg-[#1c1b19] text-[#faf8f5] p-6 sm:p-10 relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm">
+            <div className="space-y-2 max-w-2xl z-10">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-[#d4af37] text-[10px] font-sans uppercase tracking-widest font-semibold">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#d4af37]" />
+                {isEn ? "Trade & Bespoke Estimation" : "Bureau d'Études & Sur-Mesure"}
+              </div>
+              <h3 className="font-sans text-xl sm:text-2xl font-bold tracking-tight text-white">
+                {isEn ? "Need a Technical Study or Bespoke Fabric Quote?" : "Besoin d'un chiffrage précis ou d'une étude technique ?"}
+              </h3>
+              <p className="font-sans text-xs sm:text-sm text-white/70 leading-relaxed">
+                {isEn
+                  ? "Architects, riads, luxury hotels and private residences: use our dedicated Quote Form for yardage calculations, sample requests, and 24h tailor estimates."
+                  : "Architectes, riads, hôtels et villas : accédez à notre formulaire de devis dédié pour vos calculs de métrages, sélections d'échantillons et confections d'atelier."}
+              </p>
+            </div>
+            <div className="shrink-0 z-10 w-full sm:w-auto">
+              <Link
+                href={`/${locale}/devis`}
+                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-[#d4af37] text-[#1c1b19] hover:bg-[#c39e2e] font-sans text-xs font-semibold uppercase tracking-wider transition-all shadow-md hover:scale-[1.02]"
+              >
+                <span>{isEn ? "Open Quote Request Form →" : "Accéder au Formulaire de Devis →"}</span>
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 pt-2">
             {/* Form Left Side: Editorial Context */}
             <div className="lg:col-span-5 space-y-4">
               <span className="font-termina text-[10px] font-bold uppercase tracking-[0.25em] text-[#1c1b19]/45 block">
-                BUREAU D&apos;ETUDES &amp; DEVIS
+                {isEn ? "CUSTOMER CARE & INQUIRIES" : "SERVICE CLIENT & CONCIERGERIE"}
               </span>
               <h2 className="font-sans text-2xl sm:text-3xl font-bold uppercase tracking-tight text-[#1c1b19] leading-tight">
-                TRANSMETTRE VOTRE PROJET TEXTILE
+                {isEn ? "SEND US A MESSAGE" : "ENVOYEZ-NOUS UN MESSAGE"}
               </h2>
               <p className="font-sans text-xs sm:text-sm text-[#1c1b19]/65 leading-relaxed">
-                Particuliers, décorateurs d&apos;intérieur et hôteliers : déposez votre demande de métrages, sélection de nuanciers ou plans d&apos;aménagement. Notre atelier vous répond sous 24h.
+                {isEn
+                  ? "A question about our collections, booking a private visit at our Marrakech showroom, or tracking your order: leave us a message, our team responds promptly."
+                  : "Une question sur nos étoffes, une prise de rendez-vous dans notre showroom d'Al Massar ou un suivi de commande : écrivez-nous, nos conseillers vous répondent avec attention."}
               </p>
 
-              {/* Quick WhatsApp Pill */}
+              {/* Direct Conciergerie WhatsApp Pill */}
               <div className="pt-4">
                 <a
                   href="https://wa.me/212661090950"
@@ -325,27 +355,38 @@ export function ContactClientView() {
                   className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#1c1b19] text-[#faf8f5] hover:bg-black text-xs font-sans font-medium transition-colors"
                 >
                   <span className="w-2 h-2 rounded-full bg-[#22c55e]" />
-                  <span>Échange Direct WhatsApp Conciergerie</span>
+                  <span>{isEn ? "Direct WhatsApp Concierge" : "Échange Direct WhatsApp Conciergerie"}</span>
                 </a>
               </div>
             </div>
 
-            {/* Form Right Side: Quiet Luxury Minimal Underlined Form */}
+            {/* Form Right Side: Pure Contact Form */}
             <div className="lg:col-span-7">
               {sent ? (
                 <div className="p-8 sm:p-10 rounded-2xl bg-[#ebe5d8]/70 border border-[#ded5c5] space-y-3">
                   <h3 className="font-sans text-xl font-bold text-[#1c1b19]">
-                    Votre message a bien été transmis.
+                    {isEn ? "Your message has been sent successfully." : "Votre message a bien été envoyé."}
                   </h3>
                   <p className="font-sans text-xs sm:text-sm text-[#1c1b19]/70 leading-relaxed">
-                    Notre équipe étudie vos éléments et reviendra vers vous sous 24h avec les recommandations techniques et l&apos;envoi de nuanciers appropriés.
+                    {isEn
+                      ? "Thank you for reaching out to Kansotex. Our customer care team will get back to you shortly."
+                      : "Merci d'avoir contacté la Maison Kansotex. Notre service client prend connaissance de votre message et vous répondra dans les plus brefs délais."}
                   </p>
                   <button
                     type="button"
-                    onClick={() => setSent(false)}
+                    onClick={() => {
+                      setSent(false);
+                      setFormData({
+                        name: "",
+                        email: "",
+                        phone: "",
+                        subject: "rendez-vous",
+                        message: "",
+                      });
+                    }}
                     className="text-xs font-sans underline underline-offset-4 text-[#1c1b19] pt-2"
                   >
-                    Envoyer un autre message
+                    {isEn ? "Send another message" : "Envoyer un autre message"}
                   </button>
                 </div>
               ) : (
@@ -354,21 +395,21 @@ export function ContactClientView() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <label className="block space-y-1.5">
                       <span className="text-[10px] font-sans uppercase tracking-widest text-[#1c1b19]/50 font-medium block">
-                        Nom &amp; Prénom *
+                        {isEn ? "Full Name *" : "Nom & Prénom *"}
                       </span>
                       <input
                         required
                         type="text"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="Votre nom complet"
+                        placeholder={isEn ? "Your full name" : "Votre nom complet"}
                         className="w-full bg-transparent border-b border-[#1c1b19]/25 py-2.5 text-xs sm:text-sm font-sans text-[#1c1b19] placeholder:text-[#1c1b19]/35 outline-none focus:border-[#1c1b19] transition-colors"
                       />
                     </label>
 
                     <label className="block space-y-1.5">
                       <span className="text-[10px] font-sans uppercase tracking-widest text-[#1c1b19]/50 font-medium block">
-                        Adresse Email *
+                        {isEn ? "Email Address *" : "Adresse Email *"}
                       </span>
                       <input
                         required
@@ -381,11 +422,11 @@ export function ContactClientView() {
                     </label>
                   </div>
 
-                  {/* Phone & Project Type */}
+                  {/* Phone & Subject */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <label className="block space-y-1.5">
                       <span className="text-[10px] font-sans uppercase tracking-widest text-[#1c1b19]/50 font-medium block">
-                        Téléphone / WhatsApp
+                        {isEn ? "Phone / WhatsApp" : "Téléphone / WhatsApp"}
                       </span>
                       <input
                         type="tel"
@@ -398,18 +439,28 @@ export function ContactClientView() {
 
                     <label className="block space-y-1.5">
                       <span className="text-[10px] font-sans uppercase tracking-widest text-[#1c1b19]/50 font-medium block">
-                        Typologie de Projet
+                        {isEn ? "Subject of Inquiry" : "Objet de votre message"}
                       </span>
                       <select
-                        value={formData.projectType}
-                        onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
+                        value={formData.subject}
+                        onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                         className="w-full bg-transparent border-b border-[#1c1b19]/25 py-2.5 text-xs sm:text-sm font-sans text-[#1c1b19] outline-none focus:border-[#1c1b19] transition-colors cursor-pointer"
                       >
-                        <option value="residentiel">Résidence Privée / Villa</option>
-                        <option value="riad">Riad de Caractère</option>
-                        <option value="hotel">Hôtellerie &amp; Restaurant</option>
-                        <option value="outdoor">Aménagement Rooftop &amp; Outdoor</option>
-                        <option value="autre">Autre Projet Sur-Mesure</option>
+                        <option value="rendez-vous">
+                          {isEn ? "Showroom Appointment (Marrakech)" : "Prise de rendez-vous Showroom (Al Massar)"}
+                        </option>
+                        <option value="info-collections">
+                          {isEn ? "Collections & Fabrics Information" : "Information sur nos étoffes & collections"}
+                        </option>
+                        <option value="suivi-commande">
+                          {isEn ? "Order Tracking & Delivery" : "Suivi de commande ou livraison"}
+                        </option>
+                        <option value="partenariat">
+                          {isEn ? "Partnership, Press & Events" : "Partenariat, Presse & Événementiel"}
+                        </option>
+                        <option value="autre">
+                          {isEn ? "Other General Question" : "Autre demande générale"}
+                        </option>
                       </select>
                     </label>
                   </div>
@@ -417,29 +468,39 @@ export function ContactClientView() {
                   {/* Message Field */}
                   <label className="block space-y-1.5">
                     <span className="text-[10px] font-sans uppercase tracking-widest text-[#1c1b19]/50 font-medium block">
-                      Description du Projet &amp; Métrages *
+                      {isEn ? "Your Message *" : "Votre Message *"}
                     </span>
                     <textarea
                       required
                       rows={4}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Précisez votre projet (hauteurs sous plafond, types d'assises, nuanciers souhaités...)"
+                      placeholder={
+                        isEn
+                          ? "How can our team assist you today?"
+                          : "Comment notre équipe peut-elle vous renseigner ?"
+                      }
                       className="w-full resize-none bg-transparent border-b border-[#1c1b19]/25 py-2.5 text-xs sm:text-sm font-sans text-[#1c1b19] placeholder:text-[#1c1b19]/35 outline-none focus:border-[#1c1b19] transition-colors"
                     />
                   </label>
 
                   {/* Submit Button */}
-                  <div className="pt-2 flex items-center justify-between">
+                  <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <button
                       type="submit"
                       disabled={loading}
-                      className="px-8 py-3.5 rounded-full bg-[#1c1b19] text-[#faf8f5] hover:bg-black text-xs font-sans font-semibold tracking-wider uppercase transition-all hover:scale-[1.01] disabled:opacity-50"
+                      className="px-8 py-3.5 rounded-full bg-[#1c1b19] text-[#faf8f5] hover:bg-black text-xs font-sans font-semibold tracking-wider uppercase transition-all hover:scale-[1.01] disabled:opacity-50 text-center"
                     >
-                      {loading ? "Transmission en cours..." : "Transmettre ma demande"}
+                      {loading
+                        ? isEn
+                          ? "Sending..."
+                          : "Envoi en cours..."
+                        : isEn
+                        ? "Send Message"
+                        : "Envoyer mon message"}
                     </button>
                     <span className="text-[11px] font-sans text-[#1c1b19]/50">
-                      Réponse atelier garantie sous 24h
+                      {isEn ? "Quick response from our Marrakech team" : "Réponse rapide de notre équipe à Marrakech"}
                     </span>
                   </div>
                 </form>

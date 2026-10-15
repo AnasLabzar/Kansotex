@@ -600,7 +600,11 @@ export function NavbarRightActions({
         /* FIXED WIDTH (w-[150px] sm:w-[165px]) so rotating text never changes button width! */
         <motion.div className="hidden md:block" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
           <Link
-            href={effectiveContactHref}
+            href={
+              effectiveLabels[ctaIndex] === "Demander un devis" || effectiveLabels[ctaIndex] === "Request a Quote"
+                ? `/${locale}/devis`
+                : effectiveContactHref
+            }
             className="relative overflow-hidden inline-flex items-center justify-center h-9 w-[150px] sm:w-[165px] px-2 rounded-full text-xs font-sans font-medium bg-[#1c1b19] text-[#faf8f5] hover:bg-[#2b2925] transition-all shadow-xs hover:shadow-md shrink-0 outline-none focus:outline-none"
             title={isEn ? "Request a quote or Contact Kansotex" : "Demander un devis ou Contacter Kansotex"}
           >

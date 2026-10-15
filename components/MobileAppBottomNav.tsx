@@ -169,7 +169,11 @@ export function MobileAppBottomNav() {
 
           {/* TAB 4: DYNAMIC ROTATING ACTION CTA (CONCIERGERIE / DEVIS / CONTACT) */}
           <Link
-            href={`/${locale}/contact`}
+            href={
+              rotatingLabels[ctaIndex] === "Devis" || rotatingLabels[ctaIndex] === "Quote"
+                ? `/${locale}/devis`
+                : `/${locale}/contact`
+            }
             className="flex-1 max-w-[100px] h-9 px-3 rounded-full bg-gradient-to-r from-[#B8860B] to-[#cf9e2e] text-[#141413] flex items-center justify-center shadow-md active:scale-95 transition-all text-center"
             title={isEn ? "Request a bespoke quote or concierge" : "Demander un devis ou conciergerie"}
           >

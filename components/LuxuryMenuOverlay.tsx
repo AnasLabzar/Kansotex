@@ -284,7 +284,7 @@ export function LuxuryMenuOverlay({ isOpen, onClose }: LuxuryMenuOverlayProps) {
           subtitleEn: "Express delivery of textile swatches to your studio",
         },
         {
-          href: "/contact?subject=devis",
+          href: "/devis",
           labelFr: "Étude Technique & Devis",
           labelEn: "Technical Study & Quote",
           subtitleFr: "Chiffrage et conseil de confection sous 24h ouvrées",
@@ -313,6 +313,12 @@ export function LuxuryMenuOverlay({ isOpen, onClose }: LuxuryMenuOverlayProps) {
           subtitleEn: "Material excellence, in & outdoor, project support",
         },
       ],
+    },
+    {
+      key: "devis",
+      href: "/devis",
+      labelFr: "DEMANDE DE DEVIS",
+      labelEn: "REQUEST A QUOTE",
     },
     {
       key: "contact",

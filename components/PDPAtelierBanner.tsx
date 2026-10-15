@@ -165,7 +165,7 @@ export function PDPAtelierBanner({ locale = "fr" }: PDPAtelierBannerProps) {
             </a>
 
             <Link
-              href={`/${locale}/contact`}
+              href={`/${locale}/devis`}
               className="inline-flex items-center justify-center border border-ink/25 text-ink hover:border-ink hover:bg-black/5 font-termina text-[10px] uppercase tracking-widest py-3.5 px-6 transition-colors text-center"
             >
               {toTermina(isEn ? "Request On-Site Quote" : "Demander un Devis Atelier")}

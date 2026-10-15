@@ -5,11 +5,12 @@ import React from "react";
 
 export async function POST(req: Request) {
   try {
-    const { name, email, projectDescription } = await req.json();
+    const { name, email, phone, subject, message, projectDescription } = await req.json();
+    const finalMessage = (message || projectDescription || "").trim();
 
-    if (!name || !email || !projectDescription) {
+    if (!name || !email || !finalMessage) {
       return NextResponse.json(
-        { error: "Tous les champs sont requis." },
+        { error: "Le nom, l'email et le message sont requis." },
         { status: 400 }
       );
     }
@@ -20,11 +21,13 @@ export async function POST(req: Request) {
     const result = await sendEmail({
       to: destination,
       replyTo: email, // So Kansotex can click 'Reply' and reply directly to the customer
-      subject: `Nouveau Contact de ${name}`,
+      subject: `[Contact Kansotex] ${subject || "Nouveau message"} - ${name}`,
       react: React.createElement(ContactEmail, {
         name,
         email,
-        projectDescription,
+        phone,
+        subject,
+        message: finalMessage,
       }),
     });
 
@@ -44,3 +47,4 @@ export async function POST(req: Request) {
     );
   }
 }
+

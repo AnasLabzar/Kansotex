@@ -5,28 +5,63 @@ import React from "react";
 
 export async function POST(req: Request) {
   try {
-    const { name, email, company, message, items } = await req.json();
+    const body = await req.json();
+    const {
+      name,
+      email,
+      phone,
+      company,
+      clientProfile,
+      services,
+      meterage,
+      timeline,
+      samples,
+      city,
+      message,
+      items,
+    } = body;
 
-    if (!name || !email || !items || items.length === 0) {
+    // Validation: name and email are mandatory
+    if (!name || !email) {
       return NextResponse.json(
-        { error: "Informations incomplètes pour le devis." },
+        { error: "Le nom et l'adresse email sont requis pour établir votre devis." },
+        { status: 400 }
+      );
+    }
+
+    // Must have either cart items OR a project message/services
+    const hasItems = items && Array.isArray(items) && items.length > 0;
+    const hasProjectInfo = (services && services.length > 0) || message || phone || clientProfile;
+
+    if (!hasItems && !hasProjectInfo) {
+      return NextResponse.json(
+        { error: "Veuillez préciser votre demande ou sélectionner des étoffes pour le devis." },
         { status: 400 }
       );
     }
 
     const destination = process.env.EMAIL_DEVIS_DEST || "devis@kansotex.com";
+    const subjectTitle = company ? `${company} (${name})` : name;
+    const subjectPrefix = clientProfile ? `[Devis ${clientProfile}]` : "[Demande de Devis]";
 
     // Send the email to the devis address
     const result = await sendEmail({
       to: destination,
       replyTo: email,
-      subject: `Demande de devis de ${company || name}`,
+      subject: `${subjectPrefix} ${subjectTitle} - Kansotex`,
       react: React.createElement(DevisEmail, {
         name,
         email,
+        phone,
         company,
+        clientProfile,
+        services,
+        meterage,
+        timeline,
+        samples,
+        city,
         message,
-        items,
+        items: hasItems ? items : [],
       }),
     });
 
@@ -41,7 +76,7 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error("Devis API error:", error);
     return NextResponse.json(
-      { error: "Erreur serveur." },
+      { error: "Erreur serveur lors de la transmission du devis." },
       { status: 500 }
     );
   }
