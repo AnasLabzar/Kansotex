@@ -532,12 +532,14 @@ export function NavbarRightActions({
             whileTap={{ scale: 0.98 }}
             type="button"
             onClick={() => setProfileMenuOpen((prev) => !prev)}
-            className="hidden md:inline-flex relative overflow-hidden items-center justify-center h-9 w-[130px] sm:w-[145px] rounded-full text-xs font-sans font-medium bg-[#1c1b19] text-[#faf8f5] hover:bg-[#2b2925] transition-all shadow-xs hover:shadow-md gap-2 shrink-0 cursor-pointer outline-none focus:outline-none"
-            title={isEn ? "My Pro Profile" : "Mon Profil Pro"}
+            className={`hidden md:inline-flex relative overflow-hidden items-center justify-center h-9 ${
+              session?.role === "ADMIN" ? "w-[150px] sm:w-[165px] bg-[#1a1a1a] text-white border border-[#404040]" : "w-[130px] sm:w-[145px] bg-[#1c1b19] text-[#faf8f5]"
+            } rounded-full text-xs font-sans font-medium hover:bg-[#2b2925] transition-all shadow-xs hover:shadow-md gap-2 shrink-0 cursor-pointer outline-none focus:outline-none`}
+            title={session?.role === "ADMIN" ? "Shopify Admin Dashboard" : (isEn ? "My Pro Profile" : "Mon Profil Pro")}
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 animate-pulse" />
-            <span className="text-[10px] font-sans uppercase tracking-widest whitespace-nowrap truncate px-1">
-              {session?.role ? `PRO ${session.role}` : (isEn ? "PRO SPACE" : "ESPACE PRO")}
+            <span className={`w-1.5 h-1.5 rounded-full ${session?.role === "ADMIN" ? "bg-amber-400" : "bg-emerald-400"} shrink-0 animate-pulse`} />
+            <span className="text-[10px] font-sans uppercase tracking-widest whitespace-nowrap truncate px-1 font-bold">
+              {session?.role === "ADMIN" ? "SHOPIFY ADMIN" : session?.role ? `PRO ${session.role}` : (isEn ? "PRO SPACE" : "ESPACE PRO")}
             </span>
           </motion.button>
 
@@ -549,33 +551,72 @@ export function NavbarRightActions({
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 6, scale: 0.96 }}
                 transition={{ duration: 0.16 }}
-                className="absolute right-0 top-full mt-2 w-56 bg-white rounded-2xl shadow-xl border border-[#e8e4db] p-3 z-50 text-[#1c1b19]"
+                className="absolute right-0 top-full mt-2 w-64 bg-white rounded-2xl shadow-xl border border-[#e8e4db] p-3 z-50 text-[#1c1b19]"
               >
                 <div className="px-3 py-2 border-b border-[#f2eee6]">
                   <span className="text-[9px] font-termina font-bold uppercase tracking-wider text-[#a49a8d] block">
                     {isEn ? "ACTIVE SESSION" : "SESSION ACTIVE"}
                   </span>
-                  <p className="text-xs font-semibold mt-0.5">
-                    {session?.role ? (isEn ? `Account ${session.role}` : `Compte ${session.role}`) : (isEn ? "Professional Account" : "Espace Professionnel")}
-                  </p>
-                  <p className="text-[11px] text-emerald-600 font-medium">
-                    {isEn
+                  <div className="flex items-center gap-1.5 mt-0.5">
+                    <span className={`w-2 h-2 rounded-full ${session?.role === "ADMIN" ? "bg-amber-500" : "bg-emerald-500"}`} />
+                    <p className="text-xs font-bold text-slate-900">
+                      {session?.role === "ADMIN"
+                        ? "Administrateur Général"
+                        : session?.role
+                        ? (isEn ? `Account ${session.role}` : `Compte ${session.role}`)
+                        : (isEn ? "Professional Account" : "Espace Professionnel")}
+                    </p>
+                  </div>
+                  <p className="text-[11px] text-emerald-600 font-medium mt-0.5">
+                    {session?.role === "ADMIN"
+                      ? "Accès complet au Store & Stocks"
+                      : isEn
                       ? `Pro Discount active (${Math.round((session?.tradeDiscount || 0.2) * 100)}%)`
                       : `Remise Pro active (${Math.round((session?.tradeDiscount || 0.2) * 100)}%)`}
                   </p>
                 </div>
                 <div className="mt-2 space-y-1">
-                  <Link
-                    href={`/${locale}/pro`}
-                    onClick={() => setProfileMenuOpen(false)}
-                    className="block px-3 py-2 text-xs rounded-xl hover:bg-[#faf7f2] font-medium transition-colors"
-                  >
-                    {isEn ? "Pro Dashboard" : "Tableau de bord Pro"}
-                  </Link>
+                  {session?.role === "ADMIN" ? (
+                    <>
+                      <Link
+                        href={`/${locale}/admin`}
+                        onClick={() => setProfileMenuOpen(false)}
+                        className="flex items-center justify-between px-3 py-2.5 text-xs rounded-xl bg-[#1a1a1a] text-white font-semibold hover:bg-[#303030] transition-colors shadow-xs"
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                          <span>Shopify Admin</span>
+                        </div>
+                        <span className="text-[10px] text-slate-300 font-mono">/admin ➔</span>
+                      </Link>
+                      <Link
+                        href={`/${locale}/admin`}
+                        onClick={() => setProfileMenuOpen(false)}
+                        className="block px-3 py-2 text-xs rounded-xl hover:bg-[#faf7f2] font-medium text-slate-700 transition-colors"
+                      >
+                        Gestion des Stocks & Rouleaux
+                      </Link>
+                      <Link
+                        href={`/${locale}/pro?view=b2b`}
+                        onClick={() => setProfileMenuOpen(false)}
+                        className="block px-3 py-2 text-xs rounded-xl hover:bg-[#faf7f2] text-slate-600 transition-colors"
+                      >
+                        Aperçu Espace Client B2B
+                      </Link>
+                    </>
+                  ) : (
+                    <Link
+                      href={`/${locale}/pro`}
+                      onClick={() => setProfileMenuOpen(false)}
+                      className="block px-3 py-2 text-xs rounded-xl hover:bg-[#faf7f2] font-medium transition-colors"
+                    >
+                      {isEn ? "Pro Dashboard" : "Tableau de bord Pro"}
+                    </Link>
+                  )}
                   <Link
                     href={`/${locale}/products`}
                     onClick={() => setProfileMenuOpen(false)}
-                    className="block px-3 py-2 text-xs rounded-xl hover:bg-[#faf7f2] transition-colors"
+                    className="block px-3 py-2 text-xs rounded-xl hover:bg-[#faf7f2] transition-colors text-slate-700"
                   >
                     {isEn ? "Editor Catalog" : "Catalogue Éditeur"}
                   </Link>
@@ -586,7 +627,7 @@ export function NavbarRightActions({
                       await logout();
                       window.location.reload();
                     }}
-                    className="w-full text-left px-3 py-2 text-xs text-red-700 rounded-xl hover:bg-red-50 transition-colors font-medium"
+                    className="w-full text-left px-3 py-2 text-xs text-red-700 rounded-xl hover:bg-red-50 transition-colors font-medium cursor-pointer"
                   >
                     {isEn ? "Sign Out" : "Déconnexion"}
                   </button>

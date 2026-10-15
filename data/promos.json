@@ -4,7 +4,7 @@
     "code": "HOTEL30",
     "discountPercent": 30,
     "description": "Palaces, Hôtels & Riads Partenaires",
-    "uses": 20,
+    "uses": 21,
     "isActive": true,
     "createdAt": "2026-10-01T10:00:00.000Z"
   },
