@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { sendEmail } from "@/lib/mailer";
 import DevisEmail from "@/emails/DevisEmail";
+import { verifyAntiBotProtection } from "@/lib/antispam";
 import React from "react";
 
 export async function POST(req: Request) {
@@ -19,7 +20,24 @@ export async function POST(req: Request) {
       city,
       message,
       items,
+      captchaToken,
+      _hp_website,
+      _hp_confirm,
+      _hp_timestamp,
     } = body;
+
+    // Anti-Bot & Spam Verification (Honeypot + HMAC Challenge + Timing + Rate Limit)
+    const botCheck = await verifyAntiBotProtection(
+      { captchaToken, _hp_website, _hp_confirm, _hp_timestamp },
+      req
+    );
+
+    if (!botCheck.success) {
+      return NextResponse.json(
+        { error: botCheck.error || "Échec de la validation anti-robot." },
+        { status: 403 }
+      );
+    }
 
     // Validation: name and email are mandatory
     if (!name || !email) {

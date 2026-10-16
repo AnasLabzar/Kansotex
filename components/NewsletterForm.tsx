@@ -6,6 +6,7 @@ import { removeAccents } from "@/lib/text";
 
 export function NewsletterForm() {
   const [email, setEmail] = useState("");
+  const [hpWebsite, setHpWebsite] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const t = useTranslations("Footer");
 
@@ -18,7 +19,11 @@ export function NewsletterForm() {
       const res = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ 
+          email,
+          _hp_website: hpWebsite,
+          _hp_timestamp: Date.now(),
+        }),
       });
 
       if (res.ok) {
@@ -43,8 +48,29 @@ export function NewsletterForm() {
   return (
     <form 
       onSubmit={handleSubmit}
-      className="mx-auto flex max-w-sm items-end border-b border-[#f3eee6]/30 pb-3 transition-colors focus-within:border-[#f3eee6]"
+      className="mx-auto flex max-w-sm items-end border-b border-[#f3eee6]/30 pb-3 transition-colors focus-within:border-[#f3eee6] relative"
     >
+      {/* Invisible Honeypot field for trapping automated scrapers */}
+      <input
+        type="text"
+        name="_hp_website"
+        tabIndex={-1}
+        autoComplete="off"
+        value={hpWebsite}
+        onChange={(e) => setHpWebsite(e.target.value)}
+        aria-hidden="true"
+        style={{
+          opacity: 0,
+          position: "absolute",
+          top: 0,
+          left: 0,
+          height: 0,
+          width: 0,
+          zIndex: -1,
+          pointerEvents: "none",
+        }}
+      />
+
       <input 
         type="email" 
         required

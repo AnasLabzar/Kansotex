@@ -3,21 +3,30 @@
 import { useState } from "react";
 import { brand } from "@/lib/content";
 import { useTranslations } from "next-intl";
+import { CaptchaShield } from "@/components/CaptchaShield";
 
 export function ContactForm() {
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaTimestamp, setCaptchaTimestamp] = useState<number>(0);
   const t = useTranslations("ContactForm");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!captchaToken) {
+      alert("Veuillez cocher 'Je ne suis pas un robot'.");
+      return;
+    }
     setLoading(true);
     
     const formData = new FormData(e.currentTarget);
     const data = {
       name: formData.get("name"),
       email: formData.get("email"),
-      projectDescription: formData.get("message"),
+      message: formData.get("message"),
+      captchaToken,
+      _hp_timestamp: captchaTimestamp,
     };
 
     try {
@@ -82,10 +91,20 @@ export function ContactForm() {
               className="w-full resize-none border-b border-[#1c1b19]/30 bg-transparent py-2 outline-none focus:border-[#1c1b19]"
             />
           </label>
+          <div className="pt-2">
+            <CaptchaShield
+              onVerify={(token, ts) => {
+                setCaptchaToken(token);
+                setCaptchaTimestamp(ts);
+              }}
+              onReset={() => setCaptchaToken(null)}
+            />
+          </div>
+
           <button
             type="submit"
-            disabled={loading}
-            className="mt-4 justify-self-start text-[11px] uppercase tracking-[0.28em] underline decoration-[0.7px] underline-offset-[10px] disabled:opacity-50"
+            disabled={loading || !captchaToken}
+            className="mt-4 justify-self-start text-[11px] uppercase tracking-[0.28em] underline decoration-[0.7px] underline-offset-[10px] disabled:opacity-50 cursor-pointer"
           >
             {loading ? "En cours..." : t("send")}
           </button>

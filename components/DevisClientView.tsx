@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { NavbarRightActions } from "@/components/NavbarRightActions";
 import { LuxuryMenuOverlay } from "@/components/LuxuryMenuOverlay";
+import { CaptchaShield } from "@/components/CaptchaShield";
 
 // =============================================================================
 // BESPOKE LUXURY ARCHITECTURAL SVG ICONS (NO EMOJIS)
@@ -348,6 +349,8 @@ export function DevisClientView() {
   const [clientEmail, setClientEmail] = useState<string>("");
   const [clientPhone, setClientPhone] = useState<string>("");
   const [projectCity, setProjectCity] = useState<string>("Marrakech");
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaTimestamp, setCaptchaTimestamp] = useState<number>(0);
 
   // Lock body scroll when menu overlay is open
   useEffect(() => {
@@ -404,6 +407,15 @@ export function DevisClientView() {
       return;
     }
 
+    if (!captchaToken) {
+      alert(
+        isEn
+          ? "Please check 'I'm not a robot' to secure your quote submission."
+          : "Veuillez cocher la case 'Je ne suis pas un robot' pour valider votre demande de devis."
+      );
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -443,6 +455,8 @@ export function DevisClientView() {
             : "Non, proposition chiffrée d'abord",
           city: projectCity,
           message: detailedMessage,
+          captchaToken,
+          _hp_timestamp: captchaTimestamp,
         }),
       });
 
@@ -1163,6 +1177,19 @@ export function DevisClientView() {
                         </label>
                       </div>
 
+                      {/* Anti-Bot Security Shield */}
+                      <CaptchaShield
+                        onVerify={(token, ts) => {
+                          setCaptchaToken(token);
+                          setCaptchaTimestamp(ts);
+                        }}
+                        onReset={() => {
+                          setCaptchaToken(null);
+                        }}
+                        isEn={isEn}
+                        className="my-3"
+                      />
+
                       {/* Privacy & Reassurance Pledge */}
                       <div className="p-4 rounded-xl bg-[#f3eee5] border border-[#e5dfd5] flex items-center gap-3">
                         <IconShieldLock className="w-5 h-5 text-[#c5a059] shrink-0" />
@@ -1201,8 +1228,8 @@ export function DevisClientView() {
                   ) : (
                     <button
                       type="submit"
-                      disabled={loading}
-                      className="px-10 py-4 rounded-full bg-gradient-to-r from-[#161513] to-[#2b2925] text-[#d4af37] hover:text-white hover:to-black text-xs font-sans font-extrabold uppercase tracking-widest transition-all shadow-lg hover:scale-[1.02] disabled:opacity-50 cursor-pointer"
+                      disabled={loading || !captchaToken}
+                      className="px-10 py-4 rounded-full bg-gradient-to-r from-[#161513] to-[#2b2925] text-[#d4af37] hover:text-white hover:to-black text-xs font-sans font-extrabold uppercase tracking-widest transition-all shadow-lg hover:scale-[1.02] disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
                     >
                       {loading
                         ? isEn

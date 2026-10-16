@@ -1,11 +1,29 @@
 import { NextResponse } from "next/server";
 import { sendEmail } from "@/lib/mailer";
 import NewsletterEmail from "@/emails/NewsletterEmail";
+import { verifyAntiBotProtection } from "@/lib/antispam";
 import React from "react";
 
 export async function POST(req: Request) {
   try {
-    const { email } = await req.json();
+    const body = await req.json();
+    const { email, captchaToken, _hp_website, _hp_confirm, _hp_timestamp } = body;
+
+    // Honeypot & bot check
+    if (_hp_website || _hp_confirm) {
+      return NextResponse.json({ success: true }); // Silently drop spam bot
+    }
+
+    // If captcha token is sent, verify it
+    if (captchaToken) {
+      const botCheck = await verifyAntiBotProtection(
+        { captchaToken, _hp_website, _hp_confirm, _hp_timestamp },
+        req
+      );
+      if (!botCheck.success) {
+        return NextResponse.json({ error: botCheck.error }, { status: 403 });
+      }
+    }
 
     if (!email) {
       return NextResponse.json(

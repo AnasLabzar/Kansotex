@@ -8,6 +8,7 @@ import { useCart } from "@/lib/CartContext";
 import { useCurrency, CurrencyCode } from "@/lib/CurrencyContext";
 import { NavbarRightActions } from "@/components/NavbarRightActions";
 import { LuxuryMenuOverlay } from "@/components/LuxuryMenuOverlay";
+import { CaptchaShield } from "@/components/CaptchaShield";
 
 export function ContactClientView() {
   const pathname = usePathname();
@@ -18,6 +19,8 @@ export function ContactClientView() {
   // Form State
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaTimestamp, setCaptchaTimestamp] = useState<number>(0);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -40,6 +43,16 @@ export function ContactClientView() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!captchaToken) {
+      alert(
+        isEn
+          ? "Please check 'I'm not a robot' to secure your message."
+          : "Veuillez cocher la case 'Je ne suis pas un robot' pour valider votre envoi."
+      );
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -52,13 +65,17 @@ export function ContactClientView() {
           phone: formData.phone,
           subject: formData.subject,
           message: formData.message,
+          captchaToken,
+          _hp_timestamp: captchaTimestamp,
         }),
       });
 
-      if (res.ok) {
+      const data = await res.json();
+
+      if (res.ok && data.success) {
         setSent(true);
       } else {
-        alert(isEn ? "An error occurred while sending. Please try again." : "Une erreur s'est produite lors de l'envoi. Veuillez réessayer.");
+        alert(data.error || (isEn ? "An error occurred while sending. Please try again." : "Une erreur s'est produite lors de l'envoi. Veuillez réessayer."));
       }
     } catch {
       alert(isEn ? "Connection error. Please check your network." : "Erreur de connexion. Veuillez vérifier votre réseau.");
@@ -484,12 +501,24 @@ export function ContactClientView() {
                     />
                   </label>
 
+                  {/* Anti-Bot Shield (I'm not a robot) */}
+                  <div className="pt-2">
+                    <CaptchaShield
+                      onVerify={(token, ts) => {
+                        setCaptchaToken(token);
+                        setCaptchaTimestamp(ts);
+                      }}
+                      onReset={() => setCaptchaToken(null)}
+                      isEn={isEn}
+                    />
+                  </div>
+
                   {/* Submit Button */}
                   <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <button
                       type="submit"
-                      disabled={loading}
-                      className="px-8 py-3.5 rounded-full bg-[#1c1b19] text-[#faf8f5] hover:bg-black text-xs font-sans font-semibold tracking-wider uppercase transition-all hover:scale-[1.01] disabled:opacity-50 text-center"
+                      disabled={loading || !captchaToken}
+                      className="px-8 py-3.5 rounded-full bg-[#1c1b19] text-[#faf8f5] hover:bg-black text-xs font-sans font-semibold tracking-wider uppercase transition-all hover:scale-[1.01] disabled:opacity-40 disabled:cursor-not-allowed text-center shadow-xs"
                     >
                       {loading
                         ? isEn

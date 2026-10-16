@@ -1,11 +1,38 @@
 import { NextResponse } from "next/server";
 import { sendEmail } from "@/lib/mailer";
 import ContactEmail from "@/emails/ContactEmail";
+import { verifyAntiBotProtection } from "@/lib/antispam";
 import React from "react";
 
 export async function POST(req: Request) {
   try {
-    const { name, email, phone, subject, message, projectDescription } = await req.json();
+    const body = await req.json();
+    const {
+      name,
+      email,
+      phone,
+      subject,
+      message,
+      projectDescription,
+      captchaToken,
+      _hp_website,
+      _hp_confirm,
+      _hp_timestamp,
+    } = body;
+
+    // Anti-Bot & Spam Verification (Honeypot + HMAC Challenge + Timing + Rate Limit)
+    const botCheck = await verifyAntiBotProtection(
+      { captchaToken, _hp_website, _hp_confirm, _hp_timestamp },
+      req
+    );
+
+    if (!botCheck.success) {
+      return NextResponse.json(
+        { error: botCheck.error || "Échec de la validation anti-robot." },
+        { status: 403 }
+      );
+    }
+
     const finalMessage = (message || projectDescription || "").trim();
 
     if (!name || !email || !finalMessage) {

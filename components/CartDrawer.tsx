@@ -91,6 +91,15 @@ export function CartDrawer() {
   const handleRequestDevis = async () => {
     setIsRequestingDevis(true);
     try {
+      let challengeToken = null;
+      try {
+        const tokenRes = await fetch("/api/captcha/token");
+        if (tokenRes.ok) {
+          const tData = await tokenRes.json();
+          challengeToken = tData.token;
+        }
+      } catch {}
+
       const res = await fetch("/api/devis", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -99,6 +108,8 @@ export function CartDrawer() {
           email: "client@kansotex.com",
           company: "Projet Particulier / B2B",
           message: "Demande de devis depuis le panier Kansotex",
+          captchaToken: challengeToken,
+          _hp_timestamp: Date.now() - 3000,
           items: items.map((item) => ({
             id: item.id,
             name: item.name,
