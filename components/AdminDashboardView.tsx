@@ -970,6 +970,18 @@ export function AdminDashboardView({ initialData }: AdminDashboardViewProps) {
                 <IconShopifyFinance className="w-4 h-4 shrink-0" />
                 <span>Finances & Factures</span>
               </button>
+
+              {/* AI Communication Agency Command Center */}
+              <Link
+                href={`/${currentLocale}/admin/agency`}
+                className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-[#c5a059] bg-[#c5a059]/10 hover:bg-[#c5a059]/20 border border-[#c5a059]/30 transition-all cursor-pointer shadow-xs mt-2"
+              >
+                <div className="flex items-center gap-2.5">
+                  <span className="w-2 h-2 rounded-full bg-[#c5a059] animate-pulse" />
+                  <span className="font-bold">AI Agency Command</span>
+                </div>
+                <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[#c5a059]/20 text-[#c5a059] font-bold">15 AGENTS</span>
+              </Link>
             </nav>
           </div>
 
@@ -1058,6 +1070,14 @@ export function AdminDashboardView({ initialData }: AdminDashboardViewProps) {
               </svg>
               <span className="hidden sm:inline">Actualiser</span>
             </button>
+
+            <Link
+              href={`/${currentLocale}/admin/agency`}
+              className="h-8 px-3 bg-gradient-to-r from-[#c5a059] to-[#9c7d40] hover:from-[#d4af37] hover:to-[#b08e48] text-black rounded-lg text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-xs"
+            >
+              <span>⚡</span>
+              <span>AI Agency</span>
+            </Link>
 
             <Link
               href={`/${currentLocale}`}
