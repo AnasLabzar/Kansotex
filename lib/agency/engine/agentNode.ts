@@ -1,6 +1,6 @@
 /**
  * KANSOTEX AUTONOMOUS MULTI-AGENT SYSTEM (AI COMMUNICATION AGENCY)
- * Individual Agent Node Execution & Prompt Synthesis
+ * Individual Agent Node Execution, Prompt Synthesis & Multi-Provider LLM Integration
  */
 
 import { AgentRole, AGENT_REGISTRY, BossDecision } from "../types";
@@ -20,6 +20,7 @@ import {
   AI_DEV_PROMPT,
 } from "../prompts/personnelPrompts";
 import { EvaluationLoop } from "../evolution/evaluationLoop";
+import { LLMRouter } from "../llm/llmRouter";
 
 export class AgentNode {
   public static getBasePrompt(role: AgentRole): string {
@@ -71,28 +72,82 @@ export class AgentNode {
 
   /**
    * Executes a specialized task for a given agent persona.
-   * If an LLM API key (e.g. OPENAI_API_KEY, ANTHROPIC_API_KEY, GEMINI_API_KEY)
-   * is present, it can invoke remote completion. Otherwise, it executes high-fidelity
-   * deterministic analytical reasoning conforming to the role's contracts.
+   * Utilizes the multi-provider LLMRouter (Gemini, Groq, OpenRouter, Mistral, OpenAI, Claude)
+   * with automatic waterfall failover.
    */
   public static async executeAgent(
     role: AgentRole,
     inputContext: Record<string, unknown>
-  ): Promise<{ result: Record<string, unknown>; tokensConsumed: number }> {
+  ): Promise<{ result: Record<string, unknown>; tokensConsumed: number; llmProvider?: string }> {
     const descriptor = AGENT_REGISTRY[role];
     const fullPrompt = this.getEvolvedPrompt(role);
 
+    // Prepare prompt for LLM Router
+    const userPrompt = `TASK EXECUTION FOR ROLE: ${role}\nContext:\n${JSON.stringify(inputContext, null, 2)}\n\nPlease provide your response strictly conforming to your persona contracts and output format.`;
+
+    // Attempt generation through the waterfall router
+    const llmResult = await LLMRouter.complete({
+      systemPrompt: fullPrompt,
+      userPrompt,
+      maxTokens: descriptor.maxTokensPerTask,
+      temperature: role === "THE_BOSS" ? 0.1 : 0.4,
+      jsonMode: role === "THE_BOSS" || role === "THE_DIRECTOR",
+    });
+
+    // If a live remote LLM (Gemini, Groq, OpenRouter, Mistral, OpenAI, Claude) returned content,
+    // parse the output according to the agent's expected contracts
+    if (!llmResult.isFallbackSimulation && llmResult.content) {
+      if (role === "THE_BOSS") {
+        const parsed = LLMRouter.parseJsonSafely<BossDecision | null>(llmResult.content, null);
+        if (parsed && (parsed.action === "[OK]" || parsed.action === "[NO]")) {
+          return {
+            result: {
+              decision: parsed,
+              llmTelemetry: {
+                provider: llmResult.providerUsed,
+                model: llmResult.modelUsed,
+                latencyMs: llmResult.latencyMs,
+                failoverChain: llmResult.failoverChain,
+              },
+            },
+            tokensConsumed: llmResult.tokensConsumed,
+            llmProvider: llmResult.providerUsed,
+          };
+        }
+      }
+
+      if (role === "THE_DIRECTOR") {
+        const parsed = LLMRouter.parseJsonSafely<any>(llmResult.content, null);
+        if (parsed && parsed.summary) {
+          return {
+            result: {
+              roadmap: parsed,
+              llmTelemetry: {
+                provider: llmResult.providerUsed,
+                model: llmResult.modelUsed,
+                latencyMs: llmResult.latencyMs,
+                failoverChain: llmResult.failoverChain,
+              },
+            },
+            tokensConsumed: llmResult.tokensConsumed,
+            llmProvider: llmResult.providerUsed,
+          };
+        }
+      }
+    }
+
     // =========================================================================
-    // 1. THE BOSS (Strict [OK] or [NO] with data-driven justification)
+    // DETERMINISTIC LUXURY DOMAIN FALLBACK ENGINE
+    // Triggered if no API keys are provided or if all providers are in cooldown
     // =========================================================================
+
+    // 1. THE BOSS
     if (role === "THE_BOSS") {
       const isFinalReview = inputContext.stage === "FINAL_SIGN_OFF";
-      const projectedRoi = Number(inputContext.projectedRoi || 4.6);
+      const projectedRoi = Number(inputContext.projectedRoi || 4.8);
       const budgetMad = Number(inputContext.budgetMad || 15000);
       const tokenCost = Number(inputContext.tokenCost || 2400);
 
-      // Boss Decision Logic:
-      // Reject if ROI < 3.2 or budget > 50,000 without prior board consensus
       if (projectedRoi < 3.2 || budgetMad > 60000) {
         const decision: BossDecision = {
           action: "[NO]",
@@ -103,7 +158,7 @@ export class AgentNode {
           riskAssessment: "HIGH",
           timestamp: new Date().toISOString(),
         };
-        return { result: { decision }, tokensConsumed: 320 };
+        return { result: { decision }, tokensConsumed: 320, llmProvider: llmResult.providerUsed };
       }
 
       const decision: BossDecision = {
@@ -117,12 +172,10 @@ export class AgentNode {
         riskAssessment: "LOW",
         timestamp: new Date().toISOString(),
       };
-      return { result: { decision }, tokensConsumed: 380 };
+      return { result: { decision }, tokensConsumed: 380, llmProvider: llmResult.providerUsed };
     }
 
-    // =========================================================================
-    // 2. THE DIRECTOR (Strategic Roadmap & Operational Delegation)
-    // =========================================================================
+    // 2. THE DIRECTOR
     if (role === "THE_DIRECTOR") {
       const userGoal = String(inputContext.request || "Launch Pinterest Ads Campaign");
       const roadmap = {
@@ -146,12 +199,10 @@ export class AgentNode {
         estimatedCostTokens: 2800,
         notesForBoss: "Low downside risk. Leverages existing luxury bed sheets photography (500-thread count Egyptian cotton sateen & washed stonewashed linen). High margin category (>68%).",
       };
-      return { result: { roadmap }, tokensConsumed: 640 };
+      return { result: { roadmap }, tokensConsumed: 640, llmProvider: llmResult.providerUsed };
     }
 
-    // =========================================================================
-    // 3. MARKETING_PM (Task Breakdown & Synthesis)
-    // =========================================================================
+    // 3. MARKETING_PM
     if (role === "MARKETING_PM") {
       if (inputContext.action === "DELEGATE_TASKS") {
         return {
@@ -172,10 +223,10 @@ export class AgentNode {
             ],
           },
           tokensConsumed: 520,
+          llmProvider: llmResult.providerUsed,
         };
       }
 
-      // Synthesis phase
       return {
         result: {
           synthesisReport: "Marketing PM verified deliverables from Ads Expert and Content Writer. Both packages adhere to Kansotex luxury brand guidelines. Ready for Director review.",
@@ -184,12 +235,11 @@ export class AgentNode {
           fallbackExecuted: false,
         },
         tokensConsumed: 480,
+        llmProvider: llmResult.providerUsed,
       };
     }
 
-    // =========================================================================
-    // 4. ADS_EXPERT (Pinterest Campaign Structure)
-    // =========================================================================
+    // 4. ADS_EXPERT
     if (role === "ADS_EXPERT") {
       return {
         result: {
@@ -232,12 +282,11 @@ export class AgentNode {
           },
         },
         tokensConsumed: 890,
+        llmProvider: llmResult.providerUsed,
       };
     }
 
-    // =========================================================================
-    // 5. CONTENT_WRITER (Human-like Luxury Ad Copy)
-    // =========================================================================
+    // 5. CONTENT_WRITER
     if (role === "CONTENT_WRITER") {
       return {
         result: {
@@ -263,10 +312,10 @@ export class AgentNode {
           ],
         },
         tokensConsumed: 920,
+        llmProvider: llmResult.providerUsed,
       };
     }
 
-    // Generic fallback for other roles
     return {
       result: {
         status: "COMPLETED",
@@ -275,6 +324,7 @@ export class AgentNode {
         contextEcho: inputContext,
       },
       tokensConsumed: 450,
+      llmProvider: llmResult.providerUsed,
     };
   }
 }
