@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 interface CaptchaShieldProps {
   onVerify: (token: string, timestamp: number) => void;
@@ -21,15 +21,26 @@ export function CaptchaShield({
   const [honeypotVal, setHoneypotVal] = useState("");
   const checkboxRef = useRef<HTMLButtonElement>(null);
 
+  // Auto-expire token after 15 minutes (standard security practice)
+  useEffect(() => {
+    if (status === "verified") {
+      const timer = setTimeout(() => {
+        setStatus("idle");
+        onReset?.();
+      }, 15 * 60 * 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [status, onReset]);
+
   const handleVerify = async () => {
     if (status !== "idle") return;
     setStatus("verifying");
 
     try {
-      // Simulate real biometric & browser entropy validation (1.1s)
+      // Realistic biometric and browser challenge latency (950ms)
       const [tokenRes] = await Promise.all([
         fetch("/api/captcha/token"),
-        new Promise((resolve) => setTimeout(resolve, 1100)),
+        new Promise((resolve) => setTimeout(resolve, 950)),
       ]);
 
       const data = await tokenRes.json();
@@ -49,9 +60,9 @@ export function CaptchaShield({
 
   return (
     <div
-      className={`relative select-none max-w-sm rounded-xl border border-[#ded7ca] bg-[#faf8f5] shadow-xs px-4 py-3 transition-all ${className}`}
+      className={`relative select-none w-full max-w-[302px] h-[76px] rounded-[3px] border border-[#d3d3d3] bg-[#f9f9f9] shadow-[0_0_4px_1px_rgba(0,0,0,0.08)] px-3.5 flex items-center justify-between transition-all hover:border-[#bcbcbc] ${className}`}
     >
-      {/* Invisible Honeypot Trap - Bots fill this automatically */}
+      {/* Invisible Honeypot Trap - Automated scrapers fill this automatically */}
       <input
         type="text"
         name="_hp_website"
@@ -63,113 +74,147 @@ export function CaptchaShield({
         aria-hidden="true"
       />
 
-      <div className="flex items-center justify-between gap-4">
-        {/* Left: Checkbox & Label */}
-        <div className="flex items-center gap-3">
+      {/* Left Column: Checkbox + Authentic Label */}
+      <div className="flex items-center gap-3">
+        {status === "idle" && (
           <button
             ref={checkboxRef}
             type="button"
             onClick={handleVerify}
-            disabled={status !== "idle"}
+            onKeyDown={(e) => {
+              if (e.key === " " || e.key === "Enter") {
+                e.preventDefault();
+                handleVerify();
+              }
+            }}
             aria-label={isEn ? "I'm not a robot" : "Je ne suis pas un robot"}
-            className={`w-7 h-7 rounded-md border flex items-center justify-center transition-all outline-none focus:ring-2 focus:ring-emerald-500/30 ${
-              status === "verified"
-                ? "bg-emerald-600 border-emerald-600 text-white shadow-xs"
-                : status === "verifying"
-                ? "bg-white border-[#c9c1b3] cursor-wait"
-                : "bg-white border-[#c2b9a9] hover:border-[#8c7e6c] hover:bg-slate-50 cursor-pointer shadow-2xs"
-            }`}
+            className="w-[28px] h-[28px] rounded-[2px] bg-white border-2 border-[#c1c1c1] hover:border-[#b2b2b2] flex items-center justify-center transition-all cursor-pointer outline-none focus:ring-2 focus:ring-[#4285f4]/40"
           >
-            {status === "idle" && (
-              <span className="w-full h-full" />
-            )}
-
-            {status === "verifying" && (
-              <svg
-                className="animate-spin w-4 h-4 text-[#8c7e6c]"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="3.5"
-                />
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8v8H4z"
-                />
-              </svg>
-            )}
-
-            {status === "verified" && (
-              <motion.svg
-                initial={{ scale: 0, rotate: -45 }}
-                animate={{ scale: 1, rotate: 0 }}
-                transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                className="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="3"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-              </motion.svg>
-            )}
+            <span className="sr-only">{isEn ? "Verify you are human" : "Vérifiez que vous êtes humain"}</span>
           </button>
+        )}
 
-          <span
-            onClick={handleVerify}
-            className={`text-xs font-sans font-medium transition-colors ${
-              status === "idle"
-                ? "text-[#1c1b19] cursor-pointer hover:text-black"
-                : status === "verifying"
-                ? "text-[#1c1b19]/60 cursor-wait"
-                : "text-emerald-800 font-semibold cursor-default"
-            }`}
-          >
-            {status === "idle"
-              ? isEn
-                ? "I'm not a robot"
-                : "Je ne suis pas un robot"
-              : status === "verifying"
-              ? isEn
-                ? "Checking browser..."
-                : "Vérification en cours..."
-              : isEn
-              ? "Verified Human"
-              : "Vérification réussie"}
-          </span>
-        </div>
-
-        {/* Right: Security Badge Branding */}
-        <div className="flex flex-col items-center justify-center shrink-0 text-center pl-2 border-l border-[#e8e2d8]">
-          <div className="w-6 h-6 flex items-center justify-center text-[#9c8e7b]">
+        {status === "verifying" && (
+          <div className="w-[28px] h-[28px] flex items-center justify-center">
             <svg
-              className="w-5 h-5 text-[#8c7e6c]"
-              fill="none"
+              className="animate-spin w-[26px] h-[26px]"
               viewBox="0 0 24 24"
-              stroke="currentColor"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
             >
+              <circle
+                cx="12"
+                cy="12"
+                r="9.5"
+                stroke="#e0e0e0"
+                strokeWidth="2.4"
+              />
               <path
+                d="M12 2.5a9.5 9.5 0 0 1 9.5 9.5"
+                stroke="#4285f4"
+                strokeWidth="2.5"
                 strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="1.6"
-                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
               />
             </svg>
           </div>
-          <span className="text-[8.5px] font-mono tracking-tight font-bold text-[#6e6355] uppercase mt-0.5">
-            Kansotex Shield
-          </span>
-          <span className="text-[7.5px] font-sans text-[#a89d8f]">
-            {isEn ? "Privacy • Terms" : "Anti-Spam Protégé"}
-          </span>
+        )}
+
+        {status === "verified" && (
+          <motion.div
+            initial={{ scale: 0.4, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 500, damping: 25 }}
+            className="w-[28px] h-[28px] flex items-center justify-center"
+          >
+            <svg
+              className="w-[28px] h-[28px] text-[#0f9d58]"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <motion.path
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                d="M4.5 12.5l5 5L20 6"
+              />
+            </svg>
+          </motion.div>
+        )}
+
+        {/* The Exact Classic reCAPTCHA Typography */}
+        <span
+          onClick={handleVerify}
+          className={`text-[14px] font-sans font-normal text-[#282727] leading-[1.2] tracking-normal select-none ${
+            status === "idle" ? "cursor-pointer" : "cursor-default"
+          }`}
+          style={{ fontFamily: 'Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif' }}
+        >
+          {isEn ? "I'm not a robot" : "Je ne suis pas un robot"}
+        </span>
+      </div>
+
+      {/* Right Column: Authentic reCAPTCHA Brand Logo & Links */}
+      <div className="flex flex-col items-center justify-center shrink-0 text-center select-none pl-2 pt-0.5 min-w-[70px]">
+        {/* The Official reCAPTCHA Circulating Logo Vectors */}
+        <div className="w-[32px] h-[32px] flex items-center justify-center">
+          <svg
+            className="w-[30px] h-[30px]"
+            viewBox="0 0 48 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            {/* Blue Arrow Swoosh */}
+            <path
+              d="M24 4C14.06 4 6 12.06 6 22c0 4.18 1.45 8.04 3.88 11.12l4.4-4.4C12.87 26.68 12 24.45 12 22c0-6.63 5.37-12 12-12 3.12 0 5.96 1.2 8.09 3.16l-4.09 4.09H40V5.25l-4.34 4.34C32.48 6.42 28.48 4 24 4z"
+              fill="#1A73E8"
+            />
+            {/* Gray Arrow Swoosh */}
+            <path
+              d="M24 44c9.94 0 18-8.06 18-18 0-4.18-1.45-8.04-3.88-11.12l-4.4 4.4C35.13 21.32 36 23.55 36 26c0 6.63-5.37 12-12 12-3.12 0-5.96-1.2-8.09-3.16l4.09-4.09H8v12l4.34-4.34C15.52 41.58 19.52 44 24 44z"
+              fill="#5F6368"
+            />
+          </svg>
+        </div>
+
+        {/* reCAPTCHA Wordmark */}
+        <span
+          className="text-[10px] font-sans font-medium text-[#555555] tracking-[0.2px] leading-tight mt-0.5"
+          style={{ fontFamily: 'Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif' }}
+        >
+          reCAPTCHA
+        </span>
+
+        {/* Privacy & Terms Links */}
+        <div className="flex items-center justify-center gap-1 text-[8.5px] font-sans text-[#555555] leading-none mt-1">
+          <a
+            href={
+              isEn
+                ? "https://www.google.com/intl/en/policies/privacy/"
+                : "https://www.google.com/intl/fr/policies/privacy/"
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#555555] hover:text-[#222222] hover:underline"
+          >
+            {isEn ? "Privacy" : "Confidentialité"}
+          </a>
+          <span className="text-[#888888]">-</span>
+          <a
+            href={
+              isEn
+                ? "https://www.google.com/intl/en/policies/terms/"
+                : "https://www.google.com/intl/fr/policies/terms/"
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#555555] hover:text-[#222222] hover:underline"
+          >
+            {isEn ? "Terms" : "Conditions"}
+          </a>
         </div>
       </div>
     </div>
