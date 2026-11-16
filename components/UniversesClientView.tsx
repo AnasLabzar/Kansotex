@@ -363,7 +363,7 @@ export function UniversesClientView() {
                   >
                     <Image
                       src={item.image}
-                      alt={item.title}
+                      alt={`${item.title} — Étoffes, Tissus In & Outdoor et Linge de Maison Kansotex Marrakech`}
                       fill
                       className="object-cover object-center transition-transform duration-700 ease-[cubic-bezier(0.2,1,0.3,1)] group-hover:scale-105"
                       sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"

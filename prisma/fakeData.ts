@@ -50,7 +50,285 @@ export const fakeCategories = [
 ];
 
 export const fakeProducts = [
-  // LINGE DE LIT
+  // ==========================================
+  // NOUVEAUX PACKS CATALOGUES KANSOTEX
+  // ==========================================
+  {
+    id: "pack-linge-de-lit-hotelier",
+    slug: "pack-linge-de-lit-hotelier",
+    nameFr: "Pack Linge de Lit Hôtelier (4 Pièces)",
+    nameEn: "Hotel Bed Linen Pack (4 Pieces)",
+    descriptionFr: "L'ensemble complet de référence pour Riads, Hôtels et Airbnb. 2 taies d'oreiller portefeuille, 1 housse de couette avec passe-mains, 1 drap plat bourdon et 1 drap housse grand bonnet 30cm. 100% coton peigné respirant, ultra-résistant aux lavages fréquents.",
+    descriptionEn: "Complete benchmark bedding set for Riads, Hotels and Airbnb hosts. 2 envelope pillowcases, 1 duvet cover with hand-slits, 1 bourdon-hem flat sheet and 1 deep 30cm fitted sheet. 100% combed breathable cotton.",
+    type: "FINISHED_GOOD",
+    basePrice: 125.0,
+    image: "/catalogues/linge-hotelier-post.jpg",
+    gallery: [
+      "/gallery/bed_set_percale_1791048617304.jpg",
+      "/gallery/bedroom_lifestyle_1791052936092.jpg",
+      "/catalogues/linge-hotelier-post.jpg"
+    ],
+    categoryId: "cat-1",
+    metadata: {
+      id: "meta-pack-hotel",
+      weight: 130,
+      composition: "100% Coton Peigné Naturel — Percale 300 Fils",
+      minOrderLength: 1.0,
+      cutIncrement: 1.0
+    },
+    variants: [
+      {
+        id: "var-pk-90-blanc",
+        sku: "HOTEL-PACK-90-BLC",
+        colorNameFr: "Blanc Hôtelier",
+        colorNameEn: "Optic Hotel White",
+        colorHex: "#ffffff",
+        size: "90x200 cm",
+        stockLevel: 100.0,
+        dyeLots: []
+      },
+      {
+        id: "var-pk-160-blanc",
+        sku: "HOTEL-PACK-160-BLC",
+        colorNameFr: "Blanc Hôtelier",
+        colorNameEn: "Optic Hotel White",
+        colorHex: "#ffffff",
+        size: "160x200 cm",
+        stockLevel: 150.0,
+        dyeLots: []
+      },
+      {
+        id: "var-pk-180-blanc",
+        sku: "HOTEL-PACK-180-BLC",
+        colorNameFr: "Blanc Hôtelier",
+        colorNameEn: "Optic Hotel White",
+        colorHex: "#ffffff",
+        size: "180x200 cm",
+        stockLevel: 120.0,
+        dyeLots: []
+      },
+      {
+        id: "var-pk-200-blanc",
+        sku: "HOTEL-PACK-200-BLC",
+        colorNameFr: "Blanc Hôtelier",
+        colorNameEn: "Optic Hotel White",
+        colorHex: "#ffffff",
+        size: "200x200 cm",
+        stockLevel: 80.0,
+        dyeLots: []
+      }
+    ]
+  },
+  {
+    id: "couette-hiver-anti-acariens",
+    slug: "couette-hiver-anti-acariens",
+    nameFr: "Couette Hôtelière Hiver Anti-Acariens SANITIZED®",
+    nameEn: "Anti-Dust Mite Hotel Winter Duvet SANITIZED®",
+    descriptionFr: "Une couette 100% confort, traitée anti-acariens pour passer un hiver bien au chaud. Piquage carreaux cloisonnés anti-pont thermique, enveloppe pur coton respirante et garnissage microfibre sensation duvet d'oie 400g/m².",
+    descriptionEn: "100% comfort duvet, anti-dust mite treated for cozy warm winter nights. Baffle-box construction with zero cold spots, pure breathable cotton shell and 400g/m² down-feel microfiber fill.",
+    type: "FINISHED_GOOD",
+    basePrice: 119.0,
+    image: "/catalogues/collection-hiver-post.jpg",
+    gallery: [
+      "/gallery/duvet_cover_linen_1791048696631.jpg",
+      "/gallery/bed_throw_textured_1791048657945.jpg",
+      "/catalogues/collection-hiver-post.jpg"
+    ],
+    categoryId: "cat-1",
+    metadata: {
+      id: "meta-couette-hiver",
+      weight: 400,
+      composition: "Enveloppe 100% Coton Percale — Garnissage Microfibre Siliconée 400g/m²",
+      minOrderLength: 1.0,
+      cutIncrement: 1.0
+    },
+    variants: [
+      {
+        id: "var-couette-140-blanc",
+        sku: "COUETTE-HIV-140",
+        colorNameFr: "Blanc Neige",
+        colorNameEn: "Snow White",
+        colorHex: "#ffffff",
+        size: "140x200 cm",
+        stockLevel: 75.0,
+        dyeLots: []
+      },
+      {
+        id: "var-couette-200-blanc",
+        sku: "COUETTE-HIV-200",
+        colorNameFr: "Blanc Neige",
+        colorNameEn: "Snow White",
+        colorHex: "#ffffff",
+        size: "200x200 cm",
+        stockLevel: 90.0,
+        dyeLots: []
+      },
+      {
+        id: "var-couette-240-blanc",
+        sku: "COUETTE-HIV-240",
+        colorNameFr: "Blanc Neige",
+        colorNameEn: "Snow White",
+        colorHex: "#ffffff",
+        size: "240x220 cm",
+        stockLevel: 140.0,
+        dyeLots: []
+      },
+      {
+        id: "var-couette-260-blanc",
+        sku: "COUETTE-HIV-260",
+        colorNameFr: "Blanc Neige",
+        colorNameEn: "Snow White",
+        colorHex: "#ffffff",
+        size: "260x240 cm",
+        stockLevel: 65.0,
+        dyeLots: []
+      }
+    ]
+  },
+  {
+    id: "parure-collection-privee-matieres-nobles",
+    slug: "parure-collection-privee-matieres-nobles",
+    nameFr: "Parure Royale Satin 800 Fils — Collection Privée",
+    nameEn: "Royal 800 TC Sateen Set — Private Collection",
+    descriptionFr: "L'excellence des matières nobles. 100% coton peigné pur, satin 800 fils d'une douceur liquide incomparable, finitions double bourdon d'artisan et broderie monogramme personnalisée.",
+    descriptionEn: "The excellence of noble materials. 100% pure combed cotton, liquid soft 800 TC sateen, artisan double-bourdon hem and bespoke monogram option.",
+    type: "FINISHED_GOOD",
+    basePrice: 239.0,
+    image: "/catalogues/collection-privee-post.jpg",
+    gallery: [
+      "/gallery/bed_set_satin_1791048686563.jpg",
+      "/gallery/bedroom_lifestyle_1791052936092.jpg",
+      "/catalogues/collection-privee-post.jpg"
+    ],
+    categoryId: "cat-1",
+    metadata: {
+      id: "meta-privee-satin",
+      weight: 155,
+      composition: "100% Coton Peigné Extra-Long Staple — Satin 800 Fils",
+      minOrderLength: 1.0,
+      cutIncrement: 1.0
+    },
+    variants: [
+      {
+        id: "var-privee-160-blanc",
+        sku: "PRIVEE-SAT800-160-BLC",
+        colorNameFr: "Blanc Calcaire",
+        colorNameEn: "Limestone White",
+        colorHex: "#fafaf8",
+        size: "160x200 cm",
+        stockLevel: 35.0,
+        dyeLots: []
+      },
+      {
+        id: "var-privee-180-blanc",
+        sku: "PRIVEE-SAT800-180-BLC",
+        colorNameFr: "Blanc Calcaire",
+        colorNameEn: "Limestone White",
+        colorHex: "#fafaf8",
+        size: "180x200 cm",
+        stockLevel: 45.0,
+        dyeLots: []
+      },
+      {
+        id: "var-privee-180-terra",
+        sku: "PRIVEE-SAT800-180-TER",
+        colorNameFr: "Terracotta Palais",
+        colorNameEn: "Palace Terracotta",
+        colorHex: "#a65a42",
+        size: "180x200 cm",
+        stockLevel: 25.0,
+        dyeLots: []
+      },
+      {
+        id: "var-privee-200-blanc",
+        sku: "PRIVEE-SAT800-200-BLC",
+        colorNameFr: "Blanc Calcaire",
+        colorNameEn: "Limestone White",
+        colorHex: "#fafaf8",
+        size: "200x200 cm",
+        stockLevel: 30.0,
+        dyeLots: []
+      }
+    ]
+  },
+  {
+    id: "pack-linge-de-bain-600g",
+    slug: "pack-linge-de-bain-600g",
+    nameFr: "Pack Linge de Bain Hôtelier 600g (7 Pièces)",
+    nameEn: "Hotel Bath Linen Pack 600g (7 Pieces)",
+    descriptionFr: "L'ensemble de bain de référence pour Riads, Hôtels et Airbnb. Comprend 2 maxi draps de bain 100x150cm, 2 serviettes toilette 50x90cm, 2 serviettes invités 30x30cm et 1 tapis 800g/m². 100% coton peigné 600g, absorption 3 secondes.",
+    descriptionEn: "Benchmark bath linen bundle for Riads, Hotels and Airbnb. Includes 2 maxi bath sheets 100x150cm, 2 hand towels 50x90cm, 2 guest washcloths 30x30cm and 1 heavyweight 800g mat. 100% combed cotton 600g.",
+    type: "FINISHED_GOOD",
+    basePrice: 91.0,
+    image: "/catalogues/linge-de-bain-post.jpg",
+    gallery: [
+      "/gallery/bath_towels_set_1791048635743.jpg",
+      "/gallery/bathrobe_velour_1791048626440.jpg",
+      "/catalogues/linge-de-bain-post.jpg"
+    ],
+    categoryId: "cat-2",
+    metadata: {
+      id: "meta-pack-bain-600",
+      weight: 600,
+      composition: "100% Coton Peigné Égyptien Bouclette Double Torsion 600g/m²",
+      minOrderLength: 1.0,
+      cutIncrement: 1.0
+    },
+    variants: [
+      {
+        id: "var-bain600-blanc",
+        sku: "BAIN-600-PACK-BLC",
+        colorNameFr: "Blanc Pur Hôtelier",
+        colorNameEn: "Pure Spa White",
+        colorHex: "#ffffff",
+        size: "Pack 7 Pièces (30x30, 50x90, 100x150, Tapis)",
+        stockLevel: 120.0,
+        dyeLots: []
+      },
+      {
+        id: "var-bain600-sauge",
+        sku: "BAIN-600-PACK-SGE",
+        colorNameFr: "Vert Sauge Eucalyptus",
+        colorNameEn: "Eucalyptus Sage",
+        colorHex: "#8a9a86",
+        size: "Pack 7 Pièces (30x30, 50x90, 100x150, Tapis)",
+        stockLevel: 80.0,
+        dyeLots: []
+      },
+      {
+        id: "var-bain600-sable",
+        sku: "BAIN-600-PACK-SAB",
+        colorNameFr: "Crème & Sable d'Agafay",
+        colorNameEn: "Cream & Agafay Sand",
+        colorHex: "#e4d9c7",
+        size: "Pack 7 Pièces (30x30, 50x90, 100x150, Tapis)",
+        stockLevel: 70.0,
+        dyeLots: []
+      },
+      {
+        id: "var-bain600-olive",
+        sku: "BAIN-600-PACK-OLV",
+        colorNameFr: "Kaki Olive Ourika",
+        colorNameEn: "Ourika Olive Green",
+        colorHex: "#5c644e",
+        size: "Pack 7 Pièces (30x30, 50x90, 100x150, Tapis)",
+        stockLevel: 55.0,
+        dyeLots: []
+      },
+      {
+        id: "var-bain600-bleu",
+        sku: "BAIN-600-PACK-BLU",
+        colorNameFr: "Bleu Nuit Majorelle",
+        colorNameEn: "Majorelle Navy Blue",
+        colorHex: "#1f2b42",
+        size: "Pack 7 Pièces (30x30, 50x90, 100x150, Tapis)",
+        stockLevel: 45.0,
+        dyeLots: []
+      }
+    ]
+  },
+
+  // LINGE DE LIT (CLASSIQUE)
   {
     id: "prod-1",
     slug: "parure-percale-blanc",

@@ -12,11 +12,18 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
+  const isEn = locale === "en";
+
   return buildCanonicalMetadata({
     locale,
     path: "/products",
-    title: locale === "en" ? "Luxury Fabrics Catalog — In & Outdoor | Kansotex" : "Catalogue Tissus Haut de Gamme — In & Outdoor | Kansotex",
-    description: locale === "en" ? "Explore our exclusive collection of luxury fabrics, velvets, linens and outdoor upholstery in Marrakech." : "Découvrez notre collection exclusive d'étoffes, velours, lins et tissus techniques outdoor à Marrakech.",
+    title: isEn
+      ? "Luxury Fabrics & Home Linen Catalog"
+      : "Catalogue Tissus d'Ameublement & Linge de Maison",
+    description: isEn
+      ? "Explore our exclusive catalog of luxury upholstery fabrics, velvets, washed linen and outdoor water-repellent textiles in Marrakech. Custom cut & tailoring."
+      : "Catalogue d'étoffes nobles au mètre, velours, lin lavé, satin et toiles outdoor déperlantes. Confection sur mesure à Marrakech pour villas et riads.",
+    category: "ameublement",
   });
 }
 

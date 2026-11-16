@@ -8,12 +8,19 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
+  const isEn = locale === "en";
+
   return buildCanonicalMetadata({
     locale,
     path: "/gallery",
-    title: locale === "en" ? "Gallery & Inspirations — Pinterest & Instagram | Kansotex" : "Galerie & Inspirations — Pinterest & Instagram | Kansotex",
-    description: locale === "en" ? "Explore Kansotex gallery: luxury indoor & outdoor textile inspirations, moodboards and Instagram reels in Marrakech." : "Explorez la galerie Kansotex : inspirations textiles haut de gamme, indoor & outdoor, tableaux Pinterest et reels Instagram à Marrakech.",
+    title: isEn
+      ? "Textile Gallery & Pinterest Inspirations Marrakech"
+      : "Galerie Textiles & Inspirations Pinterest Marrakech",
+    description: isEn
+      ? "Explore Kansotex gallery: luxury indoor & outdoor textile inspirations, Pinterest moodboards, and Instagram reels crafted in Marrakech."
+      : "Explorez la galerie Kansotex : inspirations textiles haut de gamme, indoor & outdoor, tableaux Pinterest et confections de riads à Marrakech.",
     image: "/gallery/Kansotex-indoor-riad-tissus-pinterest-1.webp",
+    category: "outdoor",
   });
 }
 

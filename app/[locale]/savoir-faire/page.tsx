@@ -8,11 +8,18 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
+  const isEn = locale === "en";
+
   return buildCanonicalMetadata({
     locale,
     path: "/savoir-faire",
-    title: locale === "en" ? "Our Craftsmanship — Textile Manufacture & Bespoke Tailoring | Kansotex" : "Notre Savoir-Faire — Atelier de Confection & Étoffes Nobles | Kansotex",
-    description: locale === "en" ? "Discover Kansotex craftsmanship in Marrakech: noble fibres, high-density weaving, bespoke tailoring and professional support." : "Découvrez les piliers du savoir-faire textile Kansotex à Marrakech : sélection des fibres nobles, tissage haute densité, confection sur-mesure et accompagnement pro.",
+    title: isEn
+      ? "Craftsmanship & Textile Tailoring Workshop Marrakech"
+      : "Atelier de Confection & Savoir-Faire Textile Marrakech",
+    description: isEn
+      ? "Discover Kansotex textile craftsmanship in Marrakech: noble fibres, high-density weaving, bespoke tailoring and professional hospitality support."
+      : "Découvrez le savoir-faire textile Kansotex à Marrakech : sélection de fibres nobles, lin lavé, velours d'exception et confection artisanale sur-mesure.",
+    category: "ameublement",
   });
 }
 

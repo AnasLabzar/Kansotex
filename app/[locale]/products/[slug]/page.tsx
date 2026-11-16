@@ -34,14 +34,33 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
   }
 
   const isEn = params.locale === "en";
-  const productName = isEn ? (product.nameEn || product.nameFr) : product.nameFr;
-  const title = `${productName} — Kansotex In & Outdoor`;
+
+  // Helper to convert ALL CAPS like "PREMIUM TOWEL SET" to elegant Title Case "Premium Towel Set"
+  const formatTitleCase = (str: string) => {
+    if (!str) return "";
+    if (str === str.toUpperCase() && str.length > 3) {
+      return str
+        .toLowerCase()
+        .split(" ")
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(" ");
+    }
+    return str;
+  };
+
+  const rawProductName = isEn ? (product.nameEn || product.nameFr) : product.nameFr;
+  const productName = formatTitleCase(rawProductName);
+
+  const rawCat = product.category
+    ? (isEn ? product.category.nameEn || product.category.nameFr : product.category.nameFr)
+    : (isEn ? "Luxury Textile" : "Linge de Maison");
+  const categoryHook = formatTitleCase(rawCat);
+
+  // Under 50 chars so template `%s | Kansotex` stays strictly under 60 chars!
+  const title = `${productName} — ${categoryHook}`;
   const description =
     (isEn ? (product.descriptionEn || product.descriptionFr) : product.descriptionFr) ||
-    `Découvrez ${product.nameFr} chez Kansotex Marrakech. Étoffes haut de gamme et confection sur mesure.`;
-  const categoryName = product.category
-    ? (isEn ? product.category.nameEn || product.category.nameFr : product.category.nameFr)
-    : "Tissus & Linge";
+    `Découvrez ${productName} par Kansotex Marrakech. Étoffes haut de gamme, matières nobles et confection sur mesure.`;
 
   const baseUrl = "https://kansotex.com";
   const canonicalUrl = `${baseUrl}/${params.locale}/products/${params.slug}`;
@@ -53,14 +72,14 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     : `${baseUrl}/gallery/Kansotex-indoor-riad-tissus-pinterest-1.png`;
 
   const keywords = [
-    product.nameFr,
-    categoryName,
+    productName,
+    categoryHook,
     product.metadata?.composition || "Textile d'exception",
-    "Kansotex Marrakech",
-    "textile in and outdoor maroc",
-    "ameublement hôtel riad",
+    "linge de maison haut de gamme marrakech",
+    "tissu ameublement marrakech",
+    "kansotex marrakech",
+    "riad hotel textile maroc",
     "confection sur mesure marrakech",
-    "tissu au mètre",
   ];
 
   return {

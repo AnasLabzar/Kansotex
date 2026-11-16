@@ -30,7 +30,7 @@ export default function ImageGallery({
         >
           <Image
             src={images[currentIndex]}
-            alt={`${productName} view ${currentIndex + 1}`}
+            alt={`${productName} — Photo ${currentIndex + 1} — Textile in & outdoor et confection sur mesure Kansotex Marrakech`}
             fill
             priority={currentIndex === 0}
             sizes="(min-width: 1024px) 55vw, 100vw"
@@ -57,7 +57,7 @@ export default function ImageGallery({
                 fill
                 sizes="56px"
                 className="object-cover"
-                alt={`Thumbnail ${idx + 1}`}
+                alt={`${productName} — Miniature ${idx + 1} — Kansotex Marrakech`}
               />
             </button>
           ))}

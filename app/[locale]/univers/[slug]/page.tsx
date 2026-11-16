@@ -18,15 +18,58 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
+  const isEn = locale === "en";
   const item = universes.find((u) => u.slug === slug);
   if (!item) return { title: "Univers" };
+
+  const customTitles: Record<string, { fr: string; en: string; cat: string }> = {
+    "linge-de-maison": {
+      fr: "Linge de Maison Haut de Gamme Marrakech",
+      en: "Luxury Home Linen Marrakech",
+      cat: "table",
+    },
+    "linge-de-lit": {
+      fr: "Linge de Lit Luxe — Satin de Coton & Lin Lavé",
+      en: "Luxury Bed Linen — Sateen & Washed Linen",
+      cat: "lit",
+    },
+    "linge-de-bain": {
+      fr: "Linge de Bain & Peignoirs Éponge 600g/m²",
+      en: "Luxury Bath Linen & Velour Bathrobes",
+      cat: "bain",
+    },
+    "indoor": {
+      fr: "Tissus d'Ameublement Intérieur & Velours",
+      en: "Indoor Upholstery Fabrics & Velvets",
+      cat: "indoor",
+    },
+    "outdoor": {
+      fr: "Tissus Outdoor Déperlants & Anti-UV Marrakech",
+      en: "Outdoor Water-Repellent & UV Resistant Fabrics",
+      cat: "outdoor",
+    },
+    "tissus-haut-de-gamme": {
+      fr: "Tissus d'Éditeur & Confection Sur Mesure",
+      en: "Bespoke Fabrics & Custom Tailoring",
+      cat: "ameublement",
+    },
+  };
+
+  const titleConfig = customTitles[slug] || {
+    fr: `${item.title} — Étoffes & Confection`,
+    en: `${item.title} — Fabrics & Tailoring`,
+    cat: "home",
+  };
+
+  const title = isEn ? titleConfig.en : titleConfig.fr;
 
   return buildCanonicalMetadata({
     locale,
     path: `/univers/${slug}`,
-    title: `${item.title} — Univers Textile | Kansotex`,
+    title,
     description: item.excerpt || item.description,
     image: item.image,
+    category: titleConfig.cat,
   });
 }
 

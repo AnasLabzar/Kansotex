@@ -465,7 +465,7 @@ export function GalleryClientView() {
                     {/* Background Poster Image */}
                     <Image
                       src={reel.poster}
-                      alt={reel.title}
+                      alt={`${reel.title} — Atelier & Confection Textile Kansotex Marrakech`}
                       fill
                       sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                       className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out brightness-[0.9] group-hover:brightness-[0.98]"
@@ -641,11 +641,13 @@ export function GalleryClientView() {
                     <div className="relative aspect-[4/5] overflow-hidden bg-[#ded8cb]">
                       <Image
                         src={pin.image}
-                        alt={pin.title}
+                        alt={`${pin.title} — Inspiration In & Outdoor Textile Marrakech Pinterest Kansotex`}
                         fill
                         sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                         className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                         loading={index < 4 ? "eager" : "lazy"}
+                        data-pin-description={`${pin.title} — Tissus haut de gamme, confection sur mesure et linge de maison par Kansotex Marrakech`}
+                        data-pin-media={`https://kansotex.com${pin.image}`}
                       />
 
                       {/* Top Pin Tag */}

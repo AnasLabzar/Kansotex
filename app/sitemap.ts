@@ -47,7 +47,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     path: string;
     priority: number;
     changeFrequency: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly";
-    image?: string;
+    images?: string[];
   }
 
   const staticRoutes: StaticRouteDef[] = [
@@ -55,61 +55,125 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       path: "",
       priority: 1.0,
       changeFrequency: "daily",
-      image: `${BASE_URL}/KANSOTEX-marque-Black.png`,
+      images: [
+        `${BASE_URL}/KANSOTEX-marque-Black.png`,
+        `${BASE_URL}/gallery/Kansotex-indoor-riad-tissus-pinterest-1.webp`,
+        `${BASE_URL}/gallery/Kansotex-outdoor-tissus-pinterest.webp`,
+        `${BASE_URL}/gallery/linge-de-lite-villa-marrakech-kansotex.webp`,
+        `${BASE_URL}/gallery/bed_set_satin_1791048686563.jpg`,
+        `${BASE_URL}/gallery/bathrobe_velour_1791048626440.jpg`,
+      ],
     },
     {
       path: "/products",
       priority: 0.95,
       changeFrequency: "daily",
-      image: `${BASE_URL}/gallery/Kansotex-indoor-riad-tissus-pinterest-1.png`,
+      images: [
+        `${BASE_URL}/gallery/Kansotex-indoor-riad-tissus-pinterest-1.png`,
+        `${BASE_URL}/gallery/tissus-haut-de-gamme.webp`,
+      ],
+    },
+    {
+      path: "/catalogues",
+      priority: 0.95,
+      changeFrequency: "daily",
+      images: [
+        `${BASE_URL}/catalogues/linge-hotelier-post.jpg`,
+        `${BASE_URL}/catalogues/collection-hiver-post.jpg`,
+        `${BASE_URL}/catalogues/collection-privee-post.jpg`,
+        `${BASE_URL}/catalogues/linge-de-bain-post.jpg`,
+      ],
+    },
+    {
+      path: "/catalogues/linge-hotelier",
+      priority: 0.95,
+      changeFrequency: "daily",
+      images: [`${BASE_URL}/catalogues/linge-hotelier-post.jpg`],
+    },
+    {
+      path: "/catalogues/collection-hiver",
+      priority: 0.95,
+      changeFrequency: "daily",
+      images: [`${BASE_URL}/catalogues/collection-hiver-post.jpg`],
+    },
+    {
+      path: "/catalogues/collection-privee",
+      priority: 0.95,
+      changeFrequency: "daily",
+      images: [`${BASE_URL}/catalogues/collection-privee-post.jpg`],
+    },
+    {
+      path: "/catalogues/linge-de-bain",
+      priority: 0.95,
+      changeFrequency: "daily",
+      images: [`${BASE_URL}/catalogues/linge-de-bain-post.jpg`],
     },
     {
       path: "/pro",
       priority: 0.95,
       changeFrequency: "weekly",
-      image: `${BASE_URL}/gallery/Kansotex-logistique-shipping.jpg`,
+      images: [`${BASE_URL}/gallery/Kansotex-logistique-shipping.jpg`],
     },
     {
       path: "/univers",
       priority: 0.90,
       changeFrequency: "weekly",
-      image: `${BASE_URL}/gallery/Kansotex-indoor-living-room-pinterest.png`,
+      images: [
+        `${BASE_URL}/gallery/Kansotex-indoor-living-room-pinterest.png`,
+        `${BASE_URL}/gallery/linge-de-maison-indoor-villa-kansotex.webp`,
+        `${BASE_URL}/gallery/linge-de-lite-villa-marrakech-kansotex.webp`,
+      ],
     },
     {
       path: "/savoir-faire",
       priority: 0.85,
       changeFrequency: "monthly",
-      image: `${BASE_URL}/gallery/Kansotex-indoor-riad-tissus-pinterest-2.png`,
+      images: [`${BASE_URL}/gallery/Kansotex-indoor-riad-tissus-pinterest-2.png`],
     },
     {
       path: "/a-propos",
       priority: 0.80,
       changeFrequency: "monthly",
-      image: `${BASE_URL}/gallery/matiere-tissus-outdoor-rooftop.jpg`,
+      images: [`${BASE_URL}/gallery/matiere-tissus-outdoor-rooftop.jpg`],
     },
     {
       path: "/contact",
       priority: 0.80,
       changeFrequency: "monthly",
-      image: `${BASE_URL}/gallery/accompagnement-equipe-kansotex.jpg`,
+      images: [`${BASE_URL}/gallery/accompagnement-equipe-kansotex.jpg`],
     },
     {
       path: "/devis",
       priority: 0.85,
       changeFrequency: "weekly",
-      image: `${BASE_URL}/gallery/accompagnement-equipe-kansotex.jpg`,
+      images: [`${BASE_URL}/gallery/accompagnement-equipe-kansotex.jpg`],
     },
     {
       path: "/gallery",
-      priority: 0.80,
+      priority: 0.85,
       changeFrequency: "weekly",
-      image: `${BASE_URL}/gallery/Kansotex-indoor-riad-tissus-pinterest-1.webp`,
+      images: [
+        `${BASE_URL}/gallery/Kansotex-indoor-riad-tissus-pinterest-1.webp`,
+        `${BASE_URL}/gallery/Kansotex-indoor-riad-tissus-pinterest-2.webp`,
+        `${BASE_URL}/gallery/Kansotex-indoor-living-room-pinterest.webp`,
+        `${BASE_URL}/gallery/Kansotex-outdoor-terasse-rooftop.webp`,
+        `${BASE_URL}/gallery/Kansotex-outdoor-terasse-rooftop-2.webp`,
+        `${BASE_URL}/gallery/Kansotex-outdoor-tissus-pinterest.webp`,
+        `${BASE_URL}/gallery/accompagnement-equipe-kansotex.webp`,
+        `${BASE_URL}/gallery/linge-de-maison-indoor-villa-kansotex.webp`,
+        `${BASE_URL}/gallery/linge-de-lite-villa-marrakech-kansotex.webp`,
+        `${BASE_URL}/gallery/tissus-haut-de-gamme.webp`,
+        `${BASE_URL}/gallery/bedroom_lifestyle_1791052936092.jpg`,
+        `${BASE_URL}/gallery/linen_fabric_closeup_1791052926029.jpg`,
+        `${BASE_URL}/gallery/chilienne-luxe-transat-marrakech.jpg`,
+        `${BASE_URL}/gallery/daybed-mousse-dryfeel-piscine-marrakech.jpg`,
+      ],
     },
     {
       path: "/blog",
       priority: 0.90,
       changeFrequency: "daily",
-      image: `${BASE_URL}/gallery/Kansotex-outdoor-terasse-rooftop.webp`,
+      images: [`${BASE_URL}/gallery/Kansotex-outdoor-terasse-rooftop.webp`],
     },
     {
       path: "/mentions-legales",
@@ -129,7 +193,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   for (const route of staticRoutes) {
-    const images = route.image ? [route.image] : undefined;
+    const images = route.images && route.images.length > 0 ? route.images : undefined;
 
     for (const locale of LOCALES) {
       const url = `${BASE_URL}/${locale}${route.path}`;

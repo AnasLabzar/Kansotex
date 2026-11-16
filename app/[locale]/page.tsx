@@ -20,11 +20,19 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
+  const isEn = locale === "en";
+
   return buildCanonicalMetadata({
     locale,
     path: "",
-    title: locale === "en" ? "Kansotex — In & Outdoor | Luxury Textile House Marrakech" : "Kansotex — In & Outdoor | Maison de Textile Haut de Gamme Marrakech",
-    description: locale === "en" ? "Maison de textile in & outdoor. Premium fabrics, bespoke curtains, linen and hospitality furnishings in Marrakech." : "Maison de textile in & outdoor. Tissus d'ameublement haut de gamme, confection sur-mesure de rideaux, voilages et linge de maison à Marrakech.",
+    isAbsoluteTitle: true,
+    title: isEn
+      ? "Kansotex — Luxury Home Linen & In/Outdoor Fabrics Marrakech"
+      : "Kansotex — Linge de Maison Haut de Gamme & Tissus Marrakech",
+    description: isEn
+      ? "High-end textile house in Marrakech: 5-star bed linen, velour bathrobes, bespoke curtains and luxury in/outdoor upholstery fabrics for riads and villas."
+      : "Maison de textile haut de gamme à Marrakech : linge de lit 5 étoiles, peignoirs velours, rideaux sur-mesure et tissus d'ameublement in & outdoor pour villas et riads.",
+    category: "home",
   });
 }
 

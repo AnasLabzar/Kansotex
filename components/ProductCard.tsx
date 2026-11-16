@@ -112,7 +112,7 @@ export function ProductCard({
       <div className="aspect-[4/5] relative overflow-hidden bg-[#e8e4db] rounded-[18px] sm:rounded-[22px] mb-3.5 border border-[#ded6c7]/80 group-hover:border-[#c5a880]/70 transition-all duration-500 shadow-2xs group-hover:shadow-md">
         <Image
           src={imageSrc}
-          alt={displayName}
+          alt={`${displayName} — ${isItemFabric ? "Tissu d'ameublement in & outdoor au mètre" : "Linge de maison haut de gamme"} Kansotex Marrakech`}
           fill
           priority={priority}
           sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"

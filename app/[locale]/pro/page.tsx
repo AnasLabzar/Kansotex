@@ -13,11 +13,18 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
+  const isEn = locale === "en";
+
   return buildCanonicalMetadata({
     locale,
     path: "/pro",
-    title: locale === "en" ? "B2B Trade Portal & Dashboard — Architects, Designers & Hospitality | Kansotex" : "Tableau de Bord Pro & Espace Prescripteurs — Architectes & Hôtellerie | Kansotex",
-    description: locale === "en" ? "Trade portal and professional dashboard for interior architects, decorators and luxury hospitality in Marrakech. Project planning, yardage calculators and tailor tracking." : "Tableau de bord professionnel réservé aux architectes d'intérieur, décorateurs et hôteliers. Suivi de confection, planning de pose, calculateur de métrage et tarifs éditeur à Marrakech.",
+    title: isEn
+      ? "Hospitality & Interior Architect Textile Supplier"
+      : "Fournisseur Textile Hôtellerie & Riads Marrakech",
+    description: isEn
+      ? "Trade supplier and custom textile workshop for luxury riads, boutique hotels and interior architects in Marrakech. Trade discounts and tailor tracking."
+      : "Grossiste et confection textile pour riads, hôtels 5 étoiles et architectes d'intérieur à Marrakech. Tarifs pro éditeur, métrages sur mesure et livraison.",
+    category: "pro",
   });
 }
 

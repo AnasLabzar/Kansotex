@@ -257,5 +257,16 @@
     "exploreMorePinterest": "Discover all our Moodboards on Pinterest",
     "badgeVideo": "Video",
     "badgePin": "Pin"
+  },
+  "Catalogues": {
+    "title": "Signature Catalogues",
+    "kicker": "Special Editions",
+    "all": "All Catalogues",
+    "configure": "Configure Pack",
+    "whatsappQuote": "WhatsApp Quote",
+    "requestB2B": "B2B Pro Request",
+    "includedInPack": "Included in Pack",
+    "fastDelivery": "Express delivery 24-72h",
+    "washResistance": "Resistant to heavy laundry"
   }
 }

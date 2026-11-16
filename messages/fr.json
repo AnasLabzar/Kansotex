@@ -257,5 +257,16 @@
     "exploreMorePinterest": "Découvrir tous nos Moodboards sur Pinterest",
     "badgeVideo": "Vidéo",
     "badgePin": "Épingle"
+  },
+  "Catalogues": {
+    "title": "Nos Catalogues d'Exception",
+    "kicker": "Éditions Spéciales",
+    "all": "Tous les catalogues",
+    "configure": "Configurer le Pack",
+    "whatsappQuote": "Devis sur WhatsApp",
+    "requestB2B": "Demande Devis Pro",
+    "includedInPack": "Composition du Pack",
+    "fastDelivery": "Livraison express 24h-72h",
+    "washResistance": "Résistant lavages intensifs"
   }
 }

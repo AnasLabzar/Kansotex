@@ -14,11 +14,12 @@ export async function generateMetadata({
     locale,
     path: "/devis",
     title: isEn
-      ? "Request a Bespoke Quote — Textile Workshop & Tailoring | Kansotex"
-      : "Demande de Devis Sur-Mesure — Manufacture Textile & Confection | Kansotex",
+      ? "Bespoke Curtains & Custom Linen Quote Marrakech"
+      : "Devis Confection Rideaux & Linge Sur Mesure Marrakech",
     description: isEn
-      ? "Request a custom quotation for bespoke curtains, indoor & outdoor upholstery fabrics, hotel bedding, and atelier tailoring in Marrakech. Fast 24h technical estimate."
-      : "Demandez votre devis sur-mesure pour vos rideaux grande hauteur, tissus d'ameublement in & outdoor, banquettes de riad et literie hôtelière à Marrakech. Chiffrage précis sous 24h.",
+      ? "Request a custom quotation for bespoke curtains, indoor & outdoor upholstery fabrics, hotel bedding, and atelier tailoring in Marrakech. Fast 24h estimate."
+      : "Demandez votre devis sur-mesure pour rideaux grande hauteur, voilages, tissus d'ameublement in & outdoor et literie de riad à Marrakech. Chiffrage sous 24h.",
+    category: "ameublement",
   });
 }
 

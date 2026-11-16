@@ -8,11 +8,18 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
+  const isEn = locale === "en";
+
   return buildCanonicalMetadata({
     locale,
     path: "/univers",
-    title: locale === "en" ? "Our Universes — Bespoke In & Outdoor Textile Creations | Kansotex" : "Nos Univers — Étoffes & Confection d'Exception In & Outdoor | Kansotex",
-    description: locale === "en" ? "Indoor, outdoor, bed linen, bath linen, table linen and luxury fabrics in Marrakech." : "Indoor, outdoor, linge de lit, linge de bain, linge de table et tissus haut de gamme confectionnés à Marrakech. Découvrez les univers textiles Kansotex.",
+    title: isEn
+      ? "Our Textile Universes — Bed, Bath & Outdoor Linen"
+      : "Nos Univers Textiles — Linge de Maison, Lit, Bain & Outdoor",
+    description: isEn
+      ? "Explore Kansotex collections in Marrakech: washed linen & sateen bedding, 600g bath linen, table linen and weather-resistant outdoor upholstery."
+      : "Explorez les univers textiles Kansotex : linge de lit lin lavé et satin, serviettes éponge pour spa, linge de table et toiles in & outdoor à Marrakech.",
+    category: "home",
   });
 }
 

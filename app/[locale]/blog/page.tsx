@@ -9,8 +9,8 @@ export async function generateMetadata(props: {
   const isEn = params.locale === "en";
 
   const title = isEn
-    ? "The Textile Gazette & Architecture Journal | Kansotex Marrakech"
-    : "Le Journal Textile & Architecture — Guides d'Étoffes In & Outdoor | Kansotex Marrakech";
+    ? "Textile Gazette & Architecture Journal"
+    : "Le Journal Textile & Guides d'Étoffes";
 
   const description = isEn
     ? "Discover expert insights, bespoke curtain yardage formulas, outdoor fabric UV standards, and luxury riad design inspirations from our Marrakech manufacture."

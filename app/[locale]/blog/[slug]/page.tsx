@@ -29,9 +29,7 @@ export async function generateMetadata(props: {
   }
 
   const isEn = params.locale === "en";
-  const title = isEn
-    ? `${post.titleEn} — Kansotex Journal`
-    : `${post.title} — Le Journal Kansotex Marrakech`;
+  const title = isEn ? post.titleEn : post.title;
 
   const description = isEn ? post.metaDescriptionEn : post.metaDescription;
 

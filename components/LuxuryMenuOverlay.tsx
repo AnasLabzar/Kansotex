@@ -38,6 +38,7 @@ export function LuxuryMenuOverlay({ isOpen, onClose }: LuxuryMenuOverlayProps) {
 
   // State to track open/closed sub-menus
   const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({
+    catalogues: false,
     univers: false,
     blog: false,
     savoir: false,
@@ -51,7 +52,9 @@ export function LuxuryMenuOverlay({ isOpen, onClose }: LuxuryMenuOverlayProps) {
       document.body.style.overflow = "hidden";
       // Auto-expand the active section if matches
       if (pathname) {
-        if (pathname.includes("/univers") || pathname.includes("/products")) {
+        if (pathname.includes("/catalogues")) {
+          setExpandedMenus((prev) => ({ ...prev, catalogues: true }));
+        } else if (pathname.includes("/univers") || pathname.includes("/products")) {
           setExpandedMenus((prev) => ({ ...prev, univers: true }));
         } else if (pathname.includes("/blog")) {
           setExpandedMenus((prev) => ({ ...prev, blog: true }));
@@ -117,6 +120,54 @@ export function LuxuryMenuOverlay({ isOpen, onClose }: LuxuryMenuOverlayProps) {
       href: "/",
       labelFr: "ACCUEIL",
       labelEn: "HOME",
+    },
+    {
+      key: "catalogues",
+      href: "/catalogues",
+      labelFr: "ÉDITIONS & CATALOGUES",
+      labelEn: "EDITIONS & CATALOGUES",
+      children: [
+        {
+          href: "/catalogues",
+          labelFr: "Tous les Catalogues d'Exception",
+          labelEn: "All Signature Catalogues",
+          subtitleFr: "Hub des 4 collections : Hôtellerie, Hiver, Collection Privée, Bain",
+          subtitleEn: "Hub of 4 editions: Hospitality, Winter, Private Collection, Bath",
+          badge: "ÉDITION",
+        },
+        {
+          href: "/catalogues/linge-hotelier",
+          labelFr: "Linge Hôtelier · Riads & Airbnb",
+          labelEn: "Hotel Bed Linen · Riads & Airbnb",
+          subtitleFr: "Pack Linge de Lit 4 pièces, lavage 90°C, normes hôtelières",
+          subtitleEn: "4-piece Bed Linen Pack, 90°C wash, hospitality grade",
+          badge: "HÔTEL",
+        },
+        {
+          href: "/catalogues/collection-hiver",
+          labelFr: "L'Hiver Arrive... Couettes Chaudes",
+          labelEn: "Winter is Coming... Warm Duvets",
+          subtitleFr: "Couettes anti-acariens SANITIZED®, avis clients 4.9★",
+          subtitleEn: "SANITIZED® anti-dust mite duvets, 4.9★ reviews",
+          badge: "HIVER",
+        },
+        {
+          href: "/catalogues/collection-privee",
+          labelFr: "L'Excellence des Matières Nobles",
+          labelEn: "The Excellence of Noble Materials",
+          subtitleFr: "Collection Privée : Satin 800 fils, 100% coton peigné pur",
+          subtitleEn: "Private Collection: 800 TC sateen, 100% pure combed cotton",
+          badge: "PALACE",
+        },
+        {
+          href: "/catalogues/linge-de-bain",
+          labelFr: "Linge de Bain Hôtelier 600g",
+          labelEn: "Hotel Bath Linen 600g",
+          subtitleFr: "Maxi draps 100x150cm, serviettes 50x90, éponges 600g/m²",
+          subtitleEn: "100x150cm bath sheets, 50x90 towels, 600g/m² terry",
+          badge: "600G",
+        },
+      ],
     },
     {
       key: "univers",
